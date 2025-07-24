@@ -1,3 +1,3 @@
 <template>
-  <div>auth</div>
+  <div>index</div>
 </template>

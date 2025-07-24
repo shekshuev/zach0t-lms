@@ -1,1 +1,24 @@
-{}
+{
+  "pages": {
+    "auth": {
+      "header": "Sign In",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Submit"
+    }
+  },
+  "validations": {
+    "username": {
+      "required": "Username is required",
+      "min": "Username must be at least 5 characters",
+      "max": "Username must be at most 12 characters",
+      "pattern": "Username can only contain letters, numbers, and underscores"
+    },
+    "password": {
+      "required": "Password is required",
+      "min": "Password must be at least 8 characters",
+      "max": "Password must be at most 20 characters",
+      "pattern": "Password should contain letters, numbers and special characters"
+    }
+  }
+}

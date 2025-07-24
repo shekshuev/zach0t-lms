@@ -14,7 +14,9 @@ export default defineNuxtConfig({
     "nuxt-tiptap-editor",
     "nuxt-monaco-editor",
     "@vee-validate/nuxt",
+    "nuxt-auth-utils",
   ],
+  css: ["~/assets/app.css"],
   i18n: {
     defaultLocale: "en",
     locales: [
