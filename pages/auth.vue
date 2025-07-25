@@ -1,4 +1,12 @@
 <script setup lang="ts">
+import {
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  PASSWORD_REGEX,
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+  USERNAME_REGEX,
+} from "~/utils/validation";
 import type { FormSubmitEvent } from "@nuxt/ui";
 import type { LoginDto } from "~/types/user";
 import { z } from "zod";
@@ -48,15 +56,15 @@ function onSubmit(e: FormSubmitEvent<LoginDto>) {
       <template #header>
         <h2 class="text-2xl font-bold text-center">{{ $t("pages.auth.header") }}</h2>
       </template>
+      <div class="grid gap-4">
+        <UFormField :label="$t('pages.auth.username')" name="username">
+          <UInput v-model="state.username" class="w-full" />
+        </UFormField>
 
-      <UFormField :label="$t('pages.auth.username')" name="userName">
-        <UInput v-model="state.username" class="w-full" />
-      </UFormField>
-
-      <UFormField :label="$t('pages.auth.password')" name="password">
-        <UInput v-model="state.password" type="password" class="w-full" />
-      </UFormField>
-
+        <UFormField :label="$t('pages.auth.password')" name="password">
+          <UInput v-model="state.password" type="password" class="w-full" />
+        </UFormField>
+      </div>
       <template #footer>
         <UButton type="submit" block> {{ $t("pages.auth.submit") }} </UButton>
       </template>
