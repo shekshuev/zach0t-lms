@@ -32,6 +32,11 @@
       "submit": "Submit"
     }
   },
+  "ui": {
+    "in-development": {
+      "header": "Sorry, this section is under development"
+    }
+  },
   "validations": {
     "username": {
       "required": "Username is required",

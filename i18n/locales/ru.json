@@ -32,6 +32,11 @@
       "submit": "Войти"
     }
   },
+  "ui": {
+    "in-development": {
+      "header": "Извините, раздел в разработке"
+    }
+  },
   "validations": {
     "username": {
       "required": "Имя пользователя обязательно",

@@ -15,5 +15,15 @@ export default defineAppConfig({
         variant: "soft",
       },
     },
+    colors: {
+      primary: "indigo",
+      secondary: "cyan",
+      tertiary: "teal",
+      neutral: "slate",
+      info: "blue",
+      success: "green",
+      warning: "amber",
+      error: "red",
+    },
   },
 });
