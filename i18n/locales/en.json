@@ -37,7 +37,20 @@
         "all-roles": "All roles",
         "all-statuses": "All statuses",
         "apply-filters": "Apply filters",
-        "clear-filters": "Clear filters"
+        "clear-filters": "Clear filters",
+        "id": "ID",
+        "username": "Username",
+        "first-name": "First name",
+        "last-name": "Last name",
+        "role": "Role",
+        "status": "Status",
+        "created-at": "Created at",
+        "updated-at": "Updated at",
+        "actions": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "new": "New",
+        "reset-password": "Reset password"
       }
     }
   },

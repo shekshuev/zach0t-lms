@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     "nuxt-monaco-editor",
     "@vee-validate/nuxt",
     "nuxt-auth-utils",
+    "dayjs-nuxt",
   ],
   css: ["~/assets/app.css"],
   i18n: {

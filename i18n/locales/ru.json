@@ -37,7 +37,20 @@
         "all-roles": "Все роли",
         "all-statuses": "Все статусы",
         "apply-filters": "Применить фильтры",
-        "clear-filters": "Очистить фильтры"
+        "clear-filters": "Очистить фильтры",
+        "id": "ID",
+        "username": "Имя пользователя",
+        "first-name": "Имя",
+        "last-name": "Фамилия",
+        "role": "Роль",
+        "status": "Статус",
+        "created-at": "Создан",
+        "updated-at": "Обновлен",
+        "actions": "Действия",
+        "edit": "Редактировать",
+        "delete": "Удалить",
+        "new": "Новый",
+        "reset-password": "Сбросить пароль"
       }
     }
   },

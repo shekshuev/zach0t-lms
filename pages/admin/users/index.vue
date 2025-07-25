@@ -1,12 +1,22 @@
 <script setup lang="ts">
 import type { FilterUserDto, ReadUserDto } from "~/types/user";
+import { USER_ROLES, USER_STATUSES } from "~/types/user";
+import { h, resolveComponent } from "vue";
 import type { Pageable } from "~/types/shared";
+import type { Row } from "@tanstack/vue-table";
+import type { TableColumn } from "@nuxt/ui";
 import { getPaginationRowModel } from "@tanstack/vue-table";
 import { z } from "zod";
+
+const UButton = resolveComponent("UButton");
+const UDropdownMenu = resolveComponent("UDropdownMenu");
 
 definePageMeta({
   layout: "dashboard",
 });
+
+const { t } = useI18n();
+const dayjs = useDayjs();
 
 const pagination = ref({
   pageIndex: 0,
@@ -25,8 +35,8 @@ const filters = reactive<Partial<Omit<FilterUserDto, "page" | "limit">>>(getInit
 
 const schema = z.object({
   username: z.string().optional(),
-  role: z.enum(["admin", "user", "teacher"]).optional(),
-  status: z.enum(["active", "blocked", "created"]).optional(),
+  role: z.enum(USER_ROLES).optional(),
+  status: z.enum(USER_STATUSES).optional(),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
 });
@@ -36,7 +46,7 @@ const state = reactive(getInitialFilters());
 const { data, status, refresh } = await useAsyncData<Pageable<ReadUserDto>>(
   "users",
   () =>
-    $fetch("/api/user", {
+    $fetch("/api/users", {
       query: {
         page: pagination.value.pageIndex + 1,
         limit: pagination.value.pageSize,
@@ -64,6 +74,89 @@ function clearFilters() {
 }
 
 const table = useTemplateRef("table");
+
+const columns: TableColumn<ReadUserDto>[] = [
+  {
+    header: t("pages.admin.users.id"),
+    accessorKey: "id",
+  },
+  {
+    header: t("pages.admin.users.username"),
+    accessorKey: "username",
+  },
+  {
+    header: t("pages.admin.users.role"),
+    accessorKey: "role",
+  },
+  {
+    header: t("pages.admin.users.status"),
+    accessorKey: "status",
+  },
+  {
+    header: t("pages.admin.users.first-name"),
+    accessorKey: "firstName",
+  },
+  {
+    header: t("pages.admin.users.last-name"),
+    accessorKey: "lastName",
+  },
+  {
+    header: t("pages.admin.users.created-at"),
+    accessorKey: "createdAt",
+    cell: ({ row }) => dayjs(row.getValue("createdAt")).format("DD.MM.YYYY HH:mm:ss"),
+  },
+  {
+    header: t("pages.admin.users.updated-at"),
+    accessorKey: "updatedAt",
+    cell: ({ row }) => dayjs(row.getValue("updatedAt")).format("DD.MM.YYYY HH:mm:ss"),
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return h(
+        "div",
+        { class: "text-right" },
+        h(
+          UDropdownMenu,
+          {
+            content: {
+              align: "end",
+            },
+            items: getRowItems(row),
+          },
+          () =>
+            h(UButton, {
+              icon: "i-lucide-ellipsis-vertical",
+              variant: "ghost",
+            }),
+        ),
+      );
+    },
+  },
+];
+
+function getRowItems(row: Row<ReadUserDto>) {
+  return [
+    {
+      type: "label",
+      label: t("pages.admin.users.actions"),
+    },
+    {
+      type: "separator",
+    },
+    {
+      label: t("pages.admin.users.reset-password"),
+    },
+    {
+      label: t("pages.admin.users.edit"),
+      type: "link",
+      to: `/admin/users/${row.original.id}`,
+    },
+    {
+      label: t("pages.admin.users.delete"),
+    },
+  ];
+}
 </script>
 
 <template>
@@ -92,11 +185,13 @@ const table = useTemplateRef("table");
 
         <UButton type="submit">{{ $t("pages.admin.users.apply-filters") }}</UButton>
         <UButton variant="ghost" @click="clearFilters">{{ $t("pages.admin.users.clear-filters") }}</UButton>
+        <UButton class="ml-auto" variant="ghost" to="/admin/users/new">{{ $t("pages.admin.users.new") }}</UButton>
       </div>
     </UForm>
     <UTable
       ref="table"
       v-model:pagination="pagination"
+      :columns="columns"
       :data="data?.items || []"
       :loading="status === 'pending'"
       :pagination-options="{

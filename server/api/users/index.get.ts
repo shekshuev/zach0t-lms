@@ -5,7 +5,7 @@ import type { Pageable } from "~/types/shared";
 import { User } from "~/server/models/user.schema";
 import { getQuery } from "h3";
 import { requireAdminSession } from "~/server/utils/auth";
-import { toReadUserDto } from "../utils/mappers";
+import { toReadUserDto } from "../../utils/mappers";
 
 export default defineEventHandler(async (event: H3Event) => {
   await requireAdminSession(event);

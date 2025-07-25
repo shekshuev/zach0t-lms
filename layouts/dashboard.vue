@@ -141,7 +141,7 @@ watchEffect(() => {
             orientation="vertical"
             :items="items"
             :ui="{
-              link: 'px-3 py-3',
+              link: collapsed && 'px-3 py-3',
             }"
           />
 
@@ -151,7 +151,7 @@ watchEffect(() => {
             orientation="vertical"
             :items="bottomItems"
             :ui="{
-              link: 'px-3 py-3',
+              link: collapsed && 'px-3 py-3',
             }"
           />
         </div>
