@@ -6,7 +6,7 @@ import {
   USERNAME_MIN_LENGTH,
   USERNAME_REGEX,
 } from "~/utils/validation";
-import type { SessionPayload } from "~/types/user";
+import type { SessionPayload, UserRole } from "~/types/user";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 
@@ -26,7 +26,7 @@ export default defineEventHandler(async event => {
       const payload: SessionPayload = {
         id: user.id,
         username: user.username,
-        role: "admin",
+        role: user.role as UserRole,
       };
       await setUserSession(
         event,
