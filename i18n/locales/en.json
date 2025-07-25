@@ -1,4 +1,29 @@
 {
+  "layouts": {
+    "dashboard": {
+      "menu": {
+        "header": "Menu",
+        "admin": "Admin",
+        "dashboard": "Dashboard",
+        "assignments": "Assignments",
+        "schedule": "Schedule",
+        "teachers": "Teachers",
+        "notes": "Notes",
+        "files": "Files",
+        "settings": "Settings",
+        "users": "Users",
+        "groups": "Groups",
+        "subjects": "Subjects",
+        "classes": "Classes",
+        "lessons": "Lessons",
+        "logout": "Logout",
+        "collapse": "Collapse",
+        "expand": "Expand",
+        "light": "Light theme",
+        "dark": "Dark theme"
+      }
+    }
+  },
   "pages": {
     "auth": {
       "header": "Sign In",

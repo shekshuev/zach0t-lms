@@ -5,7 +5,7 @@ import { z } from "zod";
 
 definePageMeta({ layout: "auth" });
 
-const { user, fetch: refreshSession } = useUserSession();
+const { fetch: refreshSession } = useUserSession();
 
 const { t } = useI18n();
 
@@ -40,16 +40,6 @@ function onSubmit(e: FormSubmitEvent<LoginDto>) {
       console.error(err);
     });
 }
-
-watch(
-  user,
-  () => {
-    if (user.value) {
-      navigateTo("/");
-    }
-  },
-  { immediate: true },
-);
 </script>
 
 <template>

@@ -1,3 +1,9 @@
+<script setup lang="ts">
+definePageMeta({
+  layout: "dashboard",
+});
+</script>
+
 <template>
-  <div>index</div>
+  <div>123456</div>
 </template>

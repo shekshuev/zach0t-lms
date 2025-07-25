@@ -1,4 +1,29 @@
 {
+  "layouts": {
+    "dashboard": {
+      "menu": {
+        "header": "Меню",
+        "admin": "Админка",
+        "dashboard": "Главная",
+        "assignments": "Задания",
+        "schedule": "Расписание",
+        "teachers": "Преподаватели",
+        "notes": "Заметки",
+        "files": "Файлы",
+        "settings": "Настройки",
+        "users": "Пользователи",
+        "groups": "Группы",
+        "subjects": "Дисциплины",
+        "classes": "Занятия",
+        "lessons": "Занятия",
+        "logout": "Выйти",
+        "collapse": "Свернуть",
+        "expand": "Развернуть",
+        "light": "Светлая тема",
+        "dark": "Темная тема"
+      }
+    }
+  },
   "pages": {
     "auth": {
       "header": "Вход в систему",

@@ -26,10 +26,17 @@ export default defineEventHandler(async event => {
       const payload: SessionPayload = {
         id: user.id,
         username: user.username,
+        role: "admin",
       };
-      await setUserSession(event, {
-        user: payload,
-      });
+      await setUserSession(
+        event,
+        {
+          user: payload,
+        },
+        {
+          maxAge: 60 * 60 * 24 * 7,
+        },
+      );
       return {};
     }
   }
