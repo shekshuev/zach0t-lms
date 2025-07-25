@@ -1,4 +1,6 @@
+import type { HydratedDocument, InferSchemaType } from "mongoose";
 import { Schema, model } from "mongoose";
+import { USER_ROLES, USER_STATUSES } from "~/types/user";
 
 const UserSchema = new Schema({
   username: {
@@ -18,12 +20,12 @@ const UserSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "user", "teacher"] as const,
+    enum: USER_ROLES,
     default: "user",
   },
   status: {
     type: String,
-    enum: ["active", "blocked", "created"] as const,
+    enum: USER_STATUSES,
     default: "active",
     required: true,
   },
@@ -36,5 +38,7 @@ const UserSchema = new Schema({
     default: () => new Date(),
   },
 });
+
+export type UserDocument = HydratedDocument<InferSchemaType<typeof UserSchema>>;
 
 export const User = model("User", UserSchema);

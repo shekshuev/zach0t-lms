@@ -15,6 +15,11 @@ export default defineAppConfig({
         variant: "soft",
       },
     },
+    select: {
+      defaultVariants: {
+        variant: "soft",
+      },
+    },
     colors: {
       primary: "indigo",
       secondary: "cyan",

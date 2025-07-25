@@ -30,6 +30,15 @@
       "username": "Username",
       "password": "Password",
       "submit": "Submit"
+    },
+    "admin": {
+      "users": {
+        "search-username": "Search username",
+        "all-roles": "All roles",
+        "all-statuses": "All statuses",
+        "apply-filters": "Apply filters",
+        "clear-filters": "Clear filters"
+      }
     }
   },
   "ui": {
@@ -53,6 +62,7 @@
   },
   "errors": {
     "unknown": "Unknown error",
+    "forbidden": "Forbidden",
     "user_not_found": "User not found",
     "user_is_blocked": "User is blocked",
     "wrong_password": "Wrong password"
