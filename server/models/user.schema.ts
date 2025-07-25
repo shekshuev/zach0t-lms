@@ -21,6 +21,12 @@ const UserSchema = new Schema({
     enum: ["admin", "user", "teacher"] as const,
     default: "user",
   },
+  status: {
+    type: String,
+    enum: ["active", "blocked", "created"] as const,
+    default: "active",
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: () => new Date(),

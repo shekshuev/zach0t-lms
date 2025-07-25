@@ -20,28 +20,42 @@ export default defineEventHandler(async event => {
 
   const user = await User.findOne({ username });
 
-  if (user) {
-    const matches = bcrypt.compareSync(password, user.passwordHash);
-    if (matches) {
-      const payload: SessionPayload = {
-        id: user.id,
-        username: user.username,
-        role: user.role as UserRole,
-      };
-      await setUserSession(
-        event,
-        {
-          user: payload,
-        },
-        {
-          maxAge: 60 * 60 * 24 * 7,
-        },
-      );
-      return {};
-    }
+  if (!user) {
+    throw createError({
+      statusCode: 404,
+      message: "user_not_found",
+    });
   }
 
-  throw createError({
-    statusCode: 401,
-  });
+  if (user.status === "blocked") {
+    throw createError({
+      statusCode: 403,
+      message: "user_is_blocked",
+    });
+  }
+
+  const matches = bcrypt.compareSync(password, user.passwordHash);
+
+  if (!matches) {
+    throw createError({
+      statusCode: 403,
+      message: "wrong_password",
+    });
+  }
+
+  const payload: SessionPayload = {
+    id: user.id,
+    username: user.username,
+    role: user.role as UserRole,
+  };
+  await setUserSession(
+    event,
+    {
+      user: payload,
+    },
+    {
+      maxAge: 60 * 60 * 24 * 7,
+    },
+  );
+  return {};
 });

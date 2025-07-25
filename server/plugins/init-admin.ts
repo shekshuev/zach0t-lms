@@ -14,6 +14,7 @@ export default defineNitroPlugin(async () => {
         firstName: "John",
         lastName: "Doe",
         role: "admin",
+        status: "active",
       });
       console.log('Admin created: userName "admin", password "Qwerty123!"');
     }

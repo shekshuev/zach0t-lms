@@ -15,6 +15,8 @@ definePageMeta({ layout: "auth" });
 
 const { fetch: refreshSession } = useUserSession();
 
+const toast = useToast();
+
 const { t } = useI18n();
 
 const schema = z.object({
@@ -45,7 +47,8 @@ function onSubmit(e: FormSubmitEvent<LoginDto>) {
       refreshSession();
     })
     .catch(err => {
-      console.error(err);
+      const msg = err?.data?.message || "unknown_error";
+      toast.add({ title: t(`errors.${msg}`) });
     });
 }
 </script>
