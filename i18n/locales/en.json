@@ -62,15 +62,31 @@
   "validations": {
     "username": {
       "required": "Username is required",
-      "min": "Username must be at least 5 characters",
-      "max": "Username must be at most 12 characters",
+      "min": "Username must be at least {length} characters",
+      "max": "Username must be at most {length} characters",
       "pattern": "Username can only contain letters, numbers, and underscores"
     },
     "password": {
       "required": "Password is required",
-      "min": "Password must be at least 8 characters",
-      "max": "Password must be at most 20 characters",
+      "min": "Password must be at least {length} characters",
+      "max": "Password must be at most {length} characters",
       "pattern": "Password should contain letters, numbers and special characters"
+    },
+    "first-name": {
+      "min": "First name must be at least {length} characters",
+      "max": "First name must be at most {length} characters",
+      "pattern": "First name should contain only letters (from any language), apostrophes, hyphens, or spaces, and must start and end with a letter"
+    },
+    "last-name": {
+      "min": "Last name must be at least {length} characters",
+      "max": "Last name must be at most {length} characters",
+      "pattern": "Last name should contain only letters (from any language), apostrophes, hyphens, or spaces, and must start and end with a letter"
+    },
+    "user-role": {
+      "includes": "User role should be one of the following: {values}"
+    },
+    "user-status": {
+      "includes": "User status should be one of the following: {values}"
     }
   },
   "errors": {
