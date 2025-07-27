@@ -127,8 +127,8 @@ watchEffect(() => {
 <template>
   <AuthState>
     <template #default>
-      <div class="h-screen min-h-screen overflow-hidden w-full grid grid-cols-[auto_1fr] gap-2">
-        <div class="flex flex-col justify-between">
+      <div class="h-screen min-h-screen max-h-screen overflow-hidden w-full grid grid-cols-[auto_1fr] gap-2">
+        <div class="flex flex-col justify-between max-h-screen">
           <UNavigationMenu
             tooltip
             :collapsed="collapsed"
@@ -149,7 +149,7 @@ watchEffect(() => {
             }"
           />
         </div>
-        <div>
+        <div class="max-h-screen overflow-y-auto">
           <slot />
         </div>
       </div>
