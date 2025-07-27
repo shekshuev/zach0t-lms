@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import type { TableColumn } from "@nuxt/ui";
+import type { Row } from "@tanstack/vue-table";
+import { getPaginationRowModel } from "@tanstack/vue-table";
+import { h, resolveComponent } from "vue";
+import { z } from "zod";
+import type { Pageable } from "~/types/shared";
 import type { FilterUserDto, ReadUserDto } from "~/types/user";
 import { USER_ROLES, USER_STATUSES } from "~/types/user";
-import { h, resolveComponent } from "vue";
-import type { Pageable } from "~/types/shared";
-import type { Row } from "@tanstack/vue-table";
-import type { TableColumn } from "@nuxt/ui";
-import { getPaginationRowModel } from "@tanstack/vue-table";
-import { z } from "zod";
 
 const UButton = resolveComponent("UButton");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
@@ -160,7 +160,7 @@ function getRowItems(row: Row<ReadUserDto>) {
 </script>
 
 <template>
-  <div class="w-full space-y-4">
+  <div class="space-y-4 container mx-auto py-8">
     <UForm :schema="schema" :state="state" @submit.prevent="onFilterSubmit">
       <div class="flex gap-4 flex-wrap items-end">
         <UFormField label="Username" name="username">

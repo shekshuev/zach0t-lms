@@ -50,7 +50,14 @@
         "edit": "Edit",
         "delete": "Delete",
         "new": "New",
-        "reset-password": "Reset password"
+        "reset-password": "Reset password",
+        "password": "Password",
+        "confirm-password": "Confirm password",
+        "create-user": "Create user",
+        "edit-user": "Edit user",
+        "save": "Save",
+        "user-created": "User created",
+        "user-updated": "User updated"
       }
     }
   },
@@ -70,7 +77,8 @@
       "required": "Password is required",
       "min": "Password must be at least {length} characters",
       "max": "Password must be at most {length} characters",
-      "pattern": "Password should contain letters, numbers and special characters"
+      "pattern": "Password should contain letters, numbers and special characters",
+      "confirm": "Password confirmation does not match"
     },
     "first-name": {
       "min": "First name must be at least {length} characters",
@@ -94,6 +102,8 @@
     "forbidden": "Forbidden",
     "user_not_found": "User not found",
     "user_is_blocked": "User is blocked",
-    "wrong_password": "Wrong password"
+    "wrong_password": "Wrong password",
+    "unprocessable_entity": "Wrong request body",
+    "user_already_exists": "User already exists"
   }
 }

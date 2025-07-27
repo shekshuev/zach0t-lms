@@ -1,19 +1,23 @@
 <script setup lang="ts">
+import type { FormSubmitEvent } from "@nuxt/ui";
+import type { FetchError } from "ofetch";
+import { z } from "zod";
+import type { CreateUserDto, ReadUserDto, UpdateUserDto, UserRole } from "~/types/user";
+import { USER_ROLES, USER_STATUSES } from "~/types/user";
 import {
+  FIRST_NAME_MAX_LENGTH,
+  FIRST_NAME_MIN_LENGTH,
+  FIRST_NAME_REGEX,
+  LAST_NAME_MAX_LENGTH,
+  LAST_NAME_MIN_LENGTH,
+  LAST_NAME_REGEX,
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  PASSWORD_REGEX,
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
   USERNAME_REGEX,
-  FIRST_NAME_MIN_LENGTH,
-  FIRST_NAME_MAX_LENGTH,
-  FIRST_NAME_REGEX,
-  LAST_NAME_MIN_LENGTH,
-  LAST_NAME_MAX_LENGTH,
-  LAST_NAME_REGEX,
 } from "~/utils/validation";
-import type { ReadUserDto, UserRole } from "~/types/user";
-import { USER_ROLES, USER_STATUSES } from "~/types/user";
-import type { FormSubmitEvent } from "@nuxt/ui";
-import { z } from "zod";
 
 definePageMeta({ layout: "dashboard" });
 
@@ -26,43 +30,60 @@ const toast = useToast();
 const isNew = computed(() => route.params.id === "new");
 const id = computed(() => route.params.id as string);
 
-const schema = z.object({
-  username: z
-    .string({ message: t("validations.username.required") })
-    .min(USERNAME_MIN_LENGTH, t("validations.username.min", { length: USERNAME_MIN_LENGTH }))
-    .max(USERNAME_MAX_LENGTH, t("validations.username.max", { length: USERNAME_MAX_LENGTH }))
-    .regex(USERNAME_REGEX, t("validations.username.pattern")),
-  firstName: z.union([
-    z.literal(""),
-    z
-      .string()
-      .min(FIRST_NAME_MIN_LENGTH, t("validations.first-name.min", { length: FIRST_NAME_MIN_LENGTH }))
-      .max(FIRST_NAME_MAX_LENGTH, t("validations.first-name.max", { length: FIRST_NAME_MAX_LENGTH }))
-      .regex(FIRST_NAME_REGEX, t("validations.first-name.pattern"))
-      .nullable()
-      .optional(),
-  ]),
-  lastName: z.union([
-    z.literal(""),
-    z
-      .string()
-      .min(LAST_NAME_MIN_LENGTH, t("validations.last-name.min", { length: LAST_NAME_MIN_LENGTH }))
-      .max(LAST_NAME_MAX_LENGTH, t("validations.last-name.max", { length: LAST_NAME_MAX_LENGTH }))
-      .regex(LAST_NAME_REGEX, t("validations.last-name.pattern"))
-      .nullable()
-      .optional(),
-  ]),
-  role: z.enum(USER_ROLES, { message: t("validations.user-role.includes", { values: USER_ROLES.join(", ") }) }),
-  status: z.enum(USER_STATUSES, {
-    message: t("validations.user-status.includes", { values: USER_STATUSES.join(", ") }),
-  }),
-});
+const statuses = computed(() => (isNew.value ? USER_STATUSES.filter(r => r != "blocked") : USER_STATUSES));
 
-const state = reactive<z.infer<typeof schema>>({
+const schema = z
+  .object({
+    username: z
+      .string({ message: t("validations.username.required") })
+      .min(USERNAME_MIN_LENGTH, t("validations.username.min", { length: USERNAME_MIN_LENGTH }))
+      .max(USERNAME_MAX_LENGTH, t("validations.username.max", { length: USERNAME_MAX_LENGTH }))
+      .regex(USERNAME_REGEX, t("validations.username.pattern")),
+    password: z
+      .string()
+      .min(PASSWORD_MIN_LENGTH, t("validations.password.min", { length: PASSWORD_MIN_LENGTH }))
+      .max(PASSWORD_MAX_LENGTH, t("validations.password.max", { length: PASSWORD_MAX_LENGTH }))
+      .regex(PASSWORD_REGEX, t("validations.password.pattern"))
+      .nullable()
+      .optional(),
+    passwordConfirm: z.string().nullable().optional(),
+    firstName: z.union([
+      z.literal(""),
+      z
+        .string()
+        .min(FIRST_NAME_MIN_LENGTH, t("validations.first-name.min", { length: FIRST_NAME_MIN_LENGTH }))
+        .max(FIRST_NAME_MAX_LENGTH, t("validations.first-name.max", { length: FIRST_NAME_MAX_LENGTH }))
+        .regex(FIRST_NAME_REGEX, t("validations.first-name.pattern"))
+        .nullable()
+        .optional(),
+    ]),
+    lastName: z.union([
+      z.literal(""),
+      z
+        .string()
+        .min(LAST_NAME_MIN_LENGTH, t("validations.last-name.min", { length: LAST_NAME_MIN_LENGTH }))
+        .max(LAST_NAME_MAX_LENGTH, t("validations.last-name.max", { length: LAST_NAME_MAX_LENGTH }))
+        .regex(LAST_NAME_REGEX, t("validations.last-name.pattern"))
+        .nullable()
+        .optional(),
+    ]),
+    role: z.enum(USER_ROLES, { message: t("validations.user-role.includes", { values: USER_ROLES.join(", ") }) }),
+    status: z.enum(USER_STATUSES, {
+      message: t("validations.user-status.includes", { values: USER_STATUSES.join(", ") }),
+    }),
+  })
+  .refine(data => data.password === data.passwordConfirm, {
+    message: t("validations.password.confirm"),
+    path: ["passwordConfirm"],
+  });
+
+const state = reactive<CreateUserDto>({
   username: "",
   firstName: "",
   lastName: "",
-  role: "user" as UserRole,
+  password: null,
+  passwordConfirm: null,
+  role: "student" as UserRole,
   status: "created",
 });
 
@@ -86,64 +107,73 @@ watch(data, newValue => {
   }
 });
 
-async function onSubmit(e: FormSubmitEvent<typeof state>) {
+async function onSubmit(e: FormSubmitEvent<CreateUserDto | UpdateUserDto>) {
   try {
     if (isNew.value) {
-      await $fetch("/api/admin/users", {
+      const result = await $fetch("/api/users", {
         method: "POST",
         body: e.data,
       });
+      router.replace(`/admin/users/${result.id}`);
+      toast.add({ title: t("pages.admin.users.user-created") });
     } else {
-      await $fetch(`/api/admin/users/${id.value}`, {
+      await $fetch(`/api/users/${id.value}`, {
         method: "PUT",
         body: e.data,
       });
+      toast.add({ title: t("pages.admin.users.user-updated") });
     }
-    toast.add({ title: "Saved successfully" });
-    router.push("/admin/users");
   } catch (err) {
-    toast.add({
-      title: "Error",
-      description: err?.data?.message || "Unexpected error",
-    });
+    const msg = (err as FetchError)?.data?.message || "unknown_error";
+    toast.add({ title: t(`errors.${msg}`), color: "error" });
   }
 }
 </script>
 
 <template>
-  <UForm :schema="schema" :state="state" @submit="onSubmit">
-    <UCard class="max-w-xl w-full space-y-4 mx-auto mt-8">
+  <UForm :schema="schema" :state="state" class="container mx-auto py-8" @submit="onSubmit">
+    <UCard class="max-w-xl w-full space-y-4 mx-auto">
       <template #header>
         <h2 class="text-2xl font-bold text-center">
-          {{ isNew ? "Create User" : "Edit User" }}
+          {{ isNew ? $t("pages.admin.users.create-user") : $t("pages.admin.users.edit-user") }}
         </h2>
       </template>
 
       <div class="grid gap-4">
-        <UFormField label="Username" name="username">
+        <UFormField :label="$t('pages.admin.users.username')" name="username">
           <UInput v-model="state.username" class="w-full" />
         </UFormField>
 
-        <UFormField label="First Name" name="firstName">
+        <UFormField :label="$t('pages.admin.users.first-name')" name="firstName">
           <UInput v-model="state.firstName" class="w-full" />
         </UFormField>
 
-        <UFormField label="Last Name" name="lastName">
+        <UFormField :label="$t('pages.admin.users.last-name')" name="lastName">
           <UInput v-model="state.lastName" class="w-full" />
         </UFormField>
 
-        <UFormField label="Role" name="role">
+        <UFormField :label="$t('pages.admin.users.role')" name="role">
           <USelect v-model="state.role" :items="USER_ROLES as unknown as string[]" class="w-full" />
         </UFormField>
 
-        <UFormField label="Status" name="status">
-          <USelect v-model="state.status" :items="USER_STATUSES as unknown as string[]" class="w-full" />
+        <UFormField :label="$t('pages.admin.users.status')" name="status">
+          <USelect v-model="state.status" :items="statuses as unknown as string[]" class="w-full" />
         </UFormField>
+
+        <template v-if="state.status !== 'created' && isNew">
+          <UFormField :label="$t('pages.admin.users.password')" name="password">
+            <UInput v-model="state.password" type="password" class="w-full" />
+          </UFormField>
+
+          <UFormField :label="$t('pages.admin.users.confirm-password')" name="passwordConfirm">
+            <UInput v-model="state.passwordConfirm" type="password" class="w-full" />
+          </UFormField>
+        </template>
       </div>
 
       <template #footer>
         <UButton type="submit" block>
-          {{ isNew ? "Create" : "Save Changes" }}
+          {{ $t("pages.admin.users.save") }}
         </UButton>
       </template>
     </UCard>

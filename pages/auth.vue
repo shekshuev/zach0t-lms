@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { FormSubmitEvent } from "@nuxt/ui";
+import { z } from "zod";
+import type { LoginDto } from "~/types/user";
 import {
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
@@ -7,9 +10,6 @@ import {
   USERNAME_MIN_LENGTH,
   USERNAME_REGEX,
 } from "~/utils/validation";
-import type { FormSubmitEvent } from "@nuxt/ui";
-import type { LoginDto } from "~/types/user";
-import { z } from "zod";
 
 definePageMeta({ layout: "auth" });
 

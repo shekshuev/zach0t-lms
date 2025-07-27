@@ -27,16 +27,6 @@ export default withNuxt(
     files: ["**/*.ts", "**/*.vue", "**/*.js", "**/*.mjs"],
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
-      "sort-imports": [
-        "error",
-        {
-          ignoreCase: false,
-          ignoreDeclarationSort: false,
-          ignoreMemberSort: false,
-          memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
-          allowSeparatedGroups: false,
-        },
-      ],
     },
   },
 );

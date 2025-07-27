@@ -15,13 +15,20 @@ export interface SessionPayload {
   role: UserRole;
 }
 
-export interface ReadUserDto {
-  id: string;
+export interface CreateUserDto {
   username: string;
-  firstName: string | null;
-  lastName: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  password?: string | null;
+  passwordConfirm?: string | null;
   role: UserRole;
   status: UserStatus;
+}
+
+export type UpdateUserDto = Partial<CreateUserDto>;
+
+export interface ReadUserDto extends Omit<CreateUserDto, "password" | "passwordConfirm"> {
+  id: string;
   createdAt: Date;
   updatedAt: Date;
 }
