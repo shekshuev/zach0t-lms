@@ -21,6 +21,7 @@ import {
 } from "~/utils/validation";
 
 export default defineEventHandler(async event => {
+  await requireAdminSession(event);
   const body = await readBody<CreateUserDto>(event);
 
   const schema = z

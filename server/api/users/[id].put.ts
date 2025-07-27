@@ -21,6 +21,7 @@ import {
 } from "~/utils/validation";
 
 export default defineEventHandler(async event => {
+  await requireAdminSession(event);
   const id = getRouterParam(event, "id");
   const body = await readBody<UpdateUserDto>(event);
 
