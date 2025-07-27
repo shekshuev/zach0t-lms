@@ -48,7 +48,7 @@ function onSubmit(e: FormSubmitEvent<LoginDto>) {
     })
     .catch(err => {
       const msg = err?.data?.message || "unknown_error";
-      toast.add({ title: t(`errors.${msg}`) });
+      toast.add({ title: t(`errors.${msg}`), color: "error" });
     });
 }
 </script>
@@ -61,11 +61,11 @@ function onSubmit(e: FormSubmitEvent<LoginDto>) {
       </template>
       <div class="grid gap-4">
         <UFormField :label="$t('pages.auth.username')" name="username">
-          <UInput v-model="state.username" class="w-full" />
+          <UInput v-model.trim="state.username" class="w-full" />
         </UFormField>
 
         <UFormField :label="$t('pages.auth.password')" name="password">
-          <UInput v-model="state.password" type="password" class="w-full" />
+          <UInput v-model.trim="state.password" type="password" class="w-full" />
         </UFormField>
       </div>
       <template #footer>

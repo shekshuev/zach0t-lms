@@ -75,15 +75,9 @@ const items = computed<NavigationMenuItem[][]>(() => {
       },
       {
         label: t("layouts.dashboard.menu.users"),
-        icon: "i-lucide-user",
-        type: "link",
-        to: "/admin/users",
-      },
-      {
-        label: t("layouts.dashboard.menu.groups"),
         icon: "i-lucide-users",
         type: "link",
-        to: "/admin/groups",
+        to: "/admin/users",
       },
       {
         label: t("layouts.dashboard.menu.subjects"),

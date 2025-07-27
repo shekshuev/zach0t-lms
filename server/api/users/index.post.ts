@@ -7,6 +7,8 @@ import {
   FIRST_NAME_MAX_LENGTH,
   FIRST_NAME_MIN_LENGTH,
   FIRST_NAME_REGEX,
+  GROUP_MAX_LENGTH,
+  GROUP_REGEX,
   LAST_NAME_MAX_LENGTH,
   LAST_NAME_MIN_LENGTH,
   LAST_NAME_REGEX,
@@ -40,6 +42,7 @@ export default defineEventHandler(async event => {
         z.literal(""),
         z.string().min(LAST_NAME_MIN_LENGTH).max(LAST_NAME_MAX_LENGTH).regex(LAST_NAME_REGEX).nullable().optional(),
       ]),
+      group: z.union([z.literal(""), z.string().max(GROUP_MAX_LENGTH).regex(GROUP_REGEX).nullable().optional()]),
       role: z.enum(USER_ROLES),
       status: z.enum(USER_STATUSES),
     })
@@ -52,7 +55,7 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 422, message: "unprocessable_entity" });
   }
 
-  const { username, password, firstName, lastName, role, status } = parsed.data;
+  const { username, password, firstName, lastName, group, role, status } = parsed.data;
 
   const existing = await User.findOne({ username });
   if (existing) {
@@ -66,6 +69,7 @@ export default defineEventHandler(async event => {
     passwordHash,
     firstName,
     lastName,
+    group,
     role,
     status,
   });

@@ -28,6 +28,9 @@ const UserSchema = new Schema({
     default: "active",
     required: true,
   },
+  group: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: () => new Date(),

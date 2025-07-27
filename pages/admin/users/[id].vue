@@ -47,6 +47,15 @@ const schema = z
       .nullable()
       .optional(),
     passwordConfirm: z.string().nullable().optional(),
+    group: z.union([
+      z.literal(""),
+      z
+        .string()
+        .max(GROUP_MAX_LENGTH, t("validations.group.max", { length: GROUP_MAX_LENGTH }))
+        .regex(GROUP_REGEX, t("validations.group.pattern"))
+        .nullable()
+        .optional(),
+    ]),
     firstName: z.union([
       z.literal(""),
       z
@@ -79,10 +88,11 @@ const schema = z
 
 const state = reactive<CreateUserDto>({
   username: "",
-  firstName: "",
-  lastName: "",
+  firstName: null,
+  lastName: null,
   password: null,
   passwordConfirm: null,
+  group: null,
   role: "student" as UserRole,
   status: "created",
 });
@@ -141,15 +151,19 @@ async function onSubmit(e: FormSubmitEvent<CreateUserDto | UpdateUserDto>) {
 
       <div class="grid gap-4">
         <UFormField :label="$t('pages.admin.users.username')" name="username">
-          <UInput v-model="state.username" class="w-full" />
+          <UInput v-model.trim="state.username" class="w-full" />
         </UFormField>
 
         <UFormField :label="$t('pages.admin.users.first-name')" name="firstName">
-          <UInput v-model="state.firstName" class="w-full" />
+          <UInput v-model.trim.nullify="state.firstName" class="w-full" />
         </UFormField>
 
         <UFormField :label="$t('pages.admin.users.last-name')" name="lastName">
-          <UInput v-model="state.lastName" class="w-full" />
+          <UInput v-model.trim.nullify="state.lastName" class="w-full" />
+        </UFormField>
+
+        <UFormField :label="$t('pages.admin.users.group')" name="group">
+          <UInput v-model.trim.nullify="state.group" class="w-full" />
         </UFormField>
 
         <UFormField :label="$t('pages.admin.users.role')" name="role">
@@ -162,11 +176,11 @@ async function onSubmit(e: FormSubmitEvent<CreateUserDto | UpdateUserDto>) {
 
         <template v-if="state.status !== 'created' && isNew">
           <UFormField :label="$t('pages.admin.users.password')" name="password">
-            <UInput v-model="state.password" type="password" class="w-full" />
+            <UInput v-model.trim.nullify="state.password" type="password" class="w-full" />
           </UFormField>
 
           <UFormField :label="$t('pages.admin.users.confirm-password')" name="passwordConfirm">
-            <UInput v-model="state.passwordConfirm" type="password" class="w-full" />
+            <UInput v-model.trim.nullify="state.passwordConfirm" type="password" class="w-full" />
           </UFormField>
         </template>
       </div>

@@ -27,6 +27,7 @@ const getInitialFilters = () => ({
   username: undefined,
   role: undefined,
   status: undefined,
+  group: undefined,
   firstName: undefined,
   lastName: undefined,
 });
@@ -39,6 +40,7 @@ const schema = z.object({
   status: z.enum(USER_STATUSES).optional(),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
+  group: z.string().optional(),
 });
 
 const state = reactive(getInitialFilters());
@@ -60,8 +62,11 @@ const { data, status, refresh } = await useAsyncData<Pageable<ReadUserDto>>(
 
 function onFilterSubmit() {
   filters.username = state.username || undefined;
+  filters.firstName = state.firstName || undefined;
+  filters.lastName = state.lastName || undefined;
   filters.role = state.role;
   filters.status = state.status;
+  filters.group = state.group || undefined;
   pagination.value.pageIndex = 0;
   refresh();
 }
@@ -99,6 +104,10 @@ const columns: TableColumn<ReadUserDto>[] = [
   {
     header: t("pages.admin.users.last-name"),
     accessorKey: "lastName",
+  },
+  {
+    header: t("pages.admin.users.group"),
+    accessorKey: "group",
   },
   {
     header: t("pages.admin.users.created-at"),
@@ -162,30 +171,48 @@ function getRowItems(row: Row<ReadUserDto>) {
 <template>
   <div class="space-y-4 container mx-auto py-8">
     <UForm :schema="schema" :state="state" @submit.prevent="onFilterSubmit">
-      <div class="flex gap-4 flex-wrap items-end">
-        <UFormField label="Username" name="username">
-          <UInput v-model="state.username" :placeholder="$t('pages.admin.users.search-username')" />
+      <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 items-end">
+        <UFormField :label="$t('pages.admin.users.username')" name="username">
+          <UInput v-model="state.username" :placeholder="$t('pages.admin.users.search-username')" class="w-full" />
         </UFormField>
 
-        <UFormField label="Role" name="role">
+        <UFormField :label="$t('pages.admin.users.first-name')" name="firstName">
+          <UInput v-model="state.firstName" :placeholder="$t('pages.admin.users.search-first-name')" class="w-full" />
+        </UFormField>
+
+        <UFormField :label="$t('pages.admin.users.last-name')" name="lastName">
+          <UInput v-model="state.lastName" :placeholder="$t('pages.admin.users.search-last-name')" class="w-full" />
+        </UFormField>
+
+        <UFormField :label="$t('pages.admin.users.group')" name="group">
+          <UInput v-model="state.group" :placeholder="$t('pages.admin.users.search-group')" class="w-full" />
+        </UFormField>
+
+        <UFormField :label="$t('pages.admin.users.role')" name="role">
           <USelect
             v-model="state.role"
             :items="USER_ROLES as unknown as string[]"
             :placeholder="$t('pages.admin.users.all-roles')"
+            class="w-full"
           />
         </UFormField>
 
-        <UFormField label="Status" name="status">
+        <UFormField :label="$t('pages.admin.users.status')" name="status">
           <USelect
             v-model="state.status"
             :items="USER_STATUSES as unknown as string[]"
             :placeholder="$t('pages.admin.users.all-statuses')"
+            class="w-full"
           />
         </UFormField>
 
-        <UButton type="submit">{{ $t("pages.admin.users.apply-filters") }}</UButton>
-        <UButton variant="ghost" @click="clearFilters">{{ $t("pages.admin.users.clear-filters") }}</UButton>
-        <UButton class="ml-auto" variant="ghost" to="/admin/users/new">{{ $t("pages.admin.users.new") }}</UButton>
+        <div class="flex flex-row gap-4 col-span-1 md:col-span-2 xl:col-span-6">
+          <UButton type="submit">{{ $t("pages.admin.users.apply-filters") }}</UButton>
+          <UButton variant="ghost" @click="clearFilters">{{ $t("pages.admin.users.clear-filters") }}</UButton>
+          <UButton icon="i-lucide-plus" class="ml-auto" to="/admin/users/new">{{
+            $t("pages.admin.users.new")
+          }}</UButton>
+        </div>
       </div>
     </UForm>
     <UTable

@@ -21,6 +21,7 @@ export interface CreateUserDto {
   lastName?: string | null;
   password?: string | null;
   passwordConfirm?: string | null;
+  group?: string | null;
   role: UserRole;
   status: UserStatus;
 }
@@ -41,4 +42,5 @@ export interface FilterUserDto {
   username?: string;
   firstName?: string;
   lastName?: string;
+  group?: string;
 }

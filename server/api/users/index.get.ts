@@ -1,10 +1,10 @@
+import type { H3Event } from "h3";
+import { getQuery } from "h3";
+import { User } from "~/server/models/user.schema";
+import { requireAdminSession } from "~/server/utils/auth";
+import type { Pageable } from "~/types/shared";
 import type { FilterUserDto, ReadUserDto } from "~/types/user";
 import { USER_ROLES, USER_STATUSES } from "~/types/user";
-import type { H3Event } from "h3";
-import type { Pageable } from "~/types/shared";
-import { User } from "~/server/models/user.schema";
-import { getQuery } from "h3";
-import { requireAdminSession } from "~/server/utils/auth";
 import { toReadUserDto } from "../../utils/mappers";
 
 export default defineEventHandler(async (event: H3Event) => {
@@ -25,6 +25,18 @@ export default defineEventHandler(async (event: H3Event) => {
 
   if (query.username && typeof query.username === "string") {
     filters.username = { $regex: query.username, $options: "i" };
+  }
+
+  if (query.firstName && typeof query.firstName === "string") {
+    filters.firstName = { $regex: query.firstName, $options: "i" };
+  }
+
+  if (query.lastName && typeof query.lastName === "string") {
+    filters.lastName = { $regex: query.lastName, $options: "i" };
+  }
+
+  if (query.group && typeof query.group === "string") {
+    filters.group = { $regex: query.group, $options: "i" };
   }
 
   const page = Math.max(query.page || 1, 1);

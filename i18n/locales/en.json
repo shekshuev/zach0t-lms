@@ -12,7 +12,6 @@
         "files": "Files",
         "settings": "Settings",
         "users": "Users",
-        "groups": "Groups",
         "subjects": "Subjects",
         "classes": "Classes",
         "lessons": "Lessons",
@@ -34,6 +33,9 @@
     "admin": {
       "users": {
         "search-username": "Search username",
+        "search-first-name": "Search first-name",
+        "search-last-name": "Search last name",
+        "search-group": "Search group",
         "all-roles": "All roles",
         "all-statuses": "All statuses",
         "apply-filters": "Apply filters",
@@ -42,6 +44,7 @@
         "username": "Username",
         "first-name": "First name",
         "last-name": "Last name",
+        "group": "Group",
         "role": "Role",
         "status": "Status",
         "created-at": "Created at",
@@ -95,6 +98,10 @@
     },
     "user-status": {
       "includes": "User status should be one of the following: {values}"
+    },
+    "group": {
+      "max": "Group must be at most {length} characters",
+      "pattern": "Group should contain only letters (from any language), apostrophes, hyphens, or spaces, and must start and end with a letter"
     }
   },
   "errors": {

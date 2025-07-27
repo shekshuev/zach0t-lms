@@ -10,3 +10,5 @@ export const FIRST_NAME_REGEX = /^[\p{L}][\p{L}'\- ]{0,48}[\p{L}]$/u;
 export const LAST_NAME_MIN_LENGTH = 2;
 export const LAST_NAME_MAX_LENGTH = 50;
 export const LAST_NAME_REGEX = /^[\p{L}][\p{L}'\- ]{0,48}[\p{L}]$/u;
+export const GROUP_MAX_LENGTH = 10;
+export const GROUP_REGEX = /^[\p{L}][\p{L}'\- ]{0,48}[\p{L}]$/u;
