@@ -39,7 +39,7 @@ const state = reactive({
 });
 
 function onSubmit(e: FormSubmitEvent<LoginDto>) {
-  $fetch("/api/login", {
+  $fetch("/api/auth/sign-in", {
     method: "POST",
     body: e.data,
   })
@@ -57,7 +57,7 @@ function onSubmit(e: FormSubmitEvent<LoginDto>) {
   <UForm :schema="schema" :state="state" @submit="onSubmit">
     <UCard class="max-w-sm w-sm space-y-4">
       <template #header>
-        <h2 class="text-2xl font-bold text-center">{{ $t("pages.auth.header") }}</h2>
+        <h2 class="text-2xl font-bold text-center">{{ $t("pages.auth.sign-in") }}</h2>
       </template>
       <div class="grid gap-4">
         <UFormField :label="$t('pages.auth.username')" name="username">
@@ -69,7 +69,12 @@ function onSubmit(e: FormSubmitEvent<LoginDto>) {
         </UFormField>
       </div>
       <template #footer>
-        <UButton type="submit" block> {{ $t("pages.auth.submit") }} </UButton>
+        <div class="flex flex-col gap-2 items-center">
+          <UButton type="submit" block> {{ $t("pages.auth.submit") }} </UButton>
+          <UButton variant="link" color="neutral" to="/auth/reset-password">
+            {{ $t("pages.auth.forgot-password") }}
+          </UButton>
+        </div>
       </template>
     </UCard>
   </UForm>

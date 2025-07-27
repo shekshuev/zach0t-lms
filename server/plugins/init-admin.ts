@@ -1,5 +1,4 @@
 import { User } from "../models/user.schema";
-import { hash } from "bcrypt";
 
 export default defineNitroPlugin(async () => {
   try {
@@ -10,7 +9,7 @@ export default defineNitroPlugin(async () => {
     } else {
       await User.insertOne({
         username: "admin",
-        passwordHash: await hash("Qwerty123!", 10),
+        passwordHash: await hashPassword("Qwerty123!"),
         firstName: "John",
         lastName: "Doe",
         role: "admin",

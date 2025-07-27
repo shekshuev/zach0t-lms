@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import { z } from "zod";
 import { User } from "~/server/models/user.schema";
 import type { UpdateUserDto } from "~/types/user";
@@ -59,7 +58,7 @@ export default defineEventHandler(async event => {
 
   const { username, password, firstName, lastName, group, role, status } = parsed.data;
 
-  const passwordHash = status === "created" || !password ? null : await bcrypt.hash(password, 10);
+  const passwordHash = status === "created" || !password ? null : await hashPassword(password);
 
   const updated = await User.findByIdAndUpdate(
     id,

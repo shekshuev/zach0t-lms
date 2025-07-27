@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 import { z } from "zod";
 import { User } from "~/server/models/user.schema";
 import type { CreateUserDto } from "~/types/user";
@@ -63,7 +62,7 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 409, message: "user_already_exists" });
   }
 
-  const passwordHash = status === "created" || !password ? null : await bcrypt.hash(password, 10);
+  const passwordHash = status === "created" || !password ? null : await hashPassword(password);
 
   const user = await User.create({
     username,

@@ -110,6 +110,10 @@ const columns: TableColumn<ReadUserDto>[] = [
     accessorKey: "group",
   },
   {
+    header: t("pages.admin.users.reset-password-token"),
+    accessorKey: "resetPasswordToken",
+  },
+  {
     header: t("pages.admin.users.created-at"),
     accessorKey: "createdAt",
     cell: ({ row }) => dayjs(row.getValue("createdAt")).format("DD.MM.YYYY HH:mm:ss"),

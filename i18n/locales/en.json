@@ -25,10 +25,14 @@
   },
   "pages": {
     "auth": {
-      "header": "Sign In",
       "username": "Username",
       "password": "Password",
-      "submit": "Submit"
+      "password-confirm": "Confirm password",
+      "reset-token": "Reset password token",
+      "submit": "Submit",
+      "forgot-password": "Forgot password?",
+      "sign-in": "Sign In",
+      "reset-password": "Reset password"
     },
     "admin": {
       "users": {
@@ -60,7 +64,8 @@
         "edit-user": "Edit user",
         "save": "Save",
         "user-created": "User created",
-        "user-updated": "User updated"
+        "user-updated": "User updated",
+        "reset-password-token": "Reset password token"
       }
     }
   },
@@ -102,6 +107,10 @@
     "group": {
       "max": "Group must be at most {length} characters",
       "pattern": "Group should contain only letters (from any language), apostrophes, hyphens, or spaces, and must start and end with a letter"
+    },
+    "reset-password-token": {
+      "required": "Reset password token is required",
+      "pattern": "Reset password token should be a valid UUID"
     }
   },
   "errors": {

@@ -3,6 +3,13 @@ export interface LoginDto {
   password: string;
 }
 
+export interface ResetPasswordDto {
+  username: string;
+  password: string;
+  passwordConfirm: string;
+  token: string;
+}
+
 export const USER_ROLES = ["admin", "teacher", "student"] as const;
 export type UserRole = (typeof USER_ROLES)[number];
 
@@ -30,6 +37,7 @@ export type UpdateUserDto = Partial<CreateUserDto>;
 
 export interface ReadUserDto extends Omit<CreateUserDto, "password" | "passwordConfirm"> {
   id: string;
+  resetPasswordToken: string;
   createdAt: Date;
   updatedAt: Date;
 }

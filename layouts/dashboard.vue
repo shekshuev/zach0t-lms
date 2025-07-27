@@ -119,7 +119,7 @@ const bottomItems = computed<NavigationMenuItem[][]>(() => [
 
 watchEffect(() => {
   if (!user.value) {
-    navigateTo("/auth");
+    navigateTo("/auth/sign-in");
   }
 });
 </script>

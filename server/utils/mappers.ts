@@ -1,5 +1,5 @@
-import type { ReadUserDto, UserRole } from "~/types/user";
 import type { UserDocument } from "~/server/models/user.schema";
+import type { ReadUserDto, UserRole } from "~/types/user";
 
 export function toReadUserDto(user: UserDocument): ReadUserDto {
   return {
@@ -9,6 +9,8 @@ export function toReadUserDto(user: UserDocument): ReadUserDto {
     lastName: user.lastName || null,
     role: user.role as UserRole,
     status: user.status,
+    group: user.group || null,
+    resetPasswordToken: user.resetPasswordToken,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   };
