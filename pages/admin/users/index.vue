@@ -46,7 +46,7 @@ const state = reactive(getInitialFilters());
 const { data, status, refresh } = await useAsyncData<Pageable<ReadUserDto>>(
   "users",
   () =>
-    $fetch("/api/users", {
+    $fetch<Pageable<ReadUserDto>>("/api/users", {
       query: {
         page: pagination.value.pageIndex + 1,
         limit: pagination.value.pageSize,
@@ -170,7 +170,7 @@ function getRowItems(row: Row<ReadUserDto>) {
         <UFormField label="Role" name="role">
           <USelect
             v-model="state.role"
-            :items="['admin', 'user', 'teacher']"
+            :items="USER_ROLES as unknown as string[]"
             :placeholder="$t('pages.admin.users.all-roles')"
           />
         </UFormField>
@@ -178,7 +178,7 @@ function getRowItems(row: Row<ReadUserDto>) {
         <UFormField label="Status" name="status">
           <USelect
             v-model="state.status"
-            :items="['active', 'blocked', 'created']"
+            :items="USER_STATUSES as unknown as string[]"
             :placeholder="$t('pages.admin.users.all-statuses')"
           />
         </UFormField>
