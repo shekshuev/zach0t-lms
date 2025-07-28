@@ -74,6 +74,19 @@
         "edit-subject": "Edit subject",
         "subject-created": "Subject created",
         "subject-updated": "Subject updated"
+      },
+      "lessons": {
+        "id": "ID",
+        "topic": "Topic",
+        "content": "Content",
+        "created-at": "Created at",
+        "updated-at": "Updated at",
+        "search-topic": "Search topic",
+        "search-subject-id": "Search subject ID",
+        "create-lesson": "Create lesson",
+        "edit-lesson": "Edit lesson",
+        "lesson-created": "Lesson created",
+        "lesson-updated": "Lesson updated"
       }
     }
   },

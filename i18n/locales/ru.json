@@ -74,6 +74,19 @@
         "edit-subject": "Редактировать предмет",
         "subject-created": "Предмет создана",
         "subject-updated": "Предмет обновлена"
+      },
+      "lessons": {
+        "id": "ID",
+        "topic": "Тема",
+        "content": "Содержание занятия",
+        "created-at": "Создано",
+        "updated-at": "Обновлено",
+        "search-topic": "Поиск по теме",
+        "search-subject-id": "Поиск по ID предмета",
+        "create-lesson": "Создать занятие",
+        "edit-lesson": "Редактировать занятие",
+        "lesson-created": "Занятие создано",
+        "lesson-updated": "Занятие обновлено"
       }
     }
   },
