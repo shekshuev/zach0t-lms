@@ -5,6 +5,10 @@ const SubjectSchema = new Schema({
   title: {
     type: String,
     required: true,
+  },
+  shortTitle: {
+    type: String,
+    required: true,
     unique: true,
   },
   description: {

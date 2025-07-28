@@ -1,3 +1,21 @@
+import { z } from "zod";
+
+import {
+  FIRST_NAME_MAX_LENGTH,
+  FIRST_NAME_MIN_LENGTH,
+  FIRST_NAME_REGEX,
+  GROUP_MAX_LENGTH,
+  LAST_NAME_MAX_LENGTH,
+  LAST_NAME_MIN_LENGTH,
+  LAST_NAME_REGEX,
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  PASSWORD_REGEX,
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+  USERNAME_REGEX,
+} from "~/utils/validation";
+
 export interface LoginDto {
   username: string;
   password: string;
@@ -52,3 +70,24 @@ export interface FilterUserDto {
   lastName?: string;
   group?: string;
 }
+
+export const schema = z
+  .object({
+    username: z.string().min(USERNAME_MIN_LENGTH).max(USERNAME_MAX_LENGTH).regex(USERNAME_REGEX),
+    password: z.string().min(PASSWORD_MIN_LENGTH).max(PASSWORD_MAX_LENGTH).regex(PASSWORD_REGEX).optional().nullable(),
+    passwordConfirm: z.string().optional().nullable(),
+    firstName: z.union([
+      z.literal(""),
+      z.string().min(FIRST_NAME_MIN_LENGTH).max(FIRST_NAME_MAX_LENGTH).regex(FIRST_NAME_REGEX).nullable().optional(),
+    ]),
+    lastName: z.union([
+      z.literal(""),
+      z.string().min(LAST_NAME_MIN_LENGTH).max(LAST_NAME_MAX_LENGTH).regex(LAST_NAME_REGEX).nullable().optional(),
+    ]),
+    group: z.union([z.literal(""), z.string().max(GROUP_MAX_LENGTH).nullable().optional()]),
+    role: z.enum(USER_ROLES),
+    status: z.enum(USER_STATUSES),
+  })
+  .refine(data => data.password === data.passwordConfirm, {
+    path: ["passwordConfirm"],
+  });

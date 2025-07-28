@@ -64,10 +64,16 @@
       "subjects": {
         "id": "ID",
         "title": "Title",
+        "short-title": "Short title",
         "description": "Description",
         "created-at": "Created at",
         "updated-at": "Updated at",
-        "search-title": "Search title"
+        "search-title": "Search title",
+        "search-short-title": "Search short title",
+        "create-subject": "Create subject",
+        "edit-subject": "Edit subject",
+        "subject-created": "Subject created",
+        "subject-updated": "Subject updated"
       }
     }
   },
@@ -107,12 +113,26 @@
       "includes": "User status should be one of the following: {values}"
     },
     "group": {
-      "max": "Group must be at most {length} characters",
-      "pattern": "Group should contain only letters (from any language), apostrophes, hyphens, or spaces, and must start and end with a letter"
+      "max": "Group must be at most {length} characters"
     },
     "reset-password-token": {
       "required": "Reset password token is required",
       "pattern": "Reset password token should be a valid UUID"
+    },
+    "subject-title": {
+      "required": "Title is required",
+      "min": "Title must be at least {length} characters",
+      "max": "Title must be at most {length} characters"
+    },
+    "subject-short-title": {
+      "required": "Short title is required",
+      "min": "Short title must be at least {length} characters",
+      "max": "Short title must be at most {length} characters"
+    },
+    "subject-description": {
+      "required": "Description is required",
+      "min": "Description must be at least {length} characters",
+      "max": "Description must be at most {length} characters"
     }
   },
   "errors": {
@@ -122,7 +142,9 @@
     "user_is_blocked": "User is blocked",
     "wrong_password": "Wrong password",
     "unprocessable_entity": "Wrong request body",
-    "user_already_exists": "User already exists"
+    "user_already_exists": "User already exists",
+    "subject_not_found": "Subject not found",
+    "subject_already_exists": "Subject already exists"
   },
   "actions": {
     "header": "Actions",

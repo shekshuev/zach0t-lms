@@ -22,6 +22,7 @@ export function toReadSubjectDto(subject: SubjectDocument): ReadSubjectDto {
   return {
     id: subject._id.toString(),
     title: subject.title,
+    shortTitle: subject.shortTitle,
     description: subject.description,
     createdAt: subject.createdAt,
     updatedAt: subject.updatedAt,

@@ -10,6 +10,11 @@ export default defineAppConfig({
         variant: "soft",
       },
     },
+    textarea: {
+      defaultVariants: {
+        variant: "soft",
+      },
+    },
     button: {
       defaultVariants: {
         variant: "soft",

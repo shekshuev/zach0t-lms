@@ -25,12 +25,14 @@ const pagination = ref({
 
 const getInitialFilters = () => ({
   title: undefined,
+  shortTitle: undefined,
 });
 
 const filters = reactive<Partial<Omit<FilterSubjectDto, "page" | "limit">>>(getInitialFilters());
 
 const schema = z.object({
   title: z.string().optional(),
+  shortTitle: z.string().optional(),
 });
 
 const state = reactive(getInitialFilters());
@@ -72,7 +74,11 @@ const columns: TableColumn<ReadUserDto>[] = [
   },
   {
     header: t("pages.admin.subjects.title"),
-    accessorKey: "username",
+    accessorKey: "title",
+  },
+  {
+    header: t("pages.admin.subjects.short-title"),
+    accessorKey: "shortTitle",
   },
   {
     header: t("pages.admin.subjects.created-at"),
@@ -133,12 +139,20 @@ function getRowItems(row: Row<ReadUserDto>) {
 <template>
   <div class="space-y-4 container mx-auto py-8">
     <UForm :schema="schema" :state="state" @submit.prevent="onFilterSubmit">
-      <div class="grid gap-4 grid-cols-1 md:grid-cols-2 items-end">
+      <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 items-end">
         <UFormField :label="$t('pages.admin.subjects.title')" name="title">
           <UInput v-model="state.title" :placeholder="$t('pages.admin.subjects.search-title')" class="w-full" />
         </UFormField>
 
-        <div class="flex flex-row gap-4 col-span-1">
+        <UFormField :label="$t('pages.admin.subjects.short-title')" name="shortTitle">
+          <UInput
+            v-model="state.shortTitle"
+            :placeholder="$t('pages.admin.subjects.search-short-title')"
+            class="w-full"
+          />
+        </UFormField>
+
+        <div class="flex flex-row gap-4 col-span-1 md:col-span-2 lg:col-span-2 xl:col-span-4">
           <UButton type="submit">{{ $t("actions.apply-filters") }}</UButton>
           <UButton variant="ghost" @click="clearFilters">{{ $t("actions.clear-filters") }}</UButton>
           <UButton icon="i-lucide-plus" class="ml-auto" to="/admin/subjects/new">{{ $t("actions.new") }}</UButton>

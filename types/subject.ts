@@ -1,11 +1,23 @@
+import { z } from "zod";
+import {
+  SUBJECT_DESCRIPTION_MAX_LENGTH,
+  SUBJECT_DESCRIPTION_MIN_LENGTH,
+  SUBJECT_SHORT_TITLE_MAX_LENGTH,
+  SUBJECT_SHORT_TITLE_MIN_LENGTH,
+  SUBJECT_TITLE_MAX_LENGTH,
+  SUBJECT_TITLE_MIN_LENGTH,
+} from "~/utils/validation";
+
 export interface FilterSubjectDto {
   title?: string;
+  shortTitle?: string;
   page: number;
   limit: number;
 }
 
 export interface CreateSubjectDto {
   title: string;
+  shortTitle: string;
   description?: string | null;
 }
 
@@ -16,3 +28,12 @@ export interface ReadSubjectDto extends CreateSubjectDto {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export const schema = z.object({
+  title: z.string().min(SUBJECT_TITLE_MIN_LENGTH).max(SUBJECT_TITLE_MAX_LENGTH),
+  shortTitle: z.string().min(SUBJECT_SHORT_TITLE_MIN_LENGTH).max(SUBJECT_SHORT_TITLE_MAX_LENGTH),
+  description: z.union([
+    z.literal(""),
+    z.string().min(SUBJECT_DESCRIPTION_MIN_LENGTH).max(SUBJECT_DESCRIPTION_MAX_LENGTH).nullable().optional(),
+  ]),
+});
