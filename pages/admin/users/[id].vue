@@ -8,6 +8,7 @@ import {
   FIRST_NAME_MAX_LENGTH,
   FIRST_NAME_MIN_LENGTH,
   FIRST_NAME_REGEX,
+  GROUP_MAX_LENGTH,
   LAST_NAME_MAX_LENGTH,
   LAST_NAME_MIN_LENGTH,
   LAST_NAME_REGEX,
@@ -52,7 +53,6 @@ const schema = z
       z
         .string()
         .max(GROUP_MAX_LENGTH, t("validations.group.max", { length: GROUP_MAX_LENGTH }))
-        .regex(GROUP_REGEX, t("validations.group.pattern"))
         .nullable()
         .optional(),
     ]),
