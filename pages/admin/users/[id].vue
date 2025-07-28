@@ -187,7 +187,7 @@ async function onSubmit(e: FormSubmitEvent<CreateUserDto | UpdateUserDto>) {
 
       <template #footer>
         <UButton type="submit" block>
-          {{ $t("pages.admin.users.save") }}
+          {{ $t("actions.save") }}
         </UButton>
       </template>
     </UCard>

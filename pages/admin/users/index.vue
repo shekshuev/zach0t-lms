@@ -152,7 +152,7 @@ function getRowItems(row: Row<ReadUserDto>) {
   return [
     {
       type: "label",
-      label: t("pages.admin.users.actions"),
+      label: t("actions.header"),
     },
     {
       type: "separator",
@@ -161,12 +161,12 @@ function getRowItems(row: Row<ReadUserDto>) {
       label: t("pages.admin.users.reset-password"),
     },
     {
-      label: t("pages.admin.users.edit"),
+      label: t("actions.edit"),
       type: "link",
       to: `/admin/users/${row.original.id}`,
     },
     {
-      label: t("pages.admin.users.delete"),
+      label: t("actions.delete"),
     },
   ];
 }
@@ -211,11 +211,9 @@ function getRowItems(row: Row<ReadUserDto>) {
         </UFormField>
 
         <div class="flex flex-row gap-4 col-span-1 md:col-span-2 xl:col-span-6">
-          <UButton type="submit">{{ $t("pages.admin.users.apply-filters") }}</UButton>
-          <UButton variant="ghost" @click="clearFilters">{{ $t("pages.admin.users.clear-filters") }}</UButton>
-          <UButton icon="i-lucide-plus" class="ml-auto" to="/admin/users/new">{{
-            $t("pages.admin.users.new")
-          }}</UButton>
+          <UButton type="submit">{{ $t("actions.apply-filters") }}</UButton>
+          <UButton variant="ghost" @click="clearFilters">{{ $t("actions.clear-filters") }}</UButton>
+          <UButton icon="i-lucide-plus" class="ml-auto" to="/admin/users/new">{{ $t("actions.new") }}</UButton>
         </div>
       </div>
     </UForm>

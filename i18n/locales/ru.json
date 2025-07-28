@@ -42,8 +42,6 @@
         "search-group": "Поиск по группе",
         "all-roles": "Все роли",
         "all-statuses": "Все статусы",
-        "apply-filters": "Применить фильтры",
-        "clear-filters": "Очистить фильтры",
         "id": "ID",
         "username": "Имя пользователя",
         "first-name": "Имя",
@@ -53,19 +51,23 @@
         "status": "Статус",
         "created-at": "Создан",
         "updated-at": "Обновлен",
-        "actions": "Действия",
-        "edit": "Редактировать",
-        "delete": "Удалить",
         "new": "Новый",
         "reset-password": "Сбросить пароль",
         "password": "Пароль",
         "confirm-password": "Подтвердите пароль",
         "create-user": "Создать пользователя",
         "edit-user": "Редактировать пользователя",
-        "save": "Сохранить",
         "user-created": "Пользователь создан",
         "user-updated": "Пользователь обновлен",
         "reset-password-token": "Токен для сброса пароля"
+      },
+      "subjects": {
+        "id": "ID",
+        "title": "Название",
+        "description": "Описание",
+        "created-at": "Создан",
+        "updated-at": "Обновлен",
+        "search-title": "Поиск по названию"
       }
     }
   },
@@ -121,5 +123,14 @@
     "wrong_password": "Неверный пароль",
     "unprocessable_entity": "Неверный запрос",
     "user_already_exists": "Пользователь уже существует"
+  },
+  "actions": {
+    "header": "Действия",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "new": "Создать",
+    "save": "Сохранить",
+    "apply-filters": "Применить фильтры",
+    "clear-filters": "Очистить фильтры"
   }
 }
