@@ -20,8 +20,8 @@ const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 
-const isNew = computed(() => route.params.id === "new");
-const id = computed(() => route.params.id as string);
+const isNew = computed(() => route.params.subject_id === "new");
+const id = computed(() => route.params.subject_id as string);
 
 const schema = z.object({
   title: z
@@ -128,9 +128,14 @@ async function onSubmit(e: FormSubmitEvent<CreateSubjectDto | UpdateSubjectDto>)
       </div>
 
       <template #footer>
-        <UButton type="submit" block>
-          {{ $t("actions.save") }}
-        </UButton>
+        <div class="flex flex-col gap-2 items-center">
+          <UButton type="submit" block>
+            {{ $t("actions.save") }}
+          </UButton>
+          <UButton variant="link" color="neutral" block :to="`/admin/subjects/${id}/lessons`">
+            {{ $t("pages.admin.subjects.to-lesson-list") }}
+          </UButton>
+        </div>
       </template>
     </UCard>
   </UForm>

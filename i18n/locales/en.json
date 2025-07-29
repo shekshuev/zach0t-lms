@@ -73,21 +73,22 @@
         "create-subject": "Create subject",
         "edit-subject": "Edit subject",
         "subject-created": "Subject created",
-        "subject-updated": "Subject updated"
+        "subject-updated": "Subject updated",
+        "to-lesson-list": "To lesson list"
       },
       "lessons": {
         "id": "ID",
         "topic": "Topic",
         "content": "Content",
-        "subject-id": "Subject ID",
+        "hours": "Hours",
         "created-at": "Created at",
         "updated-at": "Updated at",
         "search-topic": "Search topic",
-        "search-subject-id": "Search subject ID",
         "create-lesson": "Create lesson",
         "edit-lesson": "Edit lesson",
         "lesson-created": "Lesson created",
-        "lesson-updated": "Lesson updated"
+        "lesson-updated": "Lesson updated",
+        "edit-content": "Edit lesson content"
       }
     }
   },
@@ -147,6 +148,15 @@
       "required": "Description is required",
       "min": "Description must be at least {length} characters",
       "max": "Description must be at most {length} characters"
+    },
+    "lesson-topic": {
+      "required": "Topic is required",
+      "min": "Topic must be at least {length} characters",
+      "max": "Topic must be at most {length} characters"
+    },
+    "lesson-hours": {
+      "required": "Hours is required",
+      "positive": "Hours must be a positive number"
     }
   },
   "errors": {

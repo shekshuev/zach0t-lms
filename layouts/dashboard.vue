@@ -85,12 +85,6 @@ const items = computed<NavigationMenuItem[][]>(() => {
         type: "link",
         to: "/admin/subjects",
       },
-      {
-        label: t("layouts.dashboard.menu.lessons"),
-        icon: "i-lucide-book-marked",
-        type: "link",
-        to: "/admin/lessons",
-      },
     ]);
   }
   return result;

@@ -18,6 +18,9 @@ definePageMeta({
 
 const { t } = useI18n();
 const dayjs = useDayjs();
+const route = useRoute();
+
+const subjectId = computed(() => route.params.subject_id as string);
 
 const pagination = ref({
   pageIndex: 0,
@@ -26,14 +29,13 @@ const pagination = ref({
 
 const getInitialFilters = (): Filters => ({
   topic: "",
-  subjectId: undefined,
+  subjectId: subjectId.value,
 });
 
 const filters = reactive<Filters>(getInitialFilters());
 
 const schema = z.object({
   topic: z.string().optional(),
-  subjectId: z.string().optional(),
 });
 
 const state = reactive<Filters>(getInitialFilters());
@@ -55,7 +57,6 @@ const { data, status, refresh } = await useAsyncData<Pageable<ReadLessonDto>>(
 );
 
 function onFilterSubmit() {
-  filters.subjectId = state.subjectId || undefined;
   filters.topic = state.topic || undefined;
   pagination.value.pageIndex = 0;
   refresh();
@@ -80,8 +81,8 @@ const columns: TableColumn<ReadLessonDto>[] = [
     accessorKey: "topic",
   },
   {
-    header: t("pages.admin.lessons.subject-id"),
-    accessorKey: "subjectId",
+    header: t("pages.admin.lessons.hours"),
+    accessorKey: "hours",
   },
   {
     header: t("pages.admin.lessons.created-at"),
@@ -130,7 +131,7 @@ function getRowItems(row: Row<ReadLessonDto>) {
     {
       label: t("actions.edit"),
       type: "link",
-      to: `/admin/lessons/${row.original.id}`,
+      to: `/admin/subjects/${subjectId.value}/lessons/${row.original.id}`,
     },
     {
       label: t("actions.delete"),
@@ -147,18 +148,12 @@ function getRowItems(row: Row<ReadLessonDto>) {
           <UInput v-model="state.topic" :placeholder="$t('pages.admin.lessons.search-topic')" class="w-full" />
         </UFormField>
 
-        <UFormField :label="$t('pages.admin.lessons.subject-id')" name="shortTitle">
-          <UInput
-            v-model.number="state.subjectId"
-            :placeholder="$t('pages.admin.lessons.search-subject-id')"
-            class="w-full"
-          />
-        </UFormField>
-
-        <div class="flex flex-row gap-4 col-span-1 md:col-span-2 lg:col-span-2 xl:col-span-4">
+        <div class="flex flex-row gap-4 col-span-1 md:col-span-1 lg:col-span-3 xl:col-span-5">
           <UButton type="submit">{{ $t("actions.apply-filters") }}</UButton>
           <UButton variant="ghost" @click="clearFilters">{{ $t("actions.clear-filters") }}</UButton>
-          <UButton icon="i-lucide-plus" class="ml-auto" to="/admin/lessons/new">{{ $t("actions.new") }}</UButton>
+          <UButton icon="i-lucide-plus" class="ml-auto" :to="`/admin/subjects/${subjectId}/lessons/new`">{{
+            $t("actions.new")
+          }}</UButton>
         </div>
       </div>
     </UForm>

@@ -73,21 +73,22 @@
         "create-subject": "Создать предмет",
         "edit-subject": "Редактировать предмет",
         "subject-created": "Предмет создана",
-        "subject-updated": "Предмет обновлена"
+        "subject-updated": "Предмет обновлена",
+        "to-lesson-list": "Перейти к списку занятий"
       },
       "lessons": {
         "id": "ID",
         "topic": "Тема",
         "content": "Содержание занятия",
-        "subject-id": "ID предмета",
+        "hours": "Часы",
         "created-at": "Создано",
         "updated-at": "Обновлено",
         "search-topic": "Поиск по теме",
-        "search-subject-id": "Поиск по ID предмета",
         "create-lesson": "Создать занятие",
         "edit-lesson": "Редактировать занятие",
         "lesson-created": "Занятие создано",
-        "lesson-updated": "Занятие обновлено"
+        "lesson-updated": "Занятие обновлено",
+        "edit-content": "Редактировать содержание занятия"
       }
     }
   },
@@ -141,6 +142,15 @@
     },
     "subject-description": {
       "required": "Описание обязательно"
+    },
+    "lesson-topic": {
+      "required": "Тема обязательная",
+      "min": "Тема должна содержать не мене {length} символов",
+      "max": "Тема должна содержать не более {length} символов"
+    },
+    "lesson-hours": {
+      "required": "Часы обязательны",
+      "positive": "Часы должны быть положительными числами"
     }
   },
   "errors": {
