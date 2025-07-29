@@ -14,7 +14,9 @@ export interface CreateLessonDto {
   subjectId: string;
 }
 
-export type UpdateLessonDto = Partial<CreateLessonDto>;
+export interface UpdateLessonDto extends Partial<CreateLessonDto> {
+  content?: object;
+}
 
 export interface ReadLessonDto extends CreateLessonDto {
   id: string;
@@ -30,4 +32,5 @@ export const schema = z.object({
   topic: z.string().min(LESSON_TOPIC_MIN_LENGTH).max(LESSON_TOPIC_MAX_LENGTH),
   hours: z.number().positive(),
   subjectId: z.string().regex(LESSON_SUBJECT_ID_REGEX),
+  content: z.object({}).passthrough().optional().nullable(),
 });

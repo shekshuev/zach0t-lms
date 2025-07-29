@@ -34,7 +34,7 @@ const state = reactive<CreateLessonDto | UpdateLessonDto>({
 });
 
 const { data, refresh } = await useAsyncData(
-  `admin-subject-${id.value}`,
+  `admin-lesson-${id.value}`,
   () => $fetch<ReadSubjectDto>(`/api/lessons/${id.value}`),
   {
     immediate: false,

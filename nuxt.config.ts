@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     "@vee-validate/nuxt",
     "nuxt-auth-utils",
     "dayjs-nuxt",
+    "@vueuse/nuxt",
   ],
   css: ["~/assets/app.css"],
   i18n: {

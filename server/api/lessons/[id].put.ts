@@ -11,7 +11,7 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 422, message: "unprocessable_entity" });
   }
 
-  const { topic, hours, subjectId } = parsed.data;
+  const { topic, hours, subjectId, content } = parsed.data;
 
   const updated = await Lesson.findByIdAndUpdate(
     id,
@@ -19,6 +19,7 @@ export default defineEventHandler(async event => {
       topic,
       hours,
       subjectId,
+      content,
       updatedAt: new Date(),
     },
     { new: true },

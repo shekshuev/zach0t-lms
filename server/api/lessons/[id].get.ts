@@ -11,5 +11,5 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 404, message: "lesson_not_found" });
   }
 
-  return toReadLessonDto(lesson);
+  return toReadFullLessonDto(lesson);
 });
