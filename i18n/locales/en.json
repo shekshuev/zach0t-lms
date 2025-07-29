@@ -79,6 +79,7 @@
         "id": "ID",
         "topic": "Topic",
         "content": "Content",
+        "subject-id": "Subject ID",
         "created-at": "Created at",
         "updated-at": "Updated at",
         "search-topic": "Search topic",
@@ -157,7 +158,9 @@
     "unprocessable_entity": "Wrong request body",
     "user_already_exists": "User already exists",
     "subject_not_found": "Subject not found",
-    "subject_already_exists": "Subject already exists"
+    "subject_already_exists": "Subject already exists",
+    "lesson_not_found": "Lesson not found",
+    "leson_already_exists": "Lesson already exists"
   },
   "actions": {
     "header": "Actions",

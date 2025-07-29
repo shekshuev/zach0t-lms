@@ -1,13 +1,8 @@
-import type { H3Event } from "h3";
-import { getQuery } from "h3";
-import { User } from "~/server/models/user.schema";
-import { requireAdminSession } from "~/server/utils/auth";
 import type { Pageable } from "~/types/shared";
 import type { FilterUserDto, ReadUserDto } from "~/types/user";
 import { USER_ROLES, USER_STATUSES } from "~/types/user";
-import { toReadUserDto } from "../../utils/mappers";
 
-export default defineEventHandler(async (event: H3Event) => {
+export default defineEventHandler(async event => {
   await requireAdminSession(event);
 
   const query = getQuery<FilterUserDto>(event);

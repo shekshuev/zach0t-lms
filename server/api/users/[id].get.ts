@@ -1,8 +1,3 @@
-import { defineEventHandler, getRouterParam } from "h3";
-import { User } from "~/server/models/user.schema";
-import { requireAdminSession } from "~/server/utils/auth";
-import { toReadUserDto } from "../../utils/mappers";
-
 export default defineEventHandler(async event => {
   await requireAdminSession(event);
 

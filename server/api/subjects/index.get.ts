@@ -1,11 +1,7 @@
-import type { H3Event } from "h3";
-import { getQuery } from "h3";
-import { requireStudentSession } from "~/server/utils/auth";
 import type { Pageable } from "~/types/shared";
 import type { FilterSubjectDto, ReadSubjectDto } from "~/types/subject";
-import { toReadSubjectDto } from "../../utils/mappers";
 
-export default defineEventHandler(async (event: H3Event) => {
+export default defineEventHandler(async event => {
   await requireStudentSession(event);
 
   const query = getQuery<FilterSubjectDto>(event);

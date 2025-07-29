@@ -1,4 +1,3 @@
-import { User } from "~/server/models/user.schema";
 import type { UpdateUserDto } from "~/types/user";
 import { schema } from "~/types/user";
 

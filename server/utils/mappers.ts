@@ -1,6 +1,8 @@
 import type { UserDocument } from "~/server/models/user.schema";
+import type { ReadFullLessonDto, ReadLessonDto } from "~/types/lesson";
 import type { ReadSubjectDto } from "~/types/subject";
 import type { ReadUserDto, UserRole } from "~/types/user";
+import type { LessonDocument } from "../models/lesson.shema";
 import type { SubjectDocument } from "../models/subject.schema";
 
 export function toReadUserDto(user: UserDocument): ReadUserDto {
@@ -26,5 +28,23 @@ export function toReadSubjectDto(subject: SubjectDocument): ReadSubjectDto {
     description: subject.description,
     createdAt: subject.createdAt,
     updatedAt: subject.updatedAt,
+  };
+}
+
+export function toReadLessonDto(lesson: LessonDocument): ReadLessonDto {
+  return {
+    id: lesson._id.toString(),
+    topic: lesson.topic,
+    hours: lesson.hours,
+    subjectId: lesson.subjectId.toString(),
+    createdAt: lesson.createdAt,
+    updatedAt: lesson.updatedAt,
+  };
+}
+
+export function toReadFullLessonDto(lesson: LessonDocument): ReadFullLessonDto {
+  return {
+    ...toReadLessonDto(lesson),
+    content: lesson.content,
   };
 }

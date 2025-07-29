@@ -4,11 +4,13 @@ import type { Row } from "@tanstack/vue-table";
 import { getPaginationRowModel } from "@tanstack/vue-table";
 import { h, resolveComponent } from "vue";
 import { z } from "zod";
+import type { FilterLessonDto, ReadLessonDto } from "~/types/lesson";
 import type { Pageable } from "~/types/shared";
-import type { FilterSubjectDto, ReadSubjectDto } from "~/types/subject";
 
 const UButton = resolveComponent("UButton");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
+
+type Filters = Partial<Omit<FilterLessonDto, "page" | "limit">>;
 
 definePageMeta({
   layout: "dashboard",
@@ -22,29 +24,29 @@ const pagination = ref({
   pageSize: 10,
 });
 
-const getInitialFilters = () => ({
-  title: undefined,
-  shortTitle: undefined,
+const getInitialFilters = (): Filters => ({
+  topic: "",
+  subjectId: undefined,
 });
 
-const filters = reactive<Partial<Omit<FilterSubjectDto, "page" | "limit">>>(getInitialFilters());
+const filters = reactive<Filters>(getInitialFilters());
 
 const schema = z.object({
-  title: z.string().optional(),
-  shortTitle: z.string().optional(),
+  topic: z.string().optional(),
+  subjectId: z.string().optional(),
 });
 
-const state = reactive(getInitialFilters());
+const state = reactive<Filters>(getInitialFilters());
 
-const { data, status, refresh } = await useAsyncData<Pageable<ReadSubjectDto>>(
-  "subjects",
+const { data, status, refresh } = await useAsyncData<Pageable<ReadLessonDto>>(
+  "lessons",
   () =>
-    $fetch<Pageable<ReadSubjectDto>>("/api/subjects", {
+    $fetch<Pageable<ReadLessonDto>>("/api/lessons", {
       query: {
         page: pagination.value.pageIndex + 1,
         limit: pagination.value.pageSize,
         ...filters,
-      } as FilterSubjectDto,
+      } as FilterLessonDto,
     }),
   {
     watch: [pagination],
@@ -53,14 +55,13 @@ const { data, status, refresh } = await useAsyncData<Pageable<ReadSubjectDto>>(
 );
 
 function onFilterSubmit() {
-  console.log(123);
-  filters.title = state.title || undefined;
+  filters.subjectId = state.subjectId || undefined;
+  filters.topic = state.topic || undefined;
   pagination.value.pageIndex = 0;
   refresh();
 }
 
 function clearFilters() {
-  console.log(456);
   Object.assign(state, getInitialFilters());
   Object.assign(filters, getInitialFilters());
   pagination.value.pageIndex = 0;
@@ -69,26 +70,26 @@ function clearFilters() {
 
 const table = useTemplateRef("table");
 
-const columns: TableColumn<ReadSubjectDto>[] = [
+const columns: TableColumn<ReadLessonDto>[] = [
   {
-    header: t("pages.admin.subjects.id"),
+    header: t("pages.admin.lessons.id"),
     accessorKey: "id",
   },
   {
-    header: t("pages.admin.subjects.title"),
-    accessorKey: "title",
+    header: t("pages.admin.lessons.topic"),
+    accessorKey: "topic",
   },
   {
-    header: t("pages.admin.subjects.short-title"),
-    accessorKey: "shortTitle",
+    header: t("pages.admin.lessons.subject-id"),
+    accessorKey: "subjectId",
   },
   {
-    header: t("pages.admin.subjects.created-at"),
+    header: t("pages.admin.lessons.created-at"),
     accessorKey: "createdAt",
     cell: ({ row }) => dayjs(row.getValue("createdAt")).format("DD.MM.YYYY HH:mm:ss"),
   },
   {
-    header: t("pages.admin.subjects.updated-at"),
+    header: t("pages.admin.lessons.updated-at"),
     accessorKey: "updatedAt",
     cell: ({ row }) => dayjs(row.getValue("updatedAt")).format("DD.MM.YYYY HH:mm:ss"),
   },
@@ -117,7 +118,7 @@ const columns: TableColumn<ReadSubjectDto>[] = [
   },
 ];
 
-function getRowItems(row: Row<ReadSubjectDto>) {
+function getRowItems(row: Row<ReadLessonDto>) {
   return [
     {
       type: "label",
@@ -129,7 +130,7 @@ function getRowItems(row: Row<ReadSubjectDto>) {
     {
       label: t("actions.edit"),
       type: "link",
-      to: `/admin/subjects/${row.original.id}`,
+      to: `/admin/lessons/${row.original.id}`,
     },
     {
       label: t("actions.delete"),
@@ -142,14 +143,14 @@ function getRowItems(row: Row<ReadSubjectDto>) {
   <div class="space-y-4 container mx-auto py-8">
     <UForm :schema="schema" :state="state" @submit.prevent="onFilterSubmit">
       <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 items-end">
-        <UFormField :label="$t('pages.admin.subjects.title')" name="title">
-          <UInput v-model="state.title" :placeholder="$t('pages.admin.subjects.search-title')" class="w-full" />
+        <UFormField :label="$t('pages.admin.lessons.topic')" name="topic">
+          <UInput v-model="state.topic" :placeholder="$t('pages.admin.lessons.search-topic')" class="w-full" />
         </UFormField>
 
-        <UFormField :label="$t('pages.admin.subjects.short-title')" name="shortTitle">
+        <UFormField :label="$t('pages.admin.lessons.subject-id')" name="shortTitle">
           <UInput
-            v-model="state.shortTitle"
-            :placeholder="$t('pages.admin.subjects.search-short-title')"
+            v-model.number="state.subjectId"
+            :placeholder="$t('pages.admin.lessons.search-subject-id')"
             class="w-full"
           />
         </UFormField>
@@ -157,7 +158,7 @@ function getRowItems(row: Row<ReadSubjectDto>) {
         <div class="flex flex-row gap-4 col-span-1 md:col-span-2 lg:col-span-2 xl:col-span-4">
           <UButton type="submit">{{ $t("actions.apply-filters") }}</UButton>
           <UButton variant="ghost" @click="clearFilters">{{ $t("actions.clear-filters") }}</UButton>
-          <UButton icon="i-lucide-plus" class="ml-auto" to="/admin/subjects/new">{{ $t("actions.new") }}</UButton>
+          <UButton icon="i-lucide-plus" class="ml-auto" to="/admin/lessons/new">{{ $t("actions.new") }}</UButton>
         </div>
       </div>
     </UForm>

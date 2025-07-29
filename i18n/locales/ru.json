@@ -79,6 +79,7 @@
         "id": "ID",
         "topic": "Тема",
         "content": "Содержание занятия",
+        "subject-id": "ID предмета",
         "created-at": "Создано",
         "updated-at": "Обновлено",
         "search-topic": "Поиск по теме",
@@ -151,7 +152,9 @@
     "unprocessable_entity": "Неверный запрос",
     "user_already_exists": "Пользователь уже существует",
     "subject_not_found": "Предмет не найден",
-    "subject_already_exist": "Предмет уже существует"
+    "subject_already_exist": "Предмет уже существует",
+    "lesson_not_found": "занятие не найдено",
+    "lesson_already_exist": "Занятие уже существует"
   },
   "actions": {
     "header": "Действия",

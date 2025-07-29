@@ -57,6 +57,7 @@ const { data, status, refresh } = await useAsyncData<Pageable<ReadUserDto>>(
     }),
   {
     watch: [pagination],
+    server: false,
   },
 );
 
@@ -230,7 +231,7 @@ function getRowItems(row: Row<ReadUserDto>) {
     <UPagination
       :default-page="(table?.tableApi?.getState().pagination.pageIndex || 0) + 1"
       :items-per-page="table?.tableApi?.getState().pagination.pageSize"
-      :total="table?.tableApi?.getFilteredRowModel().rows.length"
+      :total="data?.total || 0"
       @update:page="p => table?.tableApi?.setPageIndex(p - 1)"
     />
   </div>

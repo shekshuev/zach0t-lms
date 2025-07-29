@@ -41,4 +41,4 @@ const LessonSchema = new Schema({
 
 export type LessonDocument = HydratedDocument<InferSchemaType<typeof LessonSchema>>;
 
-export const Lesson = model("Subject", LessonSchema);
+export const Lesson = model("Lesson", LessonSchema);
