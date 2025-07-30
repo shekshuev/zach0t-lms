@@ -130,7 +130,13 @@
         "pink": "Pink",
         "red": "Red",
         "reset": "Reset color"
-      }
+      },
+      "insert-table": "Insert table",
+      "delete-table": "Delete table",
+      "add-row": "Add row",
+      "add-column": "Add column",
+      "delete-row": "Delete row",
+      "delete-column": "Delete column"
     }
   },
   "validations": {

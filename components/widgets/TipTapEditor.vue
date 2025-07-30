@@ -2,6 +2,7 @@
 import type { JSONContent } from "@tiptap/core";
 import Color from "@tiptap/extension-color";
 import Link from "@tiptap/extension-link";
+import { TableKit } from "@tiptap/extension-table";
 import TextAlign from "@tiptap/extension-text-align";
 import { TextStyle } from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
@@ -29,6 +30,11 @@ const editor = useEditor({
     TextStyle,
     Underline,
     Link.configure({ openOnClick: false }),
+    TableKit.configure({
+      table: {
+        resizable: true,
+      },
+    }),
   ],
   onUpdate: useDebounceFn(({ editor }) => {
     emit("update:modelValue", editor.getJSON());

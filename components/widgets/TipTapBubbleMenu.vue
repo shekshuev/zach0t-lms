@@ -185,6 +185,51 @@ const setTextColor = (color: string) => {
 const clearTextColor = () => {
   props.editor?.chain().focus().unsetColor().run();
 };
+
+const tableActions: Action[] = [
+  {
+    name: "insertTable",
+    label: t("widgets.tiptap.insert-table"),
+    icon: "i-lucide-table",
+    command: () => props.editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
+    isActive: () => false,
+  },
+  {
+    name: "deleteTable",
+    label: t("widgets.tiptap.delete-table"),
+    icon: "i-lucide-trash",
+    command: () => props.editor?.chain().focus().deleteTable().run(),
+    isActive: () => false,
+  },
+  {
+    name: "addRowAfter",
+    label: t("widgets.tiptap.add-row"),
+    icon: "i-lucide-plus",
+    command: () => props.editor?.chain().focus().addRowAfter().run(),
+    isActive: () => false,
+  },
+  {
+    name: "addColumnAfter",
+    label: t("widgets.tiptap.add-column"),
+    icon: "i-lucide-plus-square",
+    command: () => props.editor?.chain().focus().addColumnAfter().run(),
+    isActive: () => false,
+  },
+  {
+    name: "deleteRow",
+    label: t("widgets.tiptap.delete-row"),
+    icon: "i-lucide-minus",
+    command: () => props.editor?.chain().focus().deleteRow().run(),
+    isActive: () => false,
+  },
+  {
+    name: "deleteColumn",
+    label: t("widgets.tiptap.delete-column"),
+    icon: "i-lucide-minus-square",
+    command: () => props.editor?.chain().focus().deleteColumn().run(),
+    isActive: () => false,
+  },
+];
 </script>
 
 <template>
@@ -201,6 +246,22 @@ const clearTextColor = () => {
           <div class="flex flex-col gap-2 p-2 bg-zinc-100 dark:bg-zinc-800 mt-2 rounded-md shadow-none">
             <UButton
               v-for="action in contentTypes"
+              :key="action.name"
+              variant="ghost"
+              :icon="action.icon"
+              @click="action.command()"
+            >
+              {{ action.label }}
+            </UButton>
+          </div>
+        </template>
+      </UPopover>
+      <UPopover>
+        <UButton icon="i-lucide-table-properties" variant="ghost" />
+        <template #content>
+          <div class="flex flex-col gap-2 p-2 bg-zinc-100 dark:bg-zinc-800 mt-2 rounded-md shadow-none">
+            <UButton
+              v-for="action in tableActions"
               :key="action.name"
               variant="ghost"
               :icon="action.icon"
