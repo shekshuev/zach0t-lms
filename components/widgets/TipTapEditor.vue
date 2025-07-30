@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import type { JSONContent } from "@tiptap/core";
+import Color from "@tiptap/extension-color";
+import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
+import { TextStyle } from "@tiptap/extension-text-style";
+import Underline from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
 import { EditorContent, useEditor } from "@tiptap/vue-3";
 import { onBeforeUnmount } from "vue";
@@ -15,7 +20,16 @@ const emit = defineEmits<{
 
 const editor = useEditor({
   content: props.modelValue,
-  extensions: [StarterKit],
+  extensions: [
+    StarterKit,
+    TextAlign.configure({
+      types: ["heading", "paragraph"],
+    }),
+    Color,
+    TextStyle,
+    Underline,
+    Link.configure({ openOnClick: false }),
+  ],
   onUpdate: useDebounceFn(({ editor }) => {
     emit("update:modelValue", editor.getJSON());
   }, 500),

@@ -25,6 +25,7 @@ export default defineAppConfig({
         variant: "soft",
       },
     },
+
     colors: {
       primary: "emerald",
       secondary: "lime",

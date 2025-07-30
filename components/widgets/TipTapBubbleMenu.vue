@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import type { EditorState } from "@tiptap/pm/state";
-import type { EditorView } from "@tiptap/pm/view";
 import type { Editor } from "@tiptap/vue-3";
 import { BubbleMenu } from "@tiptap/vue-3/menus";
-
 interface Action {
   name: string;
   label: string;
@@ -16,23 +13,6 @@ const { t } = useI18n();
 const props = defineProps<{
   editor?: Editor;
 }>();
-
-const shouldShow = (props: {
-  editor: Editor;
-  view: EditorView;
-  state: EditorState;
-  oldState?: EditorState;
-  from: number;
-  to: number;
-}) => {
-  const { state, from } = props;
-  const { doc, selection } = state;
-  const { empty } = selection;
-
-  if (empty) return false;
-
-  return true;
-};
 
 const textActions: Action[] = [
   {
@@ -54,6 +34,12 @@ const textActions: Action[] = [
     command: () => props.editor?.chain().focus().toggleStrike().run(),
   },
   {
+    name: "underline",
+    label: t("widgets.tiptap.underline"),
+    icon: "i-lucide-underline",
+    command: () => props.editor?.chain().focus().toggleUnderline().run(),
+  },
+  {
     name: "bulletList",
     label: t("widgets.tiptap.unordered-list"),
     icon: "i-lucide-list",
@@ -64,6 +50,51 @@ const textActions: Action[] = [
     label: t("widgets.tiptap.ordered-list"),
     icon: "i-lucide-list-ordered",
     command: () => props.editor?.chain().focus().toggleOrderedList().run(),
+  },
+  {
+    name: "alignLeft",
+    label: t("widgets.tiptap.align.left"),
+    icon: "i-lucide-align-left",
+    command: () => props.editor?.chain().focus().setTextAlign("left").run(),
+  },
+  {
+    name: "alignCenter",
+    label: t("widgets.tiptap.align.center"),
+    icon: "i-lucide-align-center",
+    command: () => props.editor?.chain().focus().setTextAlign("center").run(),
+  },
+  {
+    name: "alignRight",
+    label: t("widgets.tiptap.align.right"),
+    icon: "i-lucide-align-right",
+    command: () => props.editor?.chain().focus().setTextAlign("right").run(),
+  },
+  {
+    name: "alignJustify",
+    label: t("widgets.tiptap.align.justify"),
+    icon: "i-lucide-align-justify",
+    command: () => props.editor?.chain().focus().setTextAlign("justify").run(),
+  },
+  {
+    name: "undo",
+    label: t("widgets.tiptap.undo"),
+    icon: "i-lucide-undo",
+    command: () => props.editor?.chain().focus().undo().run(),
+  },
+  {
+    name: "redo",
+    label: t("widgets.tiptap.redo"),
+    icon: "i-lucide-redo",
+    command: () => props.editor?.chain().focus().redo().run(),
+  },
+  {
+    name: "link",
+    label: t("widgets.tiptap.link"),
+    icon: "i-lucide-link",
+    command: () => {
+      const url = prompt("Enter URL");
+      if (url) props.editor?.chain().focus().setLink({ href: url }).run();
+    },
   },
 ];
 
@@ -92,7 +123,6 @@ const contentTypes: Action[] = [
     icon: "i-lucide-heading-3",
     command: () => props.editor?.chain().focus().toggleHeading({ level: 3 }).run(),
   },
-
   {
     name: "codeBlock",
     label: t("widgets.tiptap.code"),
@@ -116,32 +146,38 @@ const currentContentType = computed(() => {
   return t("widgets.tiptap.paragraph");
 });
 
-// const colors: Color[] = [
-//   { name: "Default", value: "inherit" },
-//   { name: "Gray", value: "#6B7280" },
-//   { name: "Brown", value: "#92400E" },
-//   { name: "Orange", value: "#EA580C" },
-//   { name: "Yellow", value: "#CA8A04" },
-//   { name: "Green", value: "#16A34A" },
-//   { name: "Blue", value: "#2563EB" },
-//   { name: "Purple", value: "#9333EA" },
-//   { name: "Pink", value: "#DB2777" },
-//   { name: "Red", value: "#DC2626" },
-// ];
+const colors = [
+  { name: t("widgets.tiptap.colors.gray"), value: "#6B7280" },
+  { name: t("widgets.tiptap.colors.brown"), value: "#92400E" },
+  { name: t("widgets.tiptap.colors.orange"), value: "#EA580C" },
+  { name: t("widgets.tiptap.colors.yellow"), value: "#CA8A04" },
+  { name: t("widgets.tiptap.colors.green"), value: "#16A34A" },
+  { name: t("widgets.tiptap.colors.blue"), value: "#2563EB" },
+  { name: t("widgets.tiptap.colors.purple"), value: "#9333EA" },
+  { name: t("widgets.tiptap.colors.pink"), value: "#DB2777" },
+  { name: t("widgets.tiptap.colors.red"), value: "#DC2626" },
+];
 
-// const setTextColor = (color: string) => {
-//   props.editor?.chain().focus().setColor(color).run();
-//   showColorMenu.value = false;
-// };
+const setTextColor = (color: string) => {
+  props.editor?.chain().focus().setColor(color).run();
+};
+const clearTextColor = () => {
+  props.editor?.chain().focus().unsetColor().run();
+};
 </script>
 
 <template>
-  <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor" :should-show="shouldShow">
-    <div class="flex gap-2 p-2 bg-white rounded-md shadow-sm">
+  <bubble-menu
+    v-if="editor"
+    :editor="editor"
+    :tippy-options="{ duration: 100 }"
+    :should-show="props => !props.state.selection.empty"
+  >
+    <div class="flex gap-2 p-2 max-w-screen flex-wrap bg-zinc-100 dark:bg-zinc-800 rounded-md shadow-sm border-none">
       <UPopover>
         <UButton :label="currentContentType" variant="ghost" />
         <template #content>
-          <div class="flex flex-col gap-2 p-2 bg-white mt-2 rounded-md shadow-sm">
+          <div class="flex flex-col gap-2 p-2 bg-zinc-100 dark:bg-zinc-800 mt-2 rounded-md shadow-none">
             <UButton
               v-for="action in contentTypes"
               :key="action.name"
@@ -154,13 +190,34 @@ const currentContentType = computed(() => {
           </div>
         </template>
       </UPopover>
-      <UButton
-        v-for="action in textActions"
-        :key="action.name"
-        variant="ghost"
-        :icon="action.icon"
-        @click="action.command()"
-      />
+      <UTooltip v-for="action in textActions" :key="action.name" :text="action.label" :popper="{ placement: 'top' }">
+        <UButton variant="ghost" :icon="action.icon" @click="action.command()" />
+      </UTooltip>
+
+      <UPopover>
+        <UButton icon="i-lucide-palette" variant="ghost" />
+        <template #content>
+          <div class="grid grid-cols-5 gap-2 p-2 bg-zinc-100 dark:bg-zinc-800 mt-2 rounded-md shadow-sm">
+            <UTooltip v-for="color in colors" :key="color.value" :text="color.name" :popper="{ placement: 'top' }">
+              <button
+                class="w-6 h-6 rounded-full border border-zinc-300 dark:border-zinc-600"
+                :class="color.value"
+                :style="{ backgroundColor: color.value }"
+                @click="setTextColor(color.value)"
+              />
+            </UTooltip>
+
+            <UTooltip :text="t('widgets.tiptap.colors.reset')" :popper="{ placement: 'top' }">
+              <button
+                class="w-6 h-6 rounded-full border border-zinc-300 dark:border-zinc-600 flex items-center justify-center"
+                @click="clearTextColor"
+              >
+                <span class="w-3 h-3 bg-white rounded-full border border-zinc-400" />
+              </button>
+            </UTooltip>
+          </div>
+        </template>
+      </UPopover>
     </div>
   </bubble-menu>
 </template>

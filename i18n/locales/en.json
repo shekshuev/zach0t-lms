@@ -102,18 +102,34 @@
       "bold": "Bold",
       "italic": "Italic",
       "underline": "Underline",
-      "strike": "Strike",
+      "strikethrough": "Strikethrough",
       "heading": "Heading",
       "paragraph": "Paragraph",
       "blockquote": "Blockquote",
       "ordered-list": "Ordered list",
       "unordered-list": "Unordered list",
       "code": "Code",
+      "undo": "Undo",
+      "redo": "Redo",
+      "link": "Link",
+      "image": "Image",
       "align": {
         "left": "Left",
         "center": "Center",
         "right": "Right",
         "justify": "Justify"
+      },
+      "colors": {
+        "gray": "Gray",
+        "brown": "Brown",
+        "orange": "Orange",
+        "yellow": "Yellow",
+        "green": "Green",
+        "blue": "Blue",
+        "purple": "Purple",
+        "pink": "Pink",
+        "red": "Red",
+        "reset": "Reset color"
       }
     }
   },
