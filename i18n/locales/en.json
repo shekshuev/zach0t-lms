@@ -97,6 +97,26 @@
       "header": "Sorry, this section is under development"
     }
   },
+  "widgets": {
+    "tiptap": {
+      "bold": "Bold",
+      "italic": "Italic",
+      "underline": "Underline",
+      "strike": "Strike",
+      "heading": "Heading",
+      "paragraph": "Paragraph",
+      "blockquote": "Blockquote",
+      "ordered-list": "Ordered list",
+      "unordered-list": "Unordered list",
+      "code": "Code",
+      "align": {
+        "left": "Left",
+        "center": "Center",
+        "right": "Right",
+        "justify": "Justify"
+      }
+    }
+  },
   "validations": {
     "username": {
       "required": "Username is required",

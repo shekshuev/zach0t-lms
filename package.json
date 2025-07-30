@@ -17,6 +17,9 @@
     "@nuxt/test-utils": "^3.19.2",
     "@nuxt/ui": "^3.2.0",
     "@nuxtjs/i18n": "^9.5.6",
+    "@tiptap/extension-bubble-menu": "^3.0.7",
+    "@tiptap/extension-color": "^3.0.7",
+    "@tiptap/extension-text-style": "^3.0.7",
     "@tiptap/pm": "^3.0.7",
     "@tiptap/starter-kit": "^3.0.7",
     "@tiptap/vue-3": "^3.0.7",
@@ -37,6 +40,7 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
     "@types/bcrypt": "^6.0.0",
     "eslint-plugin-prettier": "^5.5.1",
     "typescript-eslint": "^8.35.1",
