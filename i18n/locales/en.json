@@ -89,6 +89,25 @@
         "lesson-created": "Lesson created",
         "lesson-updated": "Lesson updated",
         "edit-content": "Edit lesson content"
+      },
+      "classes": {
+        "id": "ID",
+        "group": "Group",
+        "begin-at": "Begin at",
+        "status": "Status",
+        "title": "Title",
+        "short-title": "Short title",
+        "created-at": "Created at",
+        "updated-at": "Updated at",
+        "search-group": "Search group",
+        "search-title": "Search title",
+        "search-short": "Search short title",
+        "all-statuses": "All statuses",
+        "all-dates": "All dates",
+        "create-class": "Create class",
+        "edit-class": "Edit class",
+        "class-created": "Class created",
+        "class-updated": "Class updated"
       }
     }
   },
@@ -184,7 +203,8 @@
       "includes": "User status should be one of the following: {values}"
     },
     "group": {
-      "max": "Group must be at most {length} characters"
+      "max": "Group must be at most {length} characters",
+      "min": "Group must be at least {length} characters"
     },
     "reset-password-token": {
       "required": "Reset password token is required",
@@ -213,6 +233,22 @@
     "lesson-hours": {
       "required": "Hours is required",
       "positive": "Hours must be a positive number"
+    },
+    "class-begin-at": {
+      "valid-date": "Begin at must be a valid date"
+    },
+    "class-title": {
+      "required": "Title is required",
+      "min": "Title must be at least {length} characters",
+      "max": "Title must be at most {length} characters"
+    },
+    "class-short-title": {
+      "required": "Short title is required",
+      "min": "Short title must be at least {length} characters",
+      "max": "Short title must be at most {length} characters"
+    },
+    "class-status": {
+      "includes": "Class status should be one of the following: {values}"
     }
   },
   "errors": {

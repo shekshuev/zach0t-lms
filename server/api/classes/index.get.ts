@@ -29,8 +29,17 @@ export default defineEventHandler(async event => {
     filters.status = query.status;
   }
 
-  if (query.beginAt && Object.prototype.toString.call(query.beginAt) === "[object Date]") {
-    filters.beginAt = { $gte: query.beginAt };
+  if (query.beginAt) {
+    if (Object.prototype.toString.call(query.beginAt) === "[object Date]") {
+      filters.beginAt = { $gte: query.beginAt };
+    } else {
+      try {
+        const date = new Date(query.beginAt);
+        filters.beginAt = { $gte: date };
+      } catch {
+        // ignore
+      }
+    }
   }
 
   const page = Math.max(query.page || 1, 1);

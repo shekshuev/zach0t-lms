@@ -22,7 +22,7 @@ export interface FilterClassDto {
   lessonId?: string;
   group?: string;
   status?: ClassStatus;
-  beginAt?: Date;
+  beginAt?: string | Date;
   title?: string;
   shortTitle?: string;
   page: number;
@@ -31,7 +31,7 @@ export interface FilterClassDto {
 
 export interface CreateClassDto {
   lessonId: string;
-  beginAt: Date;
+  beginAt: string | Date;
   group: string;
   title: string;
   shortTitle: string;
@@ -49,7 +49,7 @@ export interface ReadClassDto extends Omit<CreateClassDto, "lessonId"> {
 
 export const schema = z.object({
   lessonId: z.string().regex(CLASS_LESSON_ID_REGEX),
-  beginAt: z.date(),
+  beginAt: z.coerce.date(),
   group: z.string().min(GROUP_MIN_LENGTH).max(GROUP_MAX_LENGTH),
   title: z.string().min(CLASS_TITLE_MIN_LENGTH).max(CLASS_TITLE_MAX_LENGTH),
   shortTitle: z.string().min(CLASS_SHORT_TITLE_MIN_LENGTH).max(CLASS_SHORT_TITLE_MAX_LENGTH),

@@ -40,6 +40,13 @@ const ClassSchema = new Schema({
   },
 });
 
+ClassSchema.pre("save", function (next) {
+  if (this.isModified("beginAt") && typeof this.beginAt === "string") {
+    this.beginAt = new Date(this.beginAt);
+  }
+  next();
+});
+
 export type ClassDocument = HydratedDocument<InferSchemaType<typeof ClassSchema>>;
 
 export const Class = model("Class", ClassSchema);
