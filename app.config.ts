@@ -25,7 +25,11 @@ export default defineAppConfig({
         variant: "soft",
       },
     },
-
+    badge: {
+      defaultVariants: {
+        variant: "soft",
+      },
+    },
     colors: {
       primary: "emerald",
       secondary: "lime",

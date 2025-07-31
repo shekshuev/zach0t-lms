@@ -5,7 +5,7 @@ import { BubbleMenu } from "@tiptap/vue-3/menus";
 interface Action {
   name: string;
   label: string;
-  icon: string;
+  icon?: string;
   command: () => void;
   isActive: () => boolean;
 }
@@ -16,7 +16,7 @@ const props = defineProps<{
   editor?: Editor;
 }>();
 
-const textActions: Action[] = [
+const textActions = computed<Action[]>(() => [
   {
     name: "bold",
     label: t("widgets.tiptap.bold"),
@@ -88,6 +88,13 @@ const textActions: Action[] = [
     isActive: () => props.editor?.isActive({ textAlign: "justify" }) || false,
   },
   {
+    name: "math",
+    label: t("widgets.tiptap.math"),
+    icon: "i-lucide-sigma",
+    command: () => props.editor?.chain().focus().setTextAlign("justify").run(),
+    isActive: () => props.editor?.isActive({ textAlign: "justify" }) || false,
+  },
+  {
     name: "undo",
     label: t("widgets.tiptap.undo"),
     icon: "i-lucide-undo",
@@ -111,9 +118,9 @@ const textActions: Action[] = [
     },
     isActive: () => props.editor?.isActive("link") || false,
   },
-];
+]);
 
-const contentTypes: Action[] = [
+const contentTypes = computed<Action[]>(() => [
   {
     name: "paragraph",
     label: t("widgets.tiptap.paragraph"),
@@ -156,7 +163,7 @@ const contentTypes: Action[] = [
     command: () => props.editor?.chain().focus().toggleBlockquote().run(),
     isActive: () => false,
   },
-];
+]);
 
 const currentContentType = computed(() => {
   if (props.editor?.isActive("heading", { level: 1 })) return t("widgets.tiptap.heading") + " 1";
@@ -167,7 +174,7 @@ const currentContentType = computed(() => {
   return t("widgets.tiptap.paragraph");
 });
 
-const colors = [
+const colors = computed(() => [
   { name: t("widgets.tiptap.colors.gray"), value: "#6B7280" },
   { name: t("widgets.tiptap.colors.brown"), value: "#92400E" },
   { name: t("widgets.tiptap.colors.orange"), value: "#EA580C" },
@@ -177,7 +184,7 @@ const colors = [
   { name: t("widgets.tiptap.colors.purple"), value: "#9333EA" },
   { name: t("widgets.tiptap.colors.pink"), value: "#DB2777" },
   { name: t("widgets.tiptap.colors.red"), value: "#DC2626" },
-];
+]);
 
 const setTextColor = (color: string) => {
   props.editor?.chain().focus().setColor(color).run();
@@ -186,7 +193,37 @@ const clearTextColor = () => {
   props.editor?.chain().focus().unsetColor().run();
 };
 
-const tableActions: Action[] = [
+const lineHeights = computed<Action[]>(() => [
+  ...["1.0", "1.5", "2.0", "2.5", "3.0"].map(value => ({
+    name: value,
+    label: value,
+    command: () => props.editor?.chain().focus().toggleTextStyle({ lineHeight: value }).run(),
+    isActive: () => props.editor?.isActive({ lineHeight: value }) || false,
+  })),
+  {
+    name: "unset",
+    label: t("widgets.tiptap.unset-line-height"),
+    command: () => props.editor?.chain().focus().unsetLineHeight().run(),
+    isActive: () => false,
+  },
+]);
+
+const fontSizes = computed<Action[]>(() => [
+  ...["14", "18", "20", "24", "28", "32", "36", "48", "64"].map(size => ({
+    name: size,
+    label: size,
+    command: () => props.editor?.chain().focus().setFontSize(`${size}px`).run(),
+    isActive: () => props.editor?.isActive("textStyle", { fontSize: `${size}px` }) || false,
+  })),
+  {
+    name: "unset",
+    label: t("widgets.tiptap.unset-font-size"),
+    command: () => props.editor?.chain().focus().unsetFontSize().run(),
+    isActive: () => false,
+  },
+]);
+
+const tableActions = computed<Action[]>(() => [
   {
     name: "insertTable",
     label: t("widgets.tiptap.insert-table"),
@@ -229,7 +266,7 @@ const tableActions: Action[] = [
     command: () => props.editor?.chain().focus().deleteColumn().run(),
     isActive: () => false,
   },
-];
+]);
 </script>
 
 <template>
@@ -257,7 +294,45 @@ const tableActions: Action[] = [
         </template>
       </UPopover>
       <UPopover>
-        <UButton icon="i-lucide-table-properties" variant="ghost" />
+        <UTooltip :text="t('widgets.tiptap.line-height')">
+          <UButton icon="i-lucide-move-vertical" variant="ghost" />
+        </UTooltip>
+        <template #content>
+          <div class="flex flex-col gap-2 p-2 bg-zinc-100 dark:bg-zinc-800 mt-2 rounded-md shadow-none">
+            <UButton
+              v-for="action in lineHeights"
+              :key="action.name"
+              :variant="action.isActive() ? 'soft' : 'ghost'"
+              :icon="action.icon"
+              @click="action.command()"
+            >
+              {{ action.label }}
+            </UButton>
+          </div>
+        </template>
+      </UPopover>
+      <UPopover>
+        <UTooltip :text="t('widgets.tiptap.font-size')">
+          <UButton icon="i-lucide-a-large-small" variant="ghost" />
+        </UTooltip>
+        <template #content>
+          <div class="flex flex-col gap-2 p-2 bg-zinc-100 dark:bg-zinc-800 mt-2 rounded-md shadow-none">
+            <UButton
+              v-for="action in fontSizes"
+              :key="action.name"
+              :variant="action.isActive() ? 'soft' : 'ghost'"
+              :icon="action.icon"
+              @click="action.command()"
+            >
+              {{ action.label }}
+            </UButton>
+          </div>
+        </template>
+      </UPopover>
+      <UPopover>
+        <UTooltip :text="t('widgets.tiptap.table')">
+          <UButton icon="i-lucide-table-properties" variant="ghost" />
+        </UTooltip>
         <template #content>
           <div class="flex flex-col gap-2 p-2 bg-zinc-100 dark:bg-zinc-800 mt-2 rounded-md shadow-none">
             <UButton
@@ -277,7 +352,9 @@ const tableActions: Action[] = [
       </UTooltip>
 
       <UPopover>
-        <UButton icon="i-lucide-palette" variant="ghost" />
+        <UTooltip :text="t('widgets.tiptap.colors.header')">
+          <UButton icon="i-lucide-palette" variant="ghost" />
+        </UTooltip>
         <template #content>
           <div class="grid grid-cols-5 gap-2 p-2 bg-zinc-100 dark:bg-zinc-800 mt-2 rounded-md shadow-sm">
             <UTooltip v-for="color in colors" :key="color.value" :text="color.name" :popper="{ placement: 'top' }">

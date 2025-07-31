@@ -99,6 +99,12 @@
   },
   "widgets": {
     "tiptap": {
+      "saved": "Saved",
+      "not-saved": "Not saved",
+      "saving": "Saving...",
+      "characters": "{count} / {total} characters",
+      "words": "{count} words",
+      "placeholder": "Write something...",
       "bold": "Bold",
       "italic": "Italic",
       "underline": "Underline",
@@ -113,6 +119,7 @@
       "redo": "Redo",
       "link": "Link",
       "image": "Image",
+      "math": "Math",
       "align": {
         "left": "Left",
         "center": "Center",
@@ -120,6 +127,7 @@
         "justify": "Justify"
       },
       "colors": {
+        "header": "Colors",
         "gray": "Gray",
         "brown": "Brown",
         "orange": "Orange",
@@ -131,12 +139,17 @@
         "red": "Red",
         "reset": "Reset color"
       },
+      "table": "Table",
       "insert-table": "Insert table",
       "delete-table": "Delete table",
       "add-row": "Add row",
       "add-column": "Add column",
       "delete-row": "Delete row",
-      "delete-column": "Delete column"
+      "delete-column": "Delete column",
+      "line-height": "Line height",
+      "unset-line-height": "Unset line height",
+      "font-size": "Font size",
+      "unset-font-size": "Unset font size"
     }
   },
   "validations": {
