@@ -220,7 +220,8 @@
     "subject_not_found": "Предмет не найден",
     "subject_already_exist": "Предмет уже существует",
     "lesson_not_found": "занятие не найдено",
-    "lesson_already_exist": "Занятие уже существует"
+    "lesson_already_exist": "Занятие уже существует",
+    "class_not_found": "Учебное занятие не найдено"
   },
   "actions": {
     "header": "Действия",

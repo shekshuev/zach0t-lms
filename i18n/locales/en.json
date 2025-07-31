@@ -226,7 +226,8 @@
     "subject_not_found": "Subject not found",
     "subject_already_exists": "Subject already exists",
     "lesson_not_found": "Lesson not found",
-    "leson_already_exists": "Lesson already exists"
+    "leson_already_exists": "Lesson already exists",
+    "class_not_found": "Class not found"
   },
   "actions": {
     "header": "Actions",

@@ -1,7 +1,7 @@
 import type { HydratedDocument, InferSchemaType } from "mongoose";
 import { Schema, model } from "mongoose";
 
-const LessonSchema = new Schema({
+export const LessonSchema = new Schema({
   topic: {
     type: String,
     required: true,

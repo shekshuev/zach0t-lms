@@ -2,7 +2,7 @@ import type { FilterLessonDto, ReadLessonDto } from "~/types/lesson";
 import type { Pageable } from "~/types/shared";
 
 export default defineEventHandler(async event => {
-  await requireStudentSession(event);
+  await requireTeacherSession(event);
 
   const query = getQuery<FilterLessonDto>(event);
 
@@ -10,10 +10,10 @@ export default defineEventHandler(async event => {
   const filters: Record<string, any> = {};
 
   if (query.topic && typeof query.topic === "string") {
-    filters.title = { $regex: query.topic, $options: "i" };
+    filters.topic = { $regex: query.topic, $options: "i" };
   }
 
-  if (query.subjectId && typeof query.topic === "string") {
+  if (query.subjectId && typeof query.subjectId === "string") {
     filters.subjectId = query.subjectId;
   }
 
