@@ -95,6 +95,13 @@ const textActions = computed<Action[]>(() => [
     isActive: () => props.editor?.isActive({ textAlign: "justify" }) || false,
   },
   {
+    name: "code",
+    label: t("widgets.tiptap.code"),
+    icon: "i-lucide-braces",
+    command: () => props.editor?.chain().focus().toggleCode().run(),
+    isActive: () => props.editor?.isActive("code") || false,
+  },
+  {
     name: "undo",
     label: t("widgets.tiptap.undo"),
     icon: "i-lucide-undo",
@@ -151,7 +158,7 @@ const contentTypes = computed<Action[]>(() => [
   },
   {
     name: "codeBlock",
-    label: t("widgets.tiptap.code"),
+    label: t("widgets.tiptap.code-block"),
     icon: "i-lucide-code",
     command: () => props.editor?.chain().focus().toggleCodeBlock().run(),
     isActive: () => false,

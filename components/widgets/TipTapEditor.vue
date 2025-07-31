@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { JSONContent } from "@tiptap/core";
+import Code from "@tiptap/extension-code";
 import Color from "@tiptap/extension-color";
 import Link from "@tiptap/extension-link";
 import { Mathematics } from "@tiptap/extension-mathematics";
@@ -37,6 +38,7 @@ const editor = useEditor({
     TextStyle,
     LineHeight,
     FontSize,
+    Code,
     Underline,
     CharacterCount.configure({
       limit: LIMIT,
