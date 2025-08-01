@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import type { FilterClassDto, ReadClassDto } from "~/types/class";
 import type { Pageable } from "~/types/shared";
 
@@ -22,24 +23,16 @@ export default defineEventHandler(async event => {
   }
 
   if (query.lessonId && typeof query.lessonId === "string") {
-    filters.lesson = { _id: query.lessonId };
+    filters["lesson._id"] = new Types.ObjectId(query.lessonId);
   }
 
   if (query.status && typeof query.status === "string") {
     filters.status = query.status;
   }
 
-  if (query.beginAt) {
-    if (Object.prototype.toString.call(query.beginAt) === "[object Date]") {
-      filters.beginAt = { $gte: query.beginAt };
-    } else {
-      try {
-        const date = new Date(query.beginAt);
-        filters.beginAt = { $gte: date };
-      } catch {
-        // ignore
-      }
-    }
+  if (query.beginAt && typeof query.beginAt === "string") {
+    const date = new Date(query.beginAt);
+    filters.beginAt = { $gte: date };
   }
 
   const page = Math.max(query.page || 1, 1);

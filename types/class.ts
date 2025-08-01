@@ -22,7 +22,7 @@ export interface FilterClassDto {
   lessonId?: string;
   group?: string;
   status?: ClassStatus;
-  beginAt?: string | Date;
+  beginAt?: Date;
   title?: string;
   shortTitle?: string;
   page: number;
@@ -31,7 +31,7 @@ export interface FilterClassDto {
 
 export interface CreateClassDto {
   lessonId: string;
-  beginAt: string | Date;
+  beginAt: Date;
   group: string;
   title: string;
   shortTitle: string;

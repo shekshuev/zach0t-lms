@@ -101,7 +101,7 @@
         "updated-at": "Обновлено",
         "search-group": "Поиск по группе",
         "search-title": "Поиск по названию",
-        "search-short": "Поиск по сокращенному названию",
+        "search-short-title": "Поиск по сокращенному названию",
         "all-statuses": "Все статусы",
         "all-dates": "Все даты",
         "create-class": "Создать учебное занятие",
@@ -114,6 +114,10 @@
   "ui": {
     "in-development": {
       "header": "Извините, раздел в разработке"
+    },
+    "date-time-picker": {
+      "time-placeholder": "чч:мм",
+      "empty": "Выберите дату и время"
     }
   },
   "widgets": {

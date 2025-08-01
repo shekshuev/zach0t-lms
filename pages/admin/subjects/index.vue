@@ -53,14 +53,12 @@ const { data, status, refresh } = await useAsyncData<Pageable<ReadSubjectDto>>(
 );
 
 function onFilterSubmit() {
-  console.log(123);
   filters.title = state.title || undefined;
   pagination.value.pageIndex = 0;
   refresh();
 }
 
 function clearFilters() {
-  console.log(456);
   Object.assign(state, getInitialFilters());
   Object.assign(filters, getInitialFilters());
   pagination.value.pageIndex = 0;

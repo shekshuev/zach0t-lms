@@ -2,9 +2,9 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import type { FetchError } from "ofetch";
 import { z } from "zod";
-import type { CreateClassDto, UpdateClassDto } from "~/types/class";
+import DateTimePicker from "~/components/ui/DateTimePicker.vue";
+import type { CreateClassDto, ReadClassDto, UpdateClassDto } from "~/types/class";
 import { CLASS_STATUSES } from "~/types/class";
-import type { ReadSubjectDto } from "~/types/subject";
 
 definePageMeta({ layout: "dashboard" });
 
@@ -20,7 +20,7 @@ const classId = computed(() => route.params.class_id as string);
 const isNew = computed(() => route.params.class_id === "new");
 
 const schema = z.object({
-  beginAt: z.coerce.date({ message: t("validations.class-begin-at.valid-date") }),
+  beginAt: z.date({ message: t("validations.class-begin-at.valid-date") }),
   group: z
     .string()
     .min(GROUP_MIN_LENGTH, { message: t("validations.group.min", { length: GROUP_MIN_LENGTH }) })
@@ -42,7 +42,7 @@ const schema = z.object({
 });
 
 const state = reactive<CreateClassDto | UpdateClassDto>({
-  beginAt: "",
+  beginAt: undefined,
   group: "",
   lessonId: lessonId.value,
   shortTitle: "",
@@ -51,8 +51,8 @@ const state = reactive<CreateClassDto | UpdateClassDto>({
 });
 
 const { data, refresh } = await useAsyncData(
-  `admin-class-${lessonId.value}`,
-  () => $fetch<ReadSubjectDto>(`/api/classes/${classId.value}`),
+  `admin-class-${classId.value}`,
+  () => $fetch<ReadClassDto>(`/api/classes/${classId.value}`),
   {
     immediate: false,
   },
@@ -77,7 +77,6 @@ async function onSubmit(e: FormSubmitEvent<CreateClassDto | UpdateClassDto>) {
         method: "POST",
         body: {
           ...e.data,
-          beginAt: new Date(),
           lessonId: lessonId.value,
         },
       });
@@ -88,7 +87,6 @@ async function onSubmit(e: FormSubmitEvent<CreateClassDto | UpdateClassDto>) {
         method: "PUT",
         body: {
           ...e.data,
-          beginAt: new Date(),
           lessonId: lessonId.value,
         },
       });
@@ -124,7 +122,7 @@ async function onSubmit(e: FormSubmitEvent<CreateClassDto | UpdateClassDto>) {
         </UFormField>
 
         <UFormField :label="$t('pages.admin.classes.begin-at')" name="beginAt">
-          <UInput v-model="state.beginAt" type="datetime-local" class="w-full" />
+          <DateTimePicker v-model="state.beginAt" class="w-full" />
         </UFormField>
 
         <UFormField :label="$t('pages.admin.classes.status')" name="status">

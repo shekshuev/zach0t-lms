@@ -11,6 +11,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@internationalized/date": "^3.8.2",
     "@nuxt/eslint": "^1.5.2",
     "@nuxt/icon": "^1.15.0",
     "@nuxt/image": "^1.10.0",
@@ -39,6 +40,7 @@
     "dayjs-nuxt": "^2.1.11",
     "eslint": "^9.30.1",
     "katex": "^0.16.22",
+    "maska": "^3.2.0",
     "monaco-editor": "^0.52.2",
     "nuxt": "^3.17.6",
     "nuxt-auth-utils": "^0.5.20",

@@ -101,7 +101,7 @@
         "updated-at": "Updated at",
         "search-group": "Search group",
         "search-title": "Search title",
-        "search-short": "Search short title",
+        "search-short-title": "Search short title",
         "all-statuses": "All statuses",
         "all-dates": "All dates",
         "create-class": "Create class",
@@ -114,6 +114,10 @@
   "ui": {
     "in-development": {
       "header": "Sorry, this section is under development"
+    },
+    "date-time-picker": {
+      "time-placeholder": "hh:mm",
+      "empty": "Choose date and time"
     }
   },
   "widgets": {
