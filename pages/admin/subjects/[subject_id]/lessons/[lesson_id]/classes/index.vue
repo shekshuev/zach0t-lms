@@ -23,7 +23,7 @@ const dayjs = useDayjs();
 const route = useRoute();
 
 const subjectId = computed(() => route.params.subject_id as string);
-const lessonId = computed(() => route.params.id as string);
+const lessonId = computed(() => route.params.lesson_id as string);
 
 const pagination = ref({
   pageIndex: 0,

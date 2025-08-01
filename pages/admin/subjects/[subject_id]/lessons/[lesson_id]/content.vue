@@ -10,7 +10,7 @@ definePageMeta({
 const route = useRoute();
 const state = ref<"saved" | "not-saved" | "saving">("saved");
 
-const id = computed(() => route.params.id as string);
+const id = computed(() => route.params.lesson_id as string);
 
 const { data } = await useAsyncData(`admin-lesson-${id.value}`, () =>
   $fetch<ReadFullLessonDto>(`/api/lessons/${id.value}`),

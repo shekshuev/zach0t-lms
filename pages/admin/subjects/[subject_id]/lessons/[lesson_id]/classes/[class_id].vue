@@ -14,7 +14,7 @@ const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 
-const lessonId = computed(() => route.params.id as string);
+const lessonId = computed(() => route.params.lesson_id as string);
 const subjectId = computed(() => route.params.subject_id as string);
 const classId = computed(() => route.params.class_id as string);
 const isNew = computed(() => route.params.class_id === "new");

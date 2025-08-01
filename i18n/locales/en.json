@@ -88,7 +88,8 @@
         "edit-lesson": "Edit lesson",
         "lesson-created": "Lesson created",
         "lesson-updated": "Lesson updated",
-        "edit-content": "Edit lesson content"
+        "edit-content": "Edit lesson content",
+        "to-lesson-classes": "To lesson classes"
       },
       "classes": {
         "id": "ID",

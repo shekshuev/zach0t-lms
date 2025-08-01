@@ -13,8 +13,8 @@ const route = useRoute();
 const router = useRouter();
 const toast = useToast();
 
-const isNew = computed(() => route.params.id === "new");
-const id = computed(() => route.params.id as string);
+const isNew = computed(() => route.params.lesson_id === "new");
+const lessonId = computed(() => route.params.lesson_id as string);
 const subjectId = computed(() => route.params.subject_id as string);
 
 const schema = z.object({
@@ -34,8 +34,8 @@ const state = reactive<CreateLessonDto | UpdateLessonDto>({
 });
 
 const { data, refresh } = await useAsyncData(
-  `admin-lesson-${id.value}`,
-  () => $fetch<ReadSubjectDto>(`/api/lessons/${id.value}`),
+  `admin-lesson-${lessonId.value}`,
+  () => $fetch<ReadSubjectDto>(`/api/lessons/${lessonId.value}`),
   {
     immediate: false,
   },
@@ -66,7 +66,7 @@ async function onSubmit(e: FormSubmitEvent<CreateLessonDto | UpdateLessonDto>) {
       router.replace(`/admin/subjects/${subjectId.value}/lessons/${result.id}`);
       toast.add({ title: t("pages.admin.lessons.lesson-created") });
     } else {
-      await $fetch(`/api/lessons/${id.value}`, {
+      await $fetch(`/api/lessons/${lessonId.value}`, {
         method: "PUT",
         body: {
           ...e.data,
@@ -111,9 +111,18 @@ async function onSubmit(e: FormSubmitEvent<CreateLessonDto | UpdateLessonDto>) {
             variant="link"
             color="neutral"
             block
-            :to="`/admin/subjects/${subjectId}/lessons/${id}/content`"
+            :to="`/admin/subjects/${subjectId}/lessons/${lessonId}/content`"
           >
             {{ $t("pages.admin.lessons.edit-content") }}
+          </UButton>
+          <UButton
+            v-if="!isNew"
+            variant="link"
+            color="neutral"
+            block
+            :to="`/admin/subjects/${subjectId}/lessons/${lessonId}/classes`"
+          >
+            {{ $t("pages.admin.lessons.to-lesson-classes") }}
           </UButton>
         </div>
       </template>
