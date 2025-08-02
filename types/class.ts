@@ -29,6 +29,11 @@ export interface FilterClassDto {
   limit: number;
 }
 
+export interface FilterScheduleDto {
+  from?: string;
+  to?: string;
+}
+
 export interface CreateClassDto {
   lessonId: string;
   beginAt: Date;
@@ -40,11 +45,15 @@ export interface CreateClassDto {
 
 export type UpdateClassDto = Partial<CreateClassDto>;
 
-export interface ReadClassDto extends Omit<CreateClassDto, "lessonId"> {
+export interface ReadClassDto extends Omit<CreateClassDto, "lessonId" | "beginAt"> {
   id: string;
+  beginAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ReadFullClassDto extends ReadClassDto {
   lesson: ReadFullLessonDto;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export const schema = z.object({

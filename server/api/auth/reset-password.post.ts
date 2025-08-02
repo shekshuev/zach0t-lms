@@ -45,6 +45,7 @@ export default defineEventHandler(async event => {
 
   const payload: SessionPayload = {
     id: user.id,
+    group: user.group || null,
     username: user.username,
     role: user.role as UserRole,
   };

@@ -3,7 +3,7 @@ import type { FilterClassDto, ReadClassDto } from "~/types/class";
 import type { Pageable } from "~/types/shared";
 
 export default defineEventHandler(async event => {
-  await requireStudentSession(event);
+  await requireTeacherSession(event);
 
   const query = getQuery<FilterClassDto>(event);
 
@@ -41,7 +41,7 @@ export default defineEventHandler(async event => {
 
   const [total, classes] = await Promise.all([
     Class.countDocuments(filters),
-    Class.find(filters).sort({ createdAt: -1 }).skip(skip).limit(limit),
+    Class.find(filters).select("-lesson").sort({ createdAt: -1 }).skip(skip).limit(limit),
   ]);
 
   return {

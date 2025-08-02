@@ -7,7 +7,7 @@ export async function requireAdminSession(event: H3Event) {
   if ((user as SessionPayload)?.role !== "admin") {
     throw createError({ statusCode: 403, message: "forbidden" });
   }
-  return user;
+  return user as SessionPayload;
 }
 
 export async function requireTeacherSession(event: H3Event) {
@@ -15,7 +15,7 @@ export async function requireTeacherSession(event: H3Event) {
   if (!["admin", "teacher"].includes((user as SessionPayload)?.role)) {
     throw createError({ statusCode: 403, message: "forbidden" });
   }
-  return user;
+  return user as SessionPayload;
 }
 
 export async function requireStudentSession(event: H3Event) {
@@ -23,5 +23,5 @@ export async function requireStudentSession(event: H3Event) {
   if (!USER_ROLES.includes((user as SessionPayload)?.role)) {
     throw createError({ statusCode: 403, message: "forbidden" });
   }
-  return user;
+  return user as SessionPayload;
 }

@@ -37,6 +37,7 @@ export type UserStatus = (typeof USER_STATUSES)[number];
 export interface SessionPayload {
   id: string;
   username: string;
+  group: string | null;
   role: UserRole;
 }
 

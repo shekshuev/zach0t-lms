@@ -30,5 +30,5 @@ export default defineEventHandler(async event => {
     title,
   });
 
-  return toReadClassDto(cls);
+  return toReadFullClassDto(cls);
 });

@@ -31,6 +31,7 @@ const UserSchema = new Schema({
   },
   group: {
     type: String,
+    index: true,
   },
   resetPasswordToken: {
     type: String,

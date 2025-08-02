@@ -59,6 +59,7 @@ export default defineEventHandler(async event => {
   const payload: SessionPayload = {
     id: user.id,
     username: user.username,
+    group: user.group || null,
     role: user.role as UserRole,
   };
   await setUserSession(
