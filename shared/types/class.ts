@@ -1,12 +1,7 @@
 import z from "zod";
 import type { ReadFullLessonDto } from "./lesson";
 
-export const CLASS_STATUSES = [
-  "opened",
-  "closed",
-  "opened_after_start_forever",
-  "opened_after_start_before_end",
-] as const;
+export const CLASS_STATUSES = ["opened", "closed"] as const;
 export type ClassStatus = (typeof CLASS_STATUSES)[number];
 
 export interface FilterClassDto {

@@ -33,13 +33,14 @@ const { data: classes } = await useAsyncData<ReadClassDto[]>(
 </script>
 
 <template>
-  <div class="container mx-auto py-8">
+  <UContainer class="max-w-4xl py-8">
     <WidgetsScheduleCalendar
       :classes="classes || []"
       :month="date.month"
       :year="date.year"
       @next-month="date = date.add({ months: 1 })"
       @prev-month="date = date.add({ months: -1 })"
+      @class-click="navigateTo(`/schedule/${$event}`)"
     />
-  </div>
+  </UContainer>
 </template>

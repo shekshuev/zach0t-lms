@@ -110,6 +110,15 @@
         "class-created": "Class created",
         "class-updated": "Class updated"
       }
+    },
+    "dashboard": {
+      "schedule": {
+        "begin-at": "Begin at",
+        "end-at": "End at",
+        "topic": "Topic",
+        "group": "Group",
+        "to-content": "To content"
+      }
     }
   },
   "ui": {
@@ -277,6 +286,13 @@
     "new": "New",
     "save": "Save",
     "apply-filters": "Apply filters",
-    "clear-filters": "Clear filters"
+    "clear-filters": "Clear filters",
+    "go-back": "Go back"
+  },
+  "shared": {
+    "class-statuses": {
+      "opened": "Opened",
+      "closed": "Closed"
+    }
   }
 }

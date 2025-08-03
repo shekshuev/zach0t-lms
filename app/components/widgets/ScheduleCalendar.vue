@@ -16,6 +16,7 @@ const {
 
 const emit = defineEmits<{
   (e: "prev-month" | "next-month"): void;
+  (e: "class-click", classId: string): void;
 }>();
 
 const current = ref<CalendarDate>(new CalendarDate(year, month, 1));
@@ -106,6 +107,7 @@ function getLessonsByDate(date: CalendarDate) {
             color="success"
             variant="soft"
             class="w-full cursor-pointer truncate text-[10px] px-2"
+            @click="emit('class-click', cls.id)"
           >
             {{ cls.shortTitle }}
           </UBadge>
