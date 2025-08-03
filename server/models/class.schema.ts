@@ -1,7 +1,5 @@
 import type { HydratedDocument, InferSchemaType } from "mongoose";
 import { Schema, model } from "mongoose";
-import { LessonSchema } from "~/server/models/lesson.shema";
-import { CLASS_STATUSES } from "~/types/class";
 
 const ClassSchema = new Schema({
   group: {

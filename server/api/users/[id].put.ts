@@ -1,12 +1,9 @@
-import type { UpdateUserDto } from "~/types/user";
-import { schema } from "~/types/user";
-
 export default defineEventHandler(async event => {
   await requireAdminSession(event);
   const id = getRouterParam(event, "id");
   const body = await readBody<UpdateUserDto>(event);
 
-  const parsed = schema.safeParse(body);
+  const parsed = userSchema.safeParse(body);
   if (!parsed.success) {
     throw createError({ statusCode: 422, message: "unprocessable_entity" });
   }

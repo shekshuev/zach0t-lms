@@ -1,7 +1,3 @@
-import type { Pageable } from "~/types/shared";
-import type { FilterUserDto, ReadUserDto } from "~/types/user";
-import { USER_ROLES, USER_STATUSES } from "~/types/user";
-
 export default defineEventHandler(async event => {
   await requireAdminSession(event);
 

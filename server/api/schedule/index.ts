@@ -1,5 +1,3 @@
-import type { FilterScheduleDto } from "~/types/class";
-
 export default defineEventHandler(async event => {
   const user = await requireStudentSession(event);
 

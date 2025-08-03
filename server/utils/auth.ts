@@ -1,6 +1,4 @@
 import type { H3Event } from "h3";
-import type { SessionPayload } from "~/types/user";
-import { USER_ROLES } from "~/types/user";
 
 export async function requireAdminSession(event: H3Event) {
   const { user } = await requireUserSession(event);

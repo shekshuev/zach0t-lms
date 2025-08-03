@@ -1,6 +1,3 @@
-import type { Pageable } from "~/types/shared";
-import type { FilterSubjectDto, ReadSubjectDto } from "~/types/subject";
-
 export default defineEventHandler(async event => {
   await requireStudentSession(event);
 

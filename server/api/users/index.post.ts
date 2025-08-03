@@ -1,11 +1,8 @@
-import type { CreateUserDto } from "~/types/user";
-import { schema } from "~/types/user";
-
 export default defineEventHandler(async event => {
   await requireAdminSession(event);
   const body = await readBody<CreateUserDto>(event);
 
-  const parsed = schema.safeParse(body);
+  const parsed = userSchema.safeParse(body);
   if (!parsed.success) {
     throw createError({ statusCode: 422, message: "unprocessable_entity" });
   }

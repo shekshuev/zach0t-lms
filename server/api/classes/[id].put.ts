@@ -1,12 +1,9 @@
-import type { UpdateClassDto } from "~/types/class";
-import { schema } from "~/types/class";
-
 export default defineEventHandler(async event => {
   await requireTeacherSession(event);
   const id = getRouterParam(event, "id");
   const body = await readBody<UpdateClassDto>(event);
 
-  const parsed = schema.safeParse(body);
+  const parsed = classSchema.safeParse(body);
   if (!parsed.success) {
     throw createError({ statusCode: 422, message: "unprocessable_entity" });
   }

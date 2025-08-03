@@ -1,6 +1,3 @@
-import type { FilterLessonDto, ReadLessonDto } from "~/types/lesson";
-import type { Pageable } from "~/types/shared";
-
 export default defineEventHandler(async event => {
   await requireTeacherSession(event);
 

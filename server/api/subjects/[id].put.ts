@@ -1,12 +1,9 @@
-import type { UpdateSubjectDto } from "~/types/subject";
-import { schema } from "~/types/subject";
-
 export default defineEventHandler(async event => {
   await requireAdminSession(event);
   const id = getRouterParam(event, "id");
   const body = await readBody<UpdateSubjectDto>(event);
 
-  const parsed = schema.safeParse(body);
+  const parsed = subjectSchema.safeParse(body);
   if (!parsed.success) {
     throw createError({ statusCode: 422, message: "unprocessable_entity" });
   }

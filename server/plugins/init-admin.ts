@@ -1,5 +1,3 @@
-import { User } from "../models/user.schema";
-
 export default defineNitroPlugin(async () => {
   try {
     const userCount = await User.countDocuments();

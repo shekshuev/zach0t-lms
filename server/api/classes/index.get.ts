@@ -1,6 +1,4 @@
 import { Types } from "mongoose";
-import type { FilterClassDto, ReadClassDto } from "~/types/class";
-import type { Pageable } from "~/types/shared";
 
 export default defineEventHandler(async event => {
   await requireTeacherSession(event);

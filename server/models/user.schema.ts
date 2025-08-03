@@ -1,7 +1,6 @@
 import type { HydratedDocument, InferSchemaType } from "mongoose";
 import { Schema, model } from "mongoose";
 import { uuid } from "uuidv4";
-import { USER_ROLES, USER_STATUSES } from "~/types/user";
 
 const UserSchema = new Schema({
   username: {
