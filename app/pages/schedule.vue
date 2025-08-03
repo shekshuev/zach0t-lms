@@ -1,27 +1,29 @@
 <script setup lang="ts">
 import { useAsyncData } from "#app";
+import { CalendarDate, endOfMonth, startOfMonth, today } from "@internationalized/date";
 
 definePageMeta({
   layout: "dashboard",
 });
 
-const date = ref(new Date());
+const date = ref(today("UTC"));
 
-const startOfMonth = computed(() => {
-  return new Date(date.value.getFullYear(), date.value.getMonth(), 1);
+const startOfSelectedMonth = computed(() => {
+  return startOfMonth(date.value as CalendarDate).toString();
 });
 
-const endOfMonth = computed(() => {
-  return new Date(date.value.getFullYear(), date.value.getMonth() + 1, 0);
+const endOfSelectedMonth = computed(() => {
+  return endOfMonth(date.value as CalendarDate).toString();
 });
+const key = computed(() => `classes-${date.value}`);
 
 const { data: classes } = await useAsyncData<ReadClassDto[]>(
-  `classes-${date.value}`,
+  key,
   () =>
     $fetch<ReadClassDto[]>("/api/schedule", {
       query: {
-        from: startOfMonth.value.toISOString(),
-        to: endOfMonth.value.toISOString(),
+        from: startOfSelectedMonth.value,
+        to: endOfSelectedMonth.value,
       } satisfies FilterScheduleDto,
     }),
   {
@@ -34,10 +36,10 @@ const { data: classes } = await useAsyncData<ReadClassDto[]>(
   <div class="container mx-auto py-8">
     <WidgetsScheduleCalendar
       :classes="classes || []"
-      :month="date.getMonth() + 1"
-      :year="date.getFullYear()"
-      @next-month="date = new Date(date.getFullYear(), date.getMonth() + 1)"
-      @prev-month="date = new Date(date.getFullYear(), date.getMonth() - 1)"
+      :month="date.month"
+      :year="date.year"
+      @next-month="date = date.add({ months: 1 })"
+      @prev-month="date = date.add({ months: -1 })"
     />
   </div>
 </template>

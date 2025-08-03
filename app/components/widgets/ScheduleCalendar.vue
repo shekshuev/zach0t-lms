@@ -84,7 +84,7 @@ function getLessonsByDate(date: CalendarDate) {
       <div
         v-for="date in calendarDates"
         :key="date.toString()"
-        class="aspect-square flex flex-col items-center justify-start p-1 rounded-xl text-sm transition"
+        class="aspect-square flex flex-col items-center justify-start gap-2 p-1 rounded-xl text-sm transition"
         :class="{
           'text-neutral-400': !isCurrentMonth(date),
           'bg-neutral-50 dark:bg-neutral-800': isCurrentMonth(date),
