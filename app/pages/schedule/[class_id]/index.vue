@@ -8,7 +8,7 @@ const route = useRoute();
 const classId = computed(() => route.params.class_id);
 
 const { data: cls } = await useAsyncData(`class-${classId.value}`, () => {
-  return $fetch<ReadClassDto>(`/api/schedule/${classId.value}`);
+  return $fetch<ReadFullClassDto>(`/api/schedule/${classId.value}`);
 });
 
 function goToContent() {
