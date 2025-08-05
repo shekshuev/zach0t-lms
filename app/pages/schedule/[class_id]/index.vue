@@ -7,7 +7,7 @@ const route = useRoute();
 
 const classId = computed(() => route.params.class_id);
 
-const { data: cls } = await useAsyncData(`class-${classId.value}`, () => {
+const { data: cls, error } = await useAsyncData(`class-${classId.value}`, () => {
   return $fetch<ReadFullClassDto>(`/api/schedule/${classId.value}`);
 });
 
@@ -18,6 +18,12 @@ function goToContent() {
 const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "full",
   timeStyle: "short",
+});
+
+watchEffect(() => {
+  if (error.value) {
+    showError({ statusCode: error.value.statusCode });
+  }
 });
 </script>
 

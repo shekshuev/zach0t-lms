@@ -7,8 +7,14 @@ const route = useRoute();
 
 const classId = computed(() => route.params.class_id);
 
-const { data: cls } = await useAsyncData(`class-${classId.value}`, () => {
+const { data: cls, error } = await useAsyncData(`class-${classId.value}`, () => {
   return $fetch<ReadFullClassDto>(`/api/schedule/${classId.value}`);
+});
+
+watchEffect(() => {
+  if (error.value) {
+    showError({ statusCode: error.value.statusCode });
+  }
 });
 </script>
 

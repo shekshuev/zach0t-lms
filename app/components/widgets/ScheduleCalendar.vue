@@ -104,7 +104,7 @@ function getLessonsByDate(date: CalendarDate) {
             v-for="cls in getLessonsByDate(date)"
             :key="cls.id"
             size="xs"
-            color="success"
+            :color="cls.status === 'opened' ? 'success' : 'error'"
             variant="soft"
             class="w-full cursor-pointer truncate text-[10px] px-2"
             @click="emit('class-click', cls.id)"
