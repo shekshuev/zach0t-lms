@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import SlashCommands from "@/extensions/slash-commands";
 import type { JSONContent } from "@tiptap/core";
 import Code from "@tiptap/extension-code";
 import Color from "@tiptap/extension-color";
@@ -79,6 +80,7 @@ const editor = useEditor({
       placeholder: t("widgets.tiptap.placeholder"),
     }),
     TrailingNode,
+    SlashCommands,
   ],
   onUpdate: useDebounceFn(({ editor }) => {
     emit("update:modelValue", editor.getJSON());

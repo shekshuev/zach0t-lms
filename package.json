@@ -32,6 +32,7 @@
     "@tiptap/extensions": "^3.0.9",
     "@tiptap/pm": "^3.0.9",
     "@tiptap/starter-kit": "^3.0.9",
+    "@tiptap/suggestion": "^3.0.9",
     "@tiptap/vue-3": "^3.0.9",
     "@vee-validate/nuxt": "^4.15.1",
     "@vee-validate/zod": "^4.15.1",
