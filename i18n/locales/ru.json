@@ -289,7 +289,8 @@
     "lesson_already_exist": "Занятие уже существует",
     "class_not_found": "Учебное занятие не найдено",
     "image_not_found": "Изображение не найдено",
-    "database_not_connected": "База данных не подключена"
+    "database_not_connected": "База данных не подключена",
+    "failed-to-load-image": "Не удалось загрузить изображение"
   },
   "actions": {
     "header": "Действия",

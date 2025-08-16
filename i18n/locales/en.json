@@ -289,7 +289,8 @@
     "leson_already_exists": "Lesson already exists",
     "class_not_found": "Class not found",
     "image_not_found": "Image not found",
-    "database_not_connected": "Database not connected"
+    "database_not_connected": "Database not connected",
+    "failed-to-load-image": "Failed to load image"
   },
   "actions": {
     "header": "Actions",

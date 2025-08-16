@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ImageComponent } from "@/extensions/image";
 import type { JSONContent } from "@tiptap/core";
 import Code from "@tiptap/extension-code";
 import Color from "@tiptap/extension-color";
@@ -41,6 +42,7 @@ const editor = useEditor({
         },
       },
     }),
+    ImageComponent,
   ],
 });
 

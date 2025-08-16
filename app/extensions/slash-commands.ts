@@ -74,8 +74,16 @@ function getItems({ query }: { query: string }): SuggestionItem[] {
           });
 
           const data = await res.json();
-          if (data?.url) {
-            editor.chain().focus().deleteRange(range).insertContent(`<img src="${data.url}" />`).run();
+          if (data?.id) {
+            editor
+              .chain()
+              .focus()
+              .deleteRange(range)
+              .insertContent({
+                type: "imageComponent",
+                attrs: { id: data.id },
+              })
+              .run();
           }
         };
         input.click();

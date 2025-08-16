@@ -33,5 +33,5 @@ export default defineEventHandler(async event => {
 
   const id = uploadStream.id as mongoose.Types.ObjectId;
 
-  return { url: `/api/images/${id.toString()}` };
+  return { id: id.toString() };
 });

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ImageComponent } from "@/extensions/image";
 import SlashCommands from "@/extensions/slash-commands";
 import type { JSONContent } from "@tiptap/core";
 import Code from "@tiptap/extension-code";
@@ -81,6 +82,7 @@ const editor = useEditor({
     }),
     TrailingNode,
     SlashCommands,
+    ImageComponent,
   ],
   onUpdate: useDebounceFn(({ editor }) => {
     emit("update:modelValue", editor.getJSON());
