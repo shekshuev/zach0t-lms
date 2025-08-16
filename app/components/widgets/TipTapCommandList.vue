@@ -1,37 +1,34 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-
-interface Item {
-  title: string;
-  subtitle?: string;
-  icon?: string;
-  command: () => void;
-}
-
 const props = defineProps<{
-  items: Item[];
-  command: (item: Item) => void;
+  items: SuggestionItem[];
+  command: (item: SuggestionItem) => void;
 }>();
 
 const selected = ref(0);
+
+const itemsRef = ref<HTMLElement[]>([]);
+
+defineExpose({ onKeyDown });
 
 function onKeyDown(e: KeyboardEvent) {
   if (e.key === "ArrowDown") {
     selected.value = (selected.value + 1) % props.items.length;
     e.preventDefault();
+    return true;
   } else if (e.key === "ArrowUp") {
     selected.value = (selected.value + props.items.length - 1) % props.items.length;
     e.preventDefault();
+    return true;
   } else if (e.key === "Enter") {
-    props.command(props.items[selected.value]);
+    props.command(props.items[selected.value] as SuggestionItem);
     e.preventDefault();
+    return true;
   } else if (e.key === "Escape") {
-    //
+    e.preventDefault();
+    return true;
   }
+  return false;
 }
-
-onMounted(() => document.addEventListener("keydown", onKeyDown));
-onBeforeUnmount(() => document.removeEventListener("keydown", onKeyDown));
 
 watch(
   () => props.items,
@@ -39,6 +36,14 @@ watch(
     selected.value = 0;
   },
 );
+
+watch(selected, async newIndex => {
+  await nextTick();
+  const el = itemsRef.value[newIndex];
+  if (el) {
+    el.scrollIntoView({ block: "nearest" });
+  }
+});
 </script>
 
 <template>
@@ -47,17 +52,17 @@ watch(
   >
     <div
       v-for="(item, idx) in items"
-      :key="item.title"
+      :key="item.name"
+      ref="itemsRef"
       class="flex gap-2 items-start px-2 py-2 rounded cursor-pointer"
       :class="idx === selected ? 'bg-zinc-100 dark:bg-zinc-700' : 'hover:bg-zinc-50 dark:hover:bg-zinc-700/60'"
       @mousedown.prevent="props.command(item)"
     >
-      <i :class="item.icon || 'i-lucide-command'" class="mt-0.5" />
+      <UIcon :name="item.icon" class="mt-0.5" />
       <div class="flex flex-col">
-        <span class="text-sm font-medium">{{ item.title }}</span>
-        <span v-if="item.subtitle" class="text-xs text-zinc-500">{{ item.subtitle }}</span>
+        <span class="text-sm font-medium">{{ $t(`widgets.tiptap.${item.name}`) }}</span>
       </div>
     </div>
-    <div v-if="!items.length" class="px-3 py-2 text-sm text-zinc-500">No results</div>
+    <div v-if="!items.length" class="px-3 py-2 text-sm text-zinc-500">{{ $t("errors.no-results") }}</div>
   </div>
 </template>

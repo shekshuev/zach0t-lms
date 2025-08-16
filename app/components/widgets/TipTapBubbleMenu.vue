@@ -137,21 +137,21 @@ const contentTypes = computed<Action[]>(() => [
   },
   {
     name: "heading",
-    label: t("widgets.tiptap.heading") + " 1",
+    label: t("widgets.tiptap.heading-1"),
     icon: "i-lucide-heading-1",
     command: () => props.editor?.chain().focus().toggleHeading({ level: 1 }).run(),
     isActive: () => false,
   },
   {
     name: "heading",
-    label: t("widgets.tiptap.heading") + " 2",
+    label: t("widgets.tiptap.heading-2"),
     icon: "i-lucide-heading-2",
     command: () => props.editor?.chain().focus().toggleHeading({ level: 2 }).run(),
     isActive: () => false,
   },
   {
     name: "heading",
-    label: t("widgets.tiptap.heading") + " 3",
+    label: t("widgets.tiptap.heading-3"),
     icon: "i-lucide-heading-3",
     command: () => props.editor?.chain().focus().toggleHeading({ level: 3 }).run(),
     isActive: () => false,
@@ -173,9 +173,9 @@ const contentTypes = computed<Action[]>(() => [
 ]);
 
 const currentContentType = computed(() => {
-  if (props.editor?.isActive("heading", { level: 1 })) return t("widgets.tiptap.heading") + " 1";
-  if (props.editor?.isActive("heading", { level: 2 })) return t("widgets.tiptap.heading") + " 2";
-  if (props.editor?.isActive("heading", { level: 3 })) return t("widgets.tiptap.heading") + " 3";
+  if (props.editor?.isActive("heading", { level: 1 })) return t("widgets.tiptap.heading-1");
+  if (props.editor?.isActive("heading", { level: 2 })) return t("widgets.tiptap.heading-2");
+  if (props.editor?.isActive("heading", { level: 3 })) return t("widgets.tiptap.heading-3");
   if (props.editor?.isActive("codeBlock")) return t("widgets.tiptap.code");
   if (props.editor?.isActive("blockquote")) return t("widgets.tiptap.blockquote");
   return t("widgets.tiptap.paragraph");

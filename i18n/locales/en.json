@@ -142,7 +142,9 @@
       "italic": "Italic",
       "underline": "Underline",
       "strikethrough": "Strikethrough",
-      "heading": "Heading",
+      "heading-1": "Heading 1",
+      "heading-2": "Heading 2",
+      "heading-3": "Heading 3",
       "paragraph": "Paragraph",
       "blockquote": "Blockquote",
       "ordered-list": "Ordered list",
@@ -176,6 +178,7 @@
       "table": "Table",
       "insert-table": "Insert table",
       "delete-table": "Delete table",
+      "upload-image": "Upload image",
       "add-row": "Add row",
       "add-column": "Add column",
       "delete-row": "Delete row",
@@ -273,6 +276,7 @@
     "500": "Internal server error. We're working on it.",
     "503": "Service temporarily unavailable. Please try again later.",
     "unknown": "Unknown error. We're already fixing it.",
+    "no-results": "No results",
     "forbidden": "Forbidden",
     "user_not_found": "User not found",
     "user_is_blocked": "User is blocked",
@@ -283,7 +287,9 @@
     "subject_already_exists": "Subject already exists",
     "lesson_not_found": "Lesson not found",
     "leson_already_exists": "Lesson already exists",
-    "class_not_found": "Class not found"
+    "class_not_found": "Class not found",
+    "image_not_found": "Image not found",
+    "database_not_connected": "Database not connected"
   },
   "actions": {
     "header": "Actions",

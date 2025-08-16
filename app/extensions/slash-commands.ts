@@ -1,86 +1,89 @@
 import TipTapCommandList from "@/components/widgets/TipTapCommandList.vue";
 import { Extension } from "@tiptap/core";
-import Suggestion, { type SuggestionOptions } from "@tiptap/suggestion";
-import type { Editor } from "@tiptap/vue-3";
-import { h, render } from "vue";
+import Suggestion from "@tiptap/suggestion";
+import { VueRenderer } from "@tiptap/vue-3";
+import tippy, { type Instance as TippyInstance } from "tippy.js";
 
-type Item = {
-  title: string;
-  subtitle?: string;
-  icon?: string;
-  command: (props: { editor: Editor }) => void;
-};
-
-function getItems({ editor, query }: { editor: Editor; query: string }): Item[] {
-  const base: Item[] = [
+function getItems({ query }: { query: string }): SuggestionItem[] {
+  const base: SuggestionItem[] = [
     {
-      title: "Heading 1",
+      name: "paragraph",
+      icon: "mdi:text",
+      command: ({ editor, range }) => {
+        editor.chain().focus().deleteRange(range).setParagraph().run();
+      },
+    },
+    {
+      name: "heading-1",
       icon: "i-lucide-heading-1",
-      command: ({ editor }) => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+      command: ({ editor, range }) => editor.chain().focus().deleteRange(range).toggleHeading({ level: 1 }).run(),
     },
     {
-      title: "Heading 2",
+      name: "heading-2",
       icon: "i-lucide-heading-2",
-      command: ({ editor }) => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+      command: ({ editor, range }) => editor.chain().focus().deleteRange(range).toggleHeading({ level: 2 }).run(),
     },
     {
-      title: "Heading 3",
+      name: "heading-3",
       icon: "i-lucide-heading-3",
-      command: ({ editor }) => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+      command: ({ editor, range }) => editor.chain().focus().deleteRange(range).toggleHeading({ level: 3 }).run(),
     },
     {
-      title: "Bullet list",
+      name: "unordered-list",
       icon: "i-lucide-list",
-      command: ({ editor }) => editor.chain().focus().toggleBulletList().run(),
+      command: ({ editor, range }) => editor.chain().focus().deleteRange(range).toggleBulletList().run(),
     },
     {
-      title: "Ordered list",
+      name: "ordered-list",
       icon: "i-lucide-list-ordered",
-      command: ({ editor }) => editor.chain().focus().toggleOrderedList().run(),
+      command: ({ editor, range }) => editor.chain().focus().deleteRange(range).toggleOrderedList().run(),
     },
     {
-      title: "Code block",
+      name: "code-block",
       icon: "i-lucide-code",
-      command: ({ editor }) => editor.chain().focus().toggleCodeBlock().run(),
+      command: ({ editor, range }) => editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
     },
     {
-      title: "Blockquote",
+      name: "blockquote",
       icon: "i-lucide-quote",
-      command: ({ editor }) => editor.chain().focus().toggleBlockquote().run(),
+      command: ({ editor, range }) => editor.chain().focus().deleteRange(range).toggleBlockquote().run(),
     },
     {
-      title: "Table 3×3",
+      name: "table",
       icon: "i-lucide-table",
-      command: ({ editor }) => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
+      command: ({ editor, range }) =>
+        editor.chain().focus().deleteRange(range).insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
     },
     {
-      title: "Math block",
-      icon: "i-lucide-sigma",
-      command: ({ editor }) =>
-        editor
-          .chain()
-          .focus()
-          .insertContent({ type: "mathDisplay", attrs: { latex: "" } })
-          .run(),
-    },
-    {
-      title: "Math inline",
-      icon: "i-lucide-sigma",
-      command: ({ editor }) =>
-        editor
-          .chain()
-          .focus()
-          .insertContent({ type: "mathInline", attrs: { latex: "" } })
-          .run(),
-    },
-    {
-      title: "Horizontal rule",
-      icon: "i-lucide-minus",
-      command: ({ editor }) => editor.chain().focus().setHorizontalRule().run(),
+      name: "upload-image",
+      icon: "i-lucide-image",
+      command: ({ editor, range }) => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.onchange = async () => {
+          const file = input.files?.[0];
+          if (!file) return;
+
+          const form = new FormData();
+          form.append("file", file);
+
+          const res = await fetch("/api/images/upload", {
+            method: "POST",
+            body: form,
+          });
+
+          const data = await res.json();
+          if (data?.url) {
+            editor.chain().focus().deleteRange(range).insertContent(`<img src="${data.url}" />`).run();
+          }
+        };
+        input.click();
+      },
     },
   ];
 
-  return base.filter(item => item.title.toLowerCase().includes(query.toLowerCase()));
+  return base.filter(item => item.name.toLowerCase().includes(query.toLowerCase()));
 }
 
 const SlashCommands = Extension.create({
@@ -93,59 +96,65 @@ const SlashCommands = Extension.create({
         startOfLine: true,
         allowSpaces: true,
         render: () => {
-          let component: any;
-          let popup: HTMLElement;
+          let component: VueRenderer;
+          let popup: TippyInstance;
 
           return {
-            onStart: props => {
-              component = document.createElement("div");
-              popup = component;
-              const vnode = h(TipTapCommandList, {
-                items: getItems({ editor: props.editor as any, query: props.query }),
+            onStart: (props: SuggestionProps) => {
+              component = new VueRenderer(TipTapCommandList, {
+                props: {
+                  items: getItems(props),
+                  command: (item: any) => {
+                    item.command({ editor: props.editor, range: props.range });
+                    popup?.destroy();
+                  },
+                },
+                editor: props.editor,
+              });
+
+              popup = tippy("body", {
+                getReferenceClientRect: props.clientRect as any,
+                appendTo: () => document.body,
+                content: component.element!,
+                theme: "none",
+                showOnCreate: true,
+                interactive: true,
+                trigger: "manual",
+                placement: "bottom-start",
+              })[0] as TippyInstance;
+            },
+
+            onUpdate: (props: SuggestionProps) => {
+              component.updateProps({
+                items: getItems(props),
                 command: (item: any) => {
-                  item.command({ editor: props.editor as any });
-                  props.command();
+                  item.command({ editor: props.editor, range: props.range });
+                  popup?.destroy();
                 },
               });
-              render(vnode, component);
-              props.clientRect && document.body.appendChild(popup);
-              position();
-            },
-            onUpdate: props => {
-              const vnode = h(TipTapCommandList, {
-                items: getItems({ editor: props.editor as any, query: props.query }),
-                command: (item: any) => {
-                  item.command({ editor: props.editor as any });
-                  props.command();
-                },
+
+              popup?.setProps({
+                getReferenceClientRect: props.clientRect as any,
               });
-              render(vnode, popup);
-              position();
             },
-            onKeyDown: props => {
+
+            onKeyDown: (props: { event: KeyboardEvent }) => {
               if (props.event.key === "Escape") {
-                props.event.preventDefault();
-                props.command();
+                popup?.hide();
                 return true;
               }
-              return false;
+
+              return component.ref?.onKeyDown?.(props.event) ?? false;
             },
+
             onExit: () => {
-              if (popup && popup.parentNode) popup.parentNode.removeChild(popup);
+              popup?.destroy();
+              component?.destroy();
             },
           };
-
-          function position() {
-            const rect = (window as any)._lastClientRect || null;
-            const r = rect || { left: window.innerWidth / 2, top: window.innerHeight / 2, bottom: 0 };
-            popup.style.position = "absolute";
-            popup.style.left = `${r.left}px`;
-            popup.style.top = `${(r.bottom || r.top) + 8}px`;
-            popup.style.zIndex = "9999";
-          }
         },
-        items: ({ editor, query }: any) => getItems({ editor, query }),
-      } as Partial<SuggestionOptions>,
+        items: getItems,
+      },
     };
   },
 
