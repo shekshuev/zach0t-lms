@@ -8,6 +8,10 @@ export default defineEventHandler(async event => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const filters: Record<string, any> = {};
 
+  if (!user.group || typeof user.group !== "string") {
+    return [];
+  }
+
   filters.group = { $regex: user.group, $options: "i" };
 
   if (query.from && typeof query.from === "string") {
