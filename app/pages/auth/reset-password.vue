@@ -51,7 +51,7 @@ function onSubmit(e: FormSubmitEvent<ResetPasswordDto>) {
       refreshSession();
     })
     .catch(err => {
-      const msg = err?.data?.message || "unknown_error";
+      const msg = err?.data?.message || "unknown";
       toast.add({ title: t(`errors.${msg}`), color: "error" });
     });
 }

@@ -74,7 +74,7 @@ async function onSubmit(e: FormSubmitEvent<CreateLessonDto | UpdateLessonDto>) {
       toast.add({ title: t("pages.admin.lessons.lesson-updated") });
     }
   } catch (err) {
-    const msg = (err as FetchError)?.data?.message || "unknown_error";
+    const msg = (err as FetchError)?.data?.message || "unknown";
     toast.add({ title: t(`errors.${msg}`), color: "error" });
   }
 }
@@ -121,6 +121,15 @@ async function onSubmit(e: FormSubmitEvent<CreateLessonDto | UpdateLessonDto>) {
             :to="`/admin/subjects/${subjectId}/lessons/${lessonId}/classes`"
           >
             {{ $t("pages.admin.lessons.to-lesson-classes") }}
+          </UButton>
+          <UButton
+            v-if="!isNew"
+            variant="link"
+            color="neutral"
+            block
+            :to="`/admin/subjects/${subjectId}/lessons/${lessonId}/quizzes`"
+          >
+            {{ $t("pages.admin.lessons.to-lesson-quizzes") }}
           </UButton>
         </div>
       </template>

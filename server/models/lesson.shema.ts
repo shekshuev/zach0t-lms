@@ -1,6 +1,75 @@
 import type { HydratedDocument, InferSchemaType } from "mongoose";
 import { Schema, model } from "mongoose";
 
+export const QuizOptionSchema = new Schema({
+  id: {
+    type: String,
+    required: true,
+  },
+  text: {
+    type: Object,
+    required: true,
+    default: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "" }],
+        },
+      ],
+    },
+  },
+  isCorrect: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+export const QuizQuestionSchema = new Schema({
+  id: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    enum: QUIZ_QUESTION_TYPES,
+    default: "single",
+  },
+  prompt: {
+    type: Object,
+    required: true,
+    default: {
+      type: "doc",
+      content: [
+        {
+          type: "paragraph",
+          content: [{ type: "text", text: "" }],
+        },
+      ],
+    },
+  },
+  options: {
+    type: [QuizOptionSchema],
+    default: [],
+    required: true,
+  },
+});
+
+export const QuizSchema = new Schema({
+  id: {
+    type: String,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  questions: {
+    type: [QuizQuestionSchema],
+    default: [],
+  },
+});
+
 export const LessonSchema = new Schema({
   topic: {
     type: String,
@@ -28,6 +97,10 @@ export const LessonSchema = new Schema({
         },
       ],
     },
+  },
+  quizzes: {
+    type: [QuizSchema],
+    default: [],
   },
   createdAt: {
     type: Date,

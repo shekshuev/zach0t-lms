@@ -91,7 +91,7 @@ async function onSubmit(e: FormSubmitEvent<CreateClassDto | UpdateClassDto>) {
       toast.add({ title: t("pages.admin.classes.class-updated") });
     }
   } catch (err) {
-    const msg = (err as FetchError)?.data?.message || "unknown_error";
+    const msg = (err as FetchError)?.data?.message || "unknown";
     toast.add({ title: t(`errors.${msg}`), color: "error" });
   }
 }

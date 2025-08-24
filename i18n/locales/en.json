@@ -89,7 +89,8 @@
         "lesson-created": "Lesson created",
         "lesson-updated": "Lesson updated",
         "edit-content": "Edit lesson content",
-        "to-lesson-classes": "To lesson classes"
+        "to-lesson-classes": "To lesson classes",
+        "to-lesson-quizzes": "To lesson quizzes"
       },
       "classes": {
         "id": "ID",
@@ -109,6 +110,18 @@
         "edit-class": "Edit class",
         "class-created": "Class created",
         "class-updated": "Class updated"
+      },
+      "quizzes": {
+        "id": "ID",
+        "title": "Title",
+        "create-quiz": "Create quiz",
+        "edit-quiz": "Edit quiz",
+        "quiz-created": "Quiz created",
+        "quiz-updated": "Quiz updated",
+        "add-single-question": "With single answer",
+        "add-multiple-question": "With multiple answers",
+        "add-open-question": "Open",
+        "add-question": "Add question"
       }
     },
     "dashboard": {
@@ -266,6 +279,11 @@
     },
     "class-status": {
       "includes": "Class status should be one of the following: {values}"
+    },
+    "quiz-title": {
+      "required": "Title is required",
+      "min": "Title must be at least {length} characters",
+      "max": "Title must be at most {length} characters"
     }
   },
   "errors": {

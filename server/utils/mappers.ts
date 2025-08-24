@@ -39,6 +39,7 @@ export function toReadFullLessonDto(lesson: LessonDocument): ReadFullLessonDto {
   return {
     ...toReadLessonDto(lesson),
     content: lesson.content,
+    quizzes: lesson.quizzes,
   };
 }
 

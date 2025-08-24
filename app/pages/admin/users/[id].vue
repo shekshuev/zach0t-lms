@@ -117,7 +117,7 @@ async function onSubmit(e: FormSubmitEvent<CreateUserDto | UpdateUserDto>) {
       toast.add({ title: t("pages.admin.users.user-updated") });
     }
   } catch (err) {
-    const msg = (err as FetchError)?.data?.message || "unknown_error";
+    const msg = (err as FetchError)?.data?.message || "unknown";
     toast.add({ title: t(`errors.${msg}`), color: "error" });
   }
 }
