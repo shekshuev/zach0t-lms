@@ -21,7 +21,7 @@ const { t } = useI18n();
 
 const props = defineProps<{
   modelValue: JSONContent;
-  state: "saved" | "saving" | "not-saved";
+  state?: "saved" | "saving" | "not-saved";
 }>();
 
 const emit = defineEmits<{
@@ -101,7 +101,7 @@ onMounted(() => {
 <template>
   <ClientOnly>
     <WidgetsTipTapBubbleMenu :editor="editor" />
-    <div class="flex justify-end items-center gap-2">
+    <div v-if="state" class="flex justify-end items-center gap-2">
       <UBadge :color="editor?.storage.characterCount.characters() === LIMIT ? 'error' : 'primary'">{{
         $t("widgets.tiptap.characters", { count: editor?.storage.characterCount.characters(), total: LIMIT })
       }}</UBadge>

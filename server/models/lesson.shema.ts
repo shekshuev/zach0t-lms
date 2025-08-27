@@ -33,7 +33,7 @@ export const QuizQuestionSchema = new Schema({
   type: {
     type: String,
     enum: QUIZ_QUESTION_TYPES,
-    default: "single",
+    default: "multiple",
   },
   prompt: {
     type: Object,

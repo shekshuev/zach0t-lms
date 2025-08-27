@@ -118,10 +118,13 @@
         "edit-quiz": "Edit quiz",
         "quiz-created": "Quiz created",
         "quiz-updated": "Quiz updated",
-        "add-single-question": "With single answer",
         "add-multiple-question": "With multiple answers",
         "add-open-question": "Open",
-        "add-question": "Add question"
+        "add-question": "Add question",
+        "prompt": "Prompt",
+        "option": "Option",
+        "is-correct": "Is correct",
+        "add-option": "Add option"
       }
     },
     "dashboard": {

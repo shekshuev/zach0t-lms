@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const QUIZ_QUESTION_TYPES = ["single", "multiple", "open"] as const;
+export const QUIZ_QUESTION_TYPES = ["multiple", "open"] as const;
 export type QuizQuestionType = (typeof QUIZ_QUESTION_TYPES)[number];
 
 export interface QuizQuestionOption {
@@ -51,11 +51,6 @@ export interface ReadFullLessonDto extends ReadLessonDto {
 }
 
 export const quizAnswerSchema = z.discriminatedUnion("type", [
-  z.object({
-    type: z.literal("single"),
-    questionId: z.string().uuid(),
-    value: z.string().uuid(),
-  }),
   z.object({
     type: z.literal("multiple"),
     questionId: z.string().uuid(),

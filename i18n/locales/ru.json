@@ -118,10 +118,13 @@
         "edit-quiz": "Редактировать тест",
         "quiz-created": "Тест создано",
         "quiz-updated": "Тест обновлено",
-        "add-single-question": "С одним ответом",
         "add-multiple-question": "С несколькоми ответами",
         "add-open-question": "Открытый",
-        "add-question": "Добавить вопрос"
+        "add-question": "Добавить вопрос",
+        "prompt": "Вопрос",
+        "option": "Вариант ответа",
+        "is-correct": "Верный или нет",
+        "add-option": "Добавить вариант ответа"
       }
     },
     "dashboard": {

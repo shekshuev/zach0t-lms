@@ -62,19 +62,6 @@ const state = reactive<Quiz>({
 const items = ref<DropdownMenuItem[][]>([
   [
     {
-      label: t("pages.admin.quizzes.add-single-question"),
-      icon: "i-lucide-circle-dot",
-      onSelect: () =>
-        state.questions.push({
-          id: v4(),
-          type: "single",
-          prompt: {
-            text: "",
-          },
-          options: [],
-        }),
-    },
-    {
       label: t("pages.admin.quizzes.add-multiple-question"),
       icon: "i-lucide-square-check",
       onSelect: () =>
@@ -94,9 +81,7 @@ const items = ref<DropdownMenuItem[][]>([
         state.questions.push({
           id: v4(),
           type: "open",
-          prompt: {
-            text: "",
-          },
+          prompt: {},
         }),
     },
   ],
@@ -159,21 +144,57 @@ async function onSubmit(e: FormSubmitEvent<Quiz>) {
           </UFormField>
         </div>
       </UCard>
-      <WidgetsQuestionEdit
-        v-for="question in state.questions"
-        :key="question.id"
-        :question="question"
-        class="max-w-xl w-full space-y-4 mx-auto"
-      />
-      <div class="mx-auto flex items-center justify-center">
-        <UButton type="submit">
+
+      <UCard v-for="question in state.questions" :key="question.id" class="max-w-xl w-full space-y-4 mx-auto">
+        <template #header>
+          <div class="flex items-center justify-between">
+            <UBadge color="primary">{{ question.type }}</UBadge>
+            <UButton
+              icon="i-lucide-close"
+              size="xs"
+              @click="() => void (state.questions = state.questions.filter(q => q.id !== question.id))"
+            />
+          </div>
+        </template>
+        <div class="flex flex-col gap-4">
+          <UFormField :label="$t('pages.admin.quizzes.prompt')" name="prompt">
+            <WidgetsTipTapEditor v-model="question.prompt" />
+          </UFormField>
+          <template v-if="['multiple'].includes(question.type)">
+            <div
+              class="grid items-start grid-cols-[1fr_auto_auto] gap-2"
+              v-for="option in question.options"
+              :key="option.id"
+            >
+              <UFormField :label="$t('pages.admin.quizzes.option')" name="option">
+                <WidgetsTipTapEditor v-model="option.text" />
+              </UFormField>
+              <UTooltip :text="$t('pages.admin.quizzes.is-correct')">
+                <UCheckbox size="xl" v-model="option.isCorrect" />
+              </UTooltip>
+              <UButton
+                icon="i-lucide-close"
+                size="xs"
+                @click="() => void (question.options = question.options?.filter(o => o.id !== option.id))"
+              />
+            </div>
+
+            <UButton block icon="i-lucide-plus" @click="() => void question.options?.push({ id: v4(), text: {} })">
+              {{ $t("pages.admin.quizzes.add-option") }}
+            </UButton>
+          </template>
+        </div>
+      </UCard>
+
+      <div class="flex flex-col max-w-xl w-full space-y-2 mx-auto">
+        <UDropdownMenu :items="items">
+          <UButton block icon="i-lucide-plus" color="neutral" variant="ghost">
+            {{ $t("pages.admin.quizzes.add-question") }}
+          </UButton>
+        </UDropdownMenu>
+        <UButton block type="submit">
           {{ $t("actions.save") }}
         </UButton>
-        <UDropdownMenu :items="items">
-          <UButton icon="i-lucide-plus" color="neutral" variant="outline">{{
-            $t("pages.admin.quizzes.add-question")
-          }}</UButton>
-        </UDropdownMenu>
       </div>
     </UForm>
   </div>
