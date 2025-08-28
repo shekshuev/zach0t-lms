@@ -133,7 +133,16 @@
         "end-at": "Дата и время окончания",
         "topic": "Тема",
         "group": "Группа",
-        "to-content": "К материалам занятия"
+        "to-content": "К материалам занятия",
+        "to-quizzes": "К тестам",
+        "quizzes": {
+          "status": "Статус",
+          "started-at": "Начат",
+          "completed-at": "Завершен",
+          "score": "Результат",
+          "start-quiz": "Начать тест",
+          "submit-answer": "Ответить"
+        }
       }
     }
   },
@@ -328,6 +337,11 @@
     "class-statuses": {
       "opened": "Открыто",
       "closed": "Закрыто"
+    },
+    "quiz-statuses": {
+      "pending": "К выполнению",
+      "finished": "Завершен",
+      "started": "Начат"
     }
   }
 }

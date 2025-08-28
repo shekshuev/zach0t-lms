@@ -21,5 +21,5 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 404, message: "class_not_found" });
   }
 
-  return toReadFullClassDto(cls);
+  return toReadFullStudentClassDto(cls, user.id);
 });

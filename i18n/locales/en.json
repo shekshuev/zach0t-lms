@@ -133,7 +133,16 @@
         "end-at": "End at",
         "topic": "Topic",
         "group": "Group",
-        "to-content": "To content"
+        "to-content": "To content",
+        "to-quizzes": "To quizzes",
+        "quizzes": {
+          "status": "Status",
+          "started-at": "Started at",
+          "completed-at": "Completed at",
+          "score": "Score",
+          "start-quiz": "Start quiz",
+          "submit-answer": "Submit answer"
+        }
       }
     }
   },
@@ -328,6 +337,11 @@
     "class-statuses": {
       "opened": "Opened",
       "closed": "Closed"
+    },
+    "quiz-statuses": {
+      "pending": "Pending",
+      "finished": "Finished",
+      "started": "Started"
     }
   }
 }

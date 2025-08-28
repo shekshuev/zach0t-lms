@@ -11,10 +11,6 @@ const { data: cls, error } = await useAsyncData(`class-${classId.value}`, () => 
   return $fetch<ReadFullClassDto>(`/api/schedule/${classId.value}`);
 });
 
-function goToContent() {
-  navigateTo(`/schedule/${classId.value}/content`);
-}
-
 const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "full",
   timeStyle: "short",
@@ -76,7 +72,19 @@ watchEffect(() => {
       </dl>
 
       <template v-if="cls.status === 'opened'" #footer>
-        <UButton color="primary" block @click="goToContent"> {{ $t("pages.dashboard.schedule.to-content") }}</UButton>
+        <div class="flex flex-col gap-4">
+          <UButton color="primary" block :to="`/schedule/${classId}/content`">
+            {{ $t("pages.dashboard.schedule.to-content") }}</UButton
+          >
+          <UButton
+            v-if="Array.isArray(cls.lesson.quizzes) && cls.lesson.quizzes.length > 0"
+            color="primary"
+            block
+            :to="`/schedule/${classId}/quizzes`"
+          >
+            {{ $t("pages.dashboard.schedule.to-quizzes") }}</UButton
+          >
+        </div>
       </template>
     </UCard>
   </UContainer>

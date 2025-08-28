@@ -4,6 +4,32 @@ import type { ReadFullLessonDto } from "./lesson";
 export const CLASS_STATUSES = ["opened", "closed"] as const;
 export type ClassStatus = (typeof CLASS_STATUSES)[number];
 
+export const QUIZ_STATUSES = ["pending", "started", "finished"] as const;
+export type QuizStatus = (typeof QUIZ_STATUSES)[number];
+
+export interface CreateQuizResultAnswerDto {
+  questionId: string;
+  options: string[];
+}
+
+export interface CreateQuizResultDto {
+  quizId: string;
+  userId: string;
+  answers: CreateQuizResultAnswerDto[];
+}
+
+export interface ReadQuizResultAnswerDto extends CreateQuizResultAnswerDto {
+  isCorrect: boolean;
+}
+
+export interface ReadQuizResultDto extends CreateQuizResultDto {
+  answers: ReadQuizResultAnswerDto[];
+  score: number;
+  startedAt: string;
+  completedAt: string | null;
+  status: QuizStatus;
+}
+
 export interface FilterClassDto {
   lessonId?: string;
   group?: string;
@@ -40,6 +66,7 @@ export interface ReadClassDto extends Omit<CreateClassDto, "lessonId" | "beginAt
 
 export interface ReadFullClassDto extends ReadClassDto {
   lesson: ReadFullLessonDto;
+  quizResults: ReadQuizResultDto[];
 }
 
 export const classSchema = z.object({

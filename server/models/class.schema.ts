@@ -1,6 +1,36 @@
 import type { HydratedDocument, InferSchemaType } from "mongoose";
 import { Schema, model } from "mongoose";
 
+const QuizResultSchema = new Schema({
+  quizId: {
+    type: String,
+    required: true,
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  answers: [
+    {
+      questionId: String,
+      options: [String],
+      isCorrect: Boolean,
+    },
+  ],
+  score: {
+    type: Number,
+    default: 0,
+  },
+  startedAt: {
+    type: Date,
+    default: Date.now,
+  },
+  completedAt: {
+    type: Date,
+  },
+});
+
 const ClassSchema = new Schema({
   group: {
     type: String,
@@ -21,6 +51,10 @@ const ClassSchema = new Schema({
   lesson: {
     type: LessonSchema,
     required: true,
+  },
+  quizResults: {
+    type: [QuizResultSchema],
+    default: [],
   },
   status: {
     type: String,
@@ -45,6 +79,7 @@ ClassSchema.pre("save", function (next) {
   next();
 });
 
+export type QuizResultType = InferSchemaType<typeof QuizResultSchema>;
 export type ClassDocument = HydratedDocument<InferSchemaType<typeof ClassSchema>>;
 
 export const Class = model("Class", ClassSchema);

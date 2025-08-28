@@ -43,6 +43,26 @@ export function toReadFullLessonDto(lesson: LessonDocument): ReadFullLessonDto {
   };
 }
 
+export function toReadFullStudentLessonDto(lesson: LessonDocument): ReadFullLessonDto {
+  return {
+    ...toReadLessonDto(lesson),
+    content: lesson.content,
+    quizzes: lesson.quizzes.map(quiz => ({
+      id: quiz.id,
+      title: quiz.title,
+      questions: quiz.questions.map(question => ({
+        id: question.id,
+        type: question.type,
+        prompt: question.prompt,
+        options: question.options.map(option => ({
+          id: option.id,
+          text: option.text,
+        })),
+      })),
+    })),
+  };
+}
+
 export function toReadClassDto(cls: ClassDocument): ReadClassDto {
   return {
     id: cls._id.toString(),
@@ -56,9 +76,34 @@ export function toReadClassDto(cls: ClassDocument): ReadClassDto {
   };
 }
 
+function toReadQuizResultDto(result: QuizResultType): ReadQuizResultDto {
+  return {
+    quizId: result.quizId,
+    userId: result.userId.toString(),
+    score: result.score,
+    answers: result.answers.map(answer => ({
+      questionId: answer.questionId as string,
+      options: answer.options,
+      isCorrect: !!answer.isCorrect,
+    })),
+    startedAt: result.startedAt.toISOString(),
+    completedAt: result.completedAt?.toISOString() || null,
+    status: result.startedAt ? (result.completedAt ? "finished" : "started") : "pending",
+  };
+}
+
 export function toReadFullClassDto(cls: ClassDocument): ReadFullClassDto {
   return {
     ...toReadClassDto(cls),
     lesson: toReadFullLessonDto(cls.lesson as LessonDocument),
+    quizResults: cls.quizResults.map(toReadQuizResultDto),
+  };
+}
+
+export function toReadFullStudentClassDto(cls: ClassDocument, userId: string): ReadFullClassDto {
+  return {
+    ...toReadClassDto(cls),
+    lesson: toReadFullStudentLessonDto(cls.lesson as LessonDocument),
+    quizResults: cls.quizResults.filter(result => result.userId.toString() === userId).map(toReadQuizResultDto),
   };
 }
