@@ -77,3 +77,8 @@ export const classSchema = z.object({
   shortTitle: z.string().min(CLASS_SHORT_TITLE_MIN_LENGTH).max(CLASS_SHORT_TITLE_MAX_LENGTH),
   status: z.enum(CLASS_STATUSES),
 });
+
+export const answerQuizSchema = z.object({
+  questionId: z.string().uuid(),
+  options: z.array(z.string()).min(1),
+});

@@ -141,7 +141,8 @@
           "completed-at": "Completed at",
           "score": "Score",
           "start-quiz": "Start quiz",
-          "submit-answer": "Submit answer"
+          "submit-answer": "Submit answer",
+          "options": "Options"
         }
       }
     }
@@ -296,6 +297,9 @@
       "required": "Title is required",
       "min": "Title must be at least {length} characters",
       "max": "Title must be at most {length} characters"
+    },
+    "quiz-answers": {
+      "min": "Required at least {length} answers"
     }
   },
   "errors": {
@@ -320,7 +324,9 @@
     "class_not_found": "Class not found",
     "image_not_found": "Image not found",
     "database_not_connected": "Database not connected",
-    "failed-to-load-image": "Failed to load image"
+    "failed_to_load_image": "Failed to load image",
+    "question_not_found": "Question not found",
+    "question_already_answered": "Question already answered"
   },
   "actions": {
     "header": "Actions",

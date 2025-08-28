@@ -32,7 +32,7 @@ onMounted(async () => {
       v-else-if="error"
       class="absolute inset-0 flex items-center justify-center text-sm text-red-500 font-medium text-center px-4"
     >
-      {{ $t("errors.failed-to-load-image") }}
+      {{ $t("errors.failed_to_load_image") }}
     </div>
 
     <img
