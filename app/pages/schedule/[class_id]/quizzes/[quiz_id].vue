@@ -14,6 +14,10 @@ const { t } = useI18n();
 const classId = computed(() => route.params.class_id as string);
 const quizId = computed(() => route.params.quiz_id as string);
 
+useCheaterDetector(2, (attempts: number) => {
+  console.log(`🚨 cheater detected, attempt ${attempts}`);
+});
+
 const {
   data: cls,
   error,
