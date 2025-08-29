@@ -15,10 +15,13 @@ const QuizResultSchema = new Schema({
     {
       questionId: String,
       options: [String],
-      isCorrect: Boolean,
+      score: {
+        type: Number,
+        default: 0,
+      },
     },
   ],
-  score: {
+  nextQuestionIndex: {
     type: Number,
     default: 0,
   },

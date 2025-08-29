@@ -80,15 +80,25 @@ function toReadQuizResultDto(result: QuizResultType): ReadQuizResultDto {
   return {
     quizId: result.quizId,
     userId: result.userId.toString(),
-    score: result.score,
     answers: result.answers.map(answer => ({
       questionId: answer.questionId as string,
       options: answer.options,
-      isCorrect: !!answer.isCorrect,
+      score: answer.score,
     })),
+    nextQuestionIndex: result.nextQuestionIndex,
     startedAt: result.startedAt.toISOString(),
     completedAt: result.completedAt?.toISOString() || null,
     status: result.startedAt ? (result.completedAt ? "finished" : "started") : "pending",
+  };
+}
+
+export function toReadStudentQuizResultDto(result: QuizResultType): ReadStudentQuizResultDto {
+  return {
+    nextQuestionIndex: result.nextQuestionIndex,
+    quizId: result.quizId,
+    status: result.startedAt ? (result.completedAt ? "finished" : "started") : "pending",
+    startedAt: result.startedAt.toISOString(),
+    completedAt: result.completedAt?.toISOString() || null,
   };
 }
 
@@ -100,10 +110,10 @@ export function toReadFullClassDto(cls: ClassDocument): ReadFullClassDto {
   };
 }
 
-export function toReadFullStudentClassDto(cls: ClassDocument, userId: string): ReadFullClassDto {
+export function toReadFullStudentClassDto(cls: ClassDocument, userId: string): ReadStudentFullClassDto {
   return {
     ...toReadClassDto(cls),
     lesson: toReadFullStudentLessonDto(cls.lesson as LessonDocument),
-    quizResults: cls.quizResults.filter(result => result.userId.toString() === userId).map(toReadQuizResultDto),
+    quizResults: cls.quizResults.filter(result => result.userId.toString() === userId).map(toReadStudentQuizResultDto),
   };
 }

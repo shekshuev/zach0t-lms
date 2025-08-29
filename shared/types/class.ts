@@ -19,15 +19,23 @@ export interface CreateQuizResultDto {
 }
 
 export interface ReadQuizResultAnswerDto extends CreateQuizResultAnswerDto {
-  isCorrect: boolean;
+  score: number;
 }
 
 export interface ReadQuizResultDto extends CreateQuizResultDto {
   answers: ReadQuizResultAnswerDto[];
-  score: number;
   startedAt: string;
   completedAt: string | null;
   status: QuizStatus;
+  nextQuestionIndex: number;
+}
+
+export interface ReadStudentQuizResultDto {
+  quizId: string;
+  nextQuestionIndex: number;
+  status: QuizStatus;
+  startedAt: string;
+  completedAt: string | null;
 }
 
 export interface FilterClassDto {
@@ -67,6 +75,11 @@ export interface ReadClassDto extends Omit<CreateClassDto, "lessonId" | "beginAt
 export interface ReadFullClassDto extends ReadClassDto {
   lesson: ReadFullLessonDto;
   quizResults: ReadQuizResultDto[];
+}
+
+export interface ReadStudentFullClassDto extends ReadClassDto {
+  lesson: ReadFullLessonDto;
+  quizResults: ReadStudentQuizResultDto[];
 }
 
 export const classSchema = z.object({

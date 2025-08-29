@@ -142,7 +142,8 @@
           "score": "Score",
           "start-quiz": "Start quiz",
           "submit-answer": "Submit answer",
-          "options": "Options"
+          "options": "Options",
+          "finished": "Quiz finished"
         }
       }
     }
