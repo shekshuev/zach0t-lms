@@ -2,6 +2,7 @@
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 import { getPaginationRowModel } from "@tanstack/vue-table";
+import type { FetchError } from "ofetch";
 import { h, resolveComponent } from "vue";
 import { z } from "zod";
 import DateTimePicker from "~/components/ui/DateTimePicker.vue";
@@ -21,6 +22,7 @@ const route = useRoute();
 
 const subjectId = computed(() => route.params.subject_id as string);
 const lessonId = computed(() => route.params.lesson_id as string);
+const toast = useToast();
 
 const pagination = ref({
   pageIndex: 0,
@@ -74,6 +76,19 @@ function onFilterSubmit() {
   filters.title = state.title || undefined;
   pagination.value.pageIndex = 0;
   refresh();
+}
+
+async function deleteClass(id: string) {
+  try {
+    await $fetch(`/api/classes/${id}`, {
+      method: "DELETE",
+    });
+    refresh();
+    toast.add({ title: t("pages.admin.classes.class-removed") });
+  } catch (err) {
+    const msg = (err as FetchError)?.data?.message || "unknown";
+    toast.add({ title: t(`errors.${msg}`), color: "error" });
+  }
 }
 
 function clearFilters() {
@@ -162,6 +177,7 @@ function getRowItems(row: Row<ReadClassDto>) {
     },
     {
       label: t("actions.delete"),
+      onSelect: () => deleteClass(row.original.id),
     },
   ];
 }

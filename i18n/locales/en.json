@@ -109,7 +109,8 @@
         "create-class": "Create class",
         "edit-class": "Edit class",
         "class-created": "Class created",
-        "class-updated": "Class updated"
+        "class-updated": "Class updated",
+        "class-removed": "Class removed"
       },
       "quizzes": {
         "id": "ID",
