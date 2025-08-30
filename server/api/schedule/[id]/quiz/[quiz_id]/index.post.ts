@@ -1,5 +1,3 @@
-import { Types } from "mongoose";
-
 export default defineEventHandler(async event => {
   const user = await requireStudentSession(event);
   const classId = getRouterParam(event, "id");
@@ -28,29 +26,18 @@ export default defineEventHandler(async event => {
   );
 
   if (quizResultIndex === -1) {
-    const newQuizResult = {
-      quizId,
-      userId: new Types.ObjectId(user.id),
-      answers: [],
-      score: 0,
-      startedAt: now,
-      status: "started",
-      completedAt: null,
-    };
-    cls.quizResults.push(newQuizResult);
-    quizResultIndex = cls.quizResults.length - 1;
-  } else if (!cls.quizResults[quizResultIndex].startedAt) {
-    cls.quizResults[quizResultIndex].startedAt = now;
-    cls.quizResults[quizResultIndex].status = "started";
+    throw createError({ statusCode: 409, message: "quiz_not_started" });
   }
 
-  let score = 0;
+  let score: number | null = 0;
   if (question.type === "multiple") {
     const correctOptions = new Set(question.options.filter(opt => opt.isCorrect).map(opt => opt.id));
     const actualOptions = new Set(parsed.data.options);
     const intersection = correctOptions.intersection(actualOptions);
     const union = correctOptions.union(actualOptions);
     score = intersection.size / union.size;
+  } else if (question.type === "open") {
+    score = null;
   }
 
   const existingAnswerIndex = cls.quizResults[quizResultIndex].answers.findIndex(

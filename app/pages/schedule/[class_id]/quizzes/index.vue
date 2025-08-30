@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import type { FetchError } from "ofetch";
+
 definePageMeta({
   layout: "dashboard",
 });
 
 const route = useRoute();
+const toast = useToast();
+const { t } = useI18n();
 
 const classId = computed(() => route.params.class_id);
 
@@ -35,6 +39,27 @@ watchEffect(() => {
     showError({ statusCode: error.value.statusCode });
   }
 });
+
+const loading = ref(false);
+
+async function startQuiz(id: string) {
+  const quizResult = cls.value?.quizResults?.find?.(qr => qr.quizId === id);
+  if (!quizResult) {
+    try {
+      loading.value = true;
+      await $fetch<ReadStudentQuizResultDto>(`/api/schedule/${classId.value}/quiz/${id}/start`, {
+        method: "POST",
+      });
+    } catch (err) {
+      const msg = (err as FetchError)?.data?.message || "unknown";
+      toast.add({ title: t(`errors.${msg}`), color: "error" });
+      return;
+    } finally {
+      loading.value = false;
+    }
+  }
+  navigateTo(`/schedule/${classId.value}/quizzes/${id}`);
+}
 </script>
 
 <template>
@@ -81,7 +106,7 @@ watchEffect(() => {
       </dl>
 
       <template #footer>
-        <UButton :to="`/schedule/${classId}/quizzes/${quiz.id}`" block>{{
+        <UButton @click="startQuiz(quiz.id)" :loading="loading" block>{{
           $t("pages.dashboard.schedule.quizzes.start-quiz")
         }}</UButton>
       </template>

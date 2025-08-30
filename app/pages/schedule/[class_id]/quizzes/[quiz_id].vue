@@ -16,14 +16,21 @@ const quizId = computed(() => route.params.quiz_id as string);
 
 const banModalOpen = ref(false);
 const finalBanModalOpen = ref(false);
+const quizStatus = ref();
 
 const {
   data: cls,
   error,
   status,
-} = await useAsyncData(`class-${classId.value}`, () => {
-  return $fetch<ReadFullClassDto>(`/api/schedule/${classId.value}`);
-});
+} = await useAsyncData(
+  `class-${classId.value}`,
+  () => {
+    return $fetch<ReadFullClassDto>(`/api/schedule/${classId.value}`);
+  },
+  {
+    watch: [quizStatus],
+  },
+);
 
 const schema = z.object({
   questionId: z.string().uuid(),
@@ -46,7 +53,6 @@ const quizResult = computed(() => cls.value?.quizResults?.find?.(qr => qr.quizId
 
 const currentQuestionIndex = ref(0);
 const currentQuestion = computed(() => quiz.value?.questions[currentQuestionIndex.value]);
-const quizStatus = ref();
 
 watchEffect(() => {
   if (quizStatus.value === "banned" && !finalBanModalOpen.value) {
@@ -69,7 +75,12 @@ watchEffect(() => {
 });
 
 useCheaterDetector(async () => {
-  if (finalBanModalOpen.value || banModalOpen.value) return;
+  if (
+    finalBanModalOpen.value ||
+    banModalOpen.value ||
+    (quiz.value?.maxCheatAttempts && quiz.value?.maxCheatAttempts <= 0)
+  )
+    return;
   try {
     const { status } = await $fetch<ReadStudentQuizResultDto>(
       `/api/schedule/${classId.value}/quiz/${quizId.value}/cheat`,

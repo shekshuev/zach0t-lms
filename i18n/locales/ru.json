@@ -331,7 +331,9 @@
     "database_not_connected": "База данных не подключена",
     "failed_to_load_image": "Не удалось загрузить изображение",
     "question_not_found": "Вопрос не найден",
-    "question_already_answered": "Ответ на вопрос уже есть"
+    "question_already_answered": "Ответ на вопрос уже есть",
+    "quiz_already_started": "Тест уже начат",
+    "quiz_not_started": "Тест не начат"
   },
   "actions": {
     "header": "Действия",

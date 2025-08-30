@@ -331,7 +331,9 @@
     "database_not_connected": "Database not connected",
     "failed_to_load_image": "Failed to load image",
     "question_not_found": "Question not found",
-    "question_already_answered": "Question already answered"
+    "question_already_answered": "Question already answered",
+    "quiz_already_started": "Quiz already started",
+    "quiz_not_started": "Quiz not started"
   },
   "actions": {
     "header": "Actions",

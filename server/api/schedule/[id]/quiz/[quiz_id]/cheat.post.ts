@@ -21,6 +21,10 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 404, message: "quiz_not_found" });
   }
 
+  if (quiz.maxCheatAttempts <= 0) {
+    return toReadStudentQuizResultDto(cls.quizResults[quizResultIndex]);
+  }
+
   if (++cls.quizResults[quizResultIndex].cheatAttempts === quiz.maxCheatAttempts) {
     cls.quizResults[quizResultIndex].status = "banned";
   }
