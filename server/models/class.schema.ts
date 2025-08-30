@@ -25,6 +25,16 @@ const QuizResultSchema = new Schema({
     type: Number,
     default: 0,
   },
+  cheatAttempts: {
+    type: Number,
+    default: 0,
+  },
+  status: {
+    type: String,
+    enum: QUIZ_STATUSES,
+    default: "pending",
+    required: true,
+  },
   startedAt: {
     type: Date,
     default: Date.now,

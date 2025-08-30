@@ -19,6 +19,7 @@ export interface QuizQuestion {
 export interface Quiz {
   id: string;
   title: string;
+  maxCheatAttempts: number;
   questions: QuizQuestion[];
 }
 

@@ -64,6 +64,10 @@ export const QuizSchema = new Schema({
     type: String,
     required: true,
   },
+  maxCheatAttempts: {
+    type: Number,
+    default: 0,
+  },
   questions: {
     type: [QuizQuestionSchema],
     default: [],

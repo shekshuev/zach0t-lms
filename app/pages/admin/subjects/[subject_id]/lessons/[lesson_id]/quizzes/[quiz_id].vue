@@ -150,7 +150,7 @@ async function onSubmit(e: FormSubmitEvent<Quiz>) {
           <div class="flex items-center justify-between">
             <UBadge color="primary">{{ question.type }}</UBadge>
             <UButton
-              icon="i-lucide-close"
+              icon="i-lucide-x"
               size="xs"
               @click="() => void (state.questions = state.questions.filter(q => q.id !== question.id))"
             />
@@ -170,10 +170,10 @@ async function onSubmit(e: FormSubmitEvent<Quiz>) {
                 <WidgetsTipTapEditor v-model="option.text" />
               </UFormField>
               <UTooltip :text="$t('pages.admin.quizzes.is-correct')">
-                <UCheckbox size="xl" v-model="option.isCorrect" />
+                <UCheckbox size="lg" v-model="option.isCorrect" />
               </UTooltip>
               <UButton
-                icon="i-lucide-close"
+                icon="i-lucide-x"
                 size="xs"
                 @click="() => void (question.options = question.options?.filter(o => o.id !== option.id))"
               />

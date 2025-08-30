@@ -25,7 +25,7 @@ const quizzes = computed(
         status: qr?.status || "pending",
         startedAt: qr?.startedAt ? dateTimeFormatter.format(new Date(qr.startedAt)) : "-",
         completedAt: qr?.startedAt ? dateTimeFormatter.format(new Date(qr.startedAt)) : "-",
-        score: qr?.score || "-",
+        score: "-",
       };
     }) || [],
 );
@@ -38,12 +38,22 @@ watchEffect(() => {
 </script>
 
 <template>
-  <UContainer class="max-w-4xl py-8">
+  <UContainer class="max-w-4xl py-8 space-y-8">
     <UCard v-for="quiz in quizzes" class="space-y-4">
       <template #header>
         <div class="flex items-center justify-between">
           <h3 class="text-md font-semibold">{{ quiz.title }}</h3>
-          <UBadge :color="quiz.status === 'pending' ? 'warning' : quiz.status === 'finished' ? 'success' : 'info'">
+          <UBadge
+            :color="
+              quiz.status === 'pending'
+                ? 'warning'
+                : quiz.status === 'finished'
+                  ? 'success'
+                  : quiz.status === 'banned'
+                    ? 'error'
+                    : 'info'
+            "
+          >
             {{ $t(`shared.quiz-statuses.${quiz.status}`) }}
           </UBadge>
         </div>

@@ -1,11 +1,6 @@
-export function useCheaterDetector(maxAttempts: number, onCheatAttempt: (attempts: number) => void) {
-  const attempts = ref(0);
-
+export function useCheaterDetector(onCheatAttempt: () => void) {
   const trigger = () => {
-    onCheatAttempt(++attempts.value);
-    if (attempts.value >= maxAttempts) {
-      lock();
-    }
+    onCheatAttempt();
   };
 
   const handleVisibilityChange = () => {
@@ -16,10 +11,6 @@ export function useCheaterDetector(maxAttempts: number, onCheatAttempt: (attempt
 
   const handleBlur = () => {
     trigger();
-  };
-
-  const lock = () => {
-    // TODO: implement later
   };
 
   onMounted(() => {

@@ -4,8 +4,12 @@ import type { ReadFullLessonDto } from "./lesson";
 export const CLASS_STATUSES = ["opened", "closed"] as const;
 export type ClassStatus = (typeof CLASS_STATUSES)[number];
 
-export const QUIZ_STATUSES = ["pending", "started", "finished"] as const;
+export const QUIZ_STATUSES = ["pending", "started", "finished", "banned"] as const;
 export type QuizStatus = (typeof QUIZ_STATUSES)[number];
+
+export interface UnbanQuizResultDto {
+  userId: string;
+}
 
 export interface CreateQuizResultAnswerDto {
   questionId: string;
@@ -28,6 +32,7 @@ export interface ReadQuizResultDto extends CreateQuizResultDto {
   completedAt: string | null;
   status: QuizStatus;
   nextQuestionIndex: number;
+  cheatAttempts: number;
 }
 
 export interface ReadStudentQuizResultDto {
@@ -94,4 +99,8 @@ export const classSchema = z.object({
 export const answerQuizSchema = z.object({
   questionId: z.string().uuid(),
   options: z.array(z.string()).min(1),
+});
+
+export const unbanQuizResultSchema = z.object({
+  userId: z.string(),
 });

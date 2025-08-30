@@ -34,12 +34,14 @@ export default defineEventHandler(async event => {
       answers: [],
       score: 0,
       startedAt: now,
+      status: "started",
       completedAt: null,
     };
     cls.quizResults.push(newQuizResult);
     quizResultIndex = cls.quizResults.length - 1;
   } else if (!cls.quizResults[quizResultIndex].startedAt) {
     cls.quizResults[quizResultIndex].startedAt = now;
+    cls.quizResults[quizResultIndex].status = "started";
   }
 
   let score = 0;
@@ -68,6 +70,7 @@ export default defineEventHandler(async event => {
   if (++cls.quizResults[quizResultIndex].nextQuestionIndex === quiz!.questions.length) {
     cls.quizResults[quizResultIndex].nextQuestionIndex = -1;
     cls.quizResults[quizResultIndex].completedAt = now;
+    cls.quizResults[quizResultIndex].status = "finished";
   }
 
   cls.updatedAt = now;

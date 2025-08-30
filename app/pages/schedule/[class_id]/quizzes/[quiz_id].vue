@@ -14,9 +14,8 @@ const { t } = useI18n();
 const classId = computed(() => route.params.class_id as string);
 const quizId = computed(() => route.params.quiz_id as string);
 
-useCheaterDetector(2, (attempts: number) => {
-  console.log(`🚨 cheater detected, attempt ${attempts}`);
-});
+const banModalOpen = ref(false);
+const finalBanModalOpen = ref(false);
 
 const {
   data: cls,
@@ -50,6 +49,12 @@ const currentQuestion = computed(() => quiz.value?.questions[currentQuestionInde
 const quizStatus = ref();
 
 watchEffect(() => {
+  if (quizStatus.value === "banned" && !finalBanModalOpen.value) {
+    showError({ statusCode: 403 });
+  }
+});
+
+watchEffect(() => {
   if (quizResult.value) {
     currentQuestionIndex.value = quizResult.value.nextQuestionIndex;
     quizStatus.value = quizResult.value.status;
@@ -60,6 +65,28 @@ watchEffect(() => {
   if (currentQuestion.value) {
     state.questionId = currentQuestion.value.id;
     state.options = [];
+  }
+});
+
+useCheaterDetector(async () => {
+  if (finalBanModalOpen.value || banModalOpen.value) return;
+  try {
+    const { status } = await $fetch<ReadStudentQuizResultDto>(
+      `/api/schedule/${classId.value}/quiz/${quizId.value}/cheat`,
+      {
+        method: "POST",
+      },
+    );
+
+    if (status === "banned") {
+      finalBanModalOpen.value = true;
+      quizStatus.value = status;
+    } else {
+      banModalOpen.value = true;
+    }
+  } catch (err) {
+    const msg = (err as FetchError)?.data?.message || "unknown";
+    console.error(`Can't ban user: ${t(`errors.${msg}`)}`);
   }
 });
 
@@ -152,11 +179,23 @@ const handleCheckboxChange = (optionId: string, isChecked: boolean) => {
 
         <template #footer>
           <USkeleton v-if="status === 'pending'" class="h-8 w-full" />
-          <UButton v-else block type="submit" :loading="loading">{{
-            $t("pages.dashboard.schedule.quizzes.submit-answer")
-          }}</UButton>
+          <UButton v-else block type="submit" :loading="loading">
+            {{ $t("pages.dashboard.schedule.quizzes.submit-answer") }}
+          </UButton>
         </template>
       </UCard>
     </UForm>
+    <UModal
+      :dismissible="false"
+      v-model:open="banModalOpen"
+      :title="$t('pages.dashboard.schedule.quizzes.cheat-attempt-title')"
+      :description="$t('pages.dashboard.schedule.quizzes.cheat-attempt-description')"
+    />
+    <UModal
+      :dismissible="false"
+      v-model:open="finalBanModalOpen"
+      :title="$t('pages.dashboard.schedule.quizzes.cheat-attempt-title')"
+      :description="$t('pages.dashboard.schedule.quizzes.cheat-attempt-description-final')"
+    />
   </UContainer>
 </template>
