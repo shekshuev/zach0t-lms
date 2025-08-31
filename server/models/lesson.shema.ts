@@ -60,6 +60,10 @@ export const QuizSchema = new Schema({
     type: String,
     required: true,
   },
+  duration: {
+    type: Number,
+    default: 0,
+  },
   title: {
     type: String,
     required: true,

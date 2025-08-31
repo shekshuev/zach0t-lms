@@ -30,6 +30,7 @@ export interface ReadQuizResultDto extends CreateQuizResultDto {
   answers: ReadQuizResultAnswerDto[];
   startedAt: string;
   completedAt: string | null;
+  deadlineAt: string | null;
   status: QuizStatus;
   nextQuestionIndex: number;
   cheatAttempts: number;

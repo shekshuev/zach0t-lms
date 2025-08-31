@@ -15,6 +15,11 @@ export default defineEventHandler(async event => {
     (result: QuizResultType) => result.quizId === quizId && result.userId.toString() === user.id,
   );
 
+  const quiz = cls.lesson.quizzes.find(q => q.id === quizId);
+  if (!cls) {
+    throw createError({ statusCode: 404, message: "quiz_not_found" });
+  }
+
   if (quizResultIndex === -1) {
     const newQuizResult = {
       quizId,
@@ -22,6 +27,7 @@ export default defineEventHandler(async event => {
       answers: [],
       score: 0,
       startedAt: now,
+      deadlineAt: quiz?.duration && quiz.duration > 0 ? new Date(now.getTime() + quiz.duration * 1000) : null,
       status: "started",
       completedAt: null,
     };

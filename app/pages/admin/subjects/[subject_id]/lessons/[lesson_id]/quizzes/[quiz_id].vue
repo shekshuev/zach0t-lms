@@ -50,6 +50,8 @@ const schema = z.object({
     .string({ message: t("validations.quiz-title.required") })
     .min(LESSON_QUIZ_TITLE_MIN_LENGTH, t("validations.quiz-title.min", { length: LESSON_QUIZ_TITLE_MIN_LENGTH }))
     .max(LESSON_QUIZ_TITLE_MAX_LENGTH, t("validations.quiz-title.max", { length: LESSON_QUIZ_TITLE_MAX_LENGTH })),
+  maxCheatAttempts: z.number().nonnegative(t("validations.quiz-max-cheat-attempts.nonnegative")).optional(),
+  duration: z.number().nonnegative(t("validations.quiz-duration.nonnegative")).optional(),
   questions: z.array(quizQuestionSchema),
 });
 
@@ -57,6 +59,8 @@ const state = reactive<Quiz>({
   id: v4(),
   title: "",
   questions: [],
+  maxCheatAttempts: 0,
+  duration: 0,
 });
 
 const items = ref<DropdownMenuItem[][]>([
@@ -141,6 +145,12 @@ async function onSubmit(e: FormSubmitEvent<Quiz>) {
         <div class="grid gap-4">
           <UFormField :label="$t('pages.admin.quizzes.title')" name="title">
             <UInput v-model.trim="state.title" class="w-full" />
+          </UFormField>
+          <UFormField :label="$t('pages.admin.quizzes.max-cheat-attempts')" name="maxCheatAttempts">
+            <UInput v-model.trim.number="state.maxCheatAttempts" class="w-full" />
+          </UFormField>
+          <UFormField :label="$t('pages.admin.quizzes.duration')" name="duration">
+            <UInput v-model.trim.number="state.duration" class="w-full" />
           </UFormField>
         </div>
       </UCard>

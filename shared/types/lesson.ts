@@ -19,6 +19,7 @@ export interface QuizQuestion {
 export interface Quiz {
   id: string;
   title: string;
+  duration: number;
   maxCheatAttempts: number;
   questions: QuizQuestion[];
 }
@@ -84,6 +85,8 @@ export const quizQuestionSchema = z.object({
 export const quizSchema = z.object({
   id: z.string().uuid(),
   title: z.string().min(LESSON_QUIZ_TITLE_MIN_LENGTH).max(LESSON_QUIZ_TITLE_MAX_LENGTH),
+  maxCheatAttempts: z.number().nonnegative().optional(),
+  duration: z.number().nonnegative().optional(),
   questions: z.array(quizQuestionSchema),
 });
 

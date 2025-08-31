@@ -125,7 +125,9 @@
         "prompt": "Prompt",
         "option": "Option",
         "is-correct": "Is correct",
-        "add-option": "Add option"
+        "add-option": "Add option",
+        "max-cheat-attempts": "Max cheat attempts",
+        "duration": "Duration"
       }
     },
     "dashboard": {
@@ -305,6 +307,12 @@
     },
     "quiz-answers": {
       "min": "Required at least {length} answers"
+    },
+    "quiz-max-cheat-attempts": {
+      "nonnegative": "Should be a positive number or zero"
+    },
+    "quiz-duration": {
+      "nonnegative": "Should be a positive number or zero (seconds)"
     }
   },
   "errors": {

@@ -39,6 +39,12 @@ const QuizResultSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  deadlineAt: {
+    type: Date,
+  },
+  bannedAt: {
+    type: Date,
+  },
   completedAt: {
     type: Date,
   },

@@ -23,13 +23,22 @@ export default defineEventHandler(async event => {
   }
 
   let quizResultIndex = cls.quizResults.findIndex(
-    (result: QuizResultType) => result.quizId === quizId && result.userId.toString() === user.id,
+    result => result.quizId === quizId && result.userId.toString() === userId,
   );
   if (quizResultIndex === -1) {
     throw createError({ statusCode: 404, message: "quiz_not_found" });
   }
   cls.quizResults[quizResultIndex].cheatAttempts = 0;
   cls.quizResults[quizResultIndex].status = "started";
+  if (quiz.duration && quiz.duration > 0) {
+    const buffer = 3000;
+    const timeMillisecondsSpent =
+      cls.quizResults[quizResultIndex].bannedAt!.getTime() - cls.quizResults[quizResultIndex].startedAt.getTime();
+    cls.quizResults[quizResultIndex].deadlineAt = new Date(
+      now.getTime() + (quiz.duration * 1000 - timeMillisecondsSpent + buffer),
+    );
+    cls.quizResults[quizResultIndex].bannedAt = null;
+  }
 
   cls.updatedAt = now;
 

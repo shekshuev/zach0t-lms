@@ -27,6 +27,7 @@ export default defineEventHandler(async event => {
 
   if (++cls.quizResults[quizResultIndex].cheatAttempts === quiz.maxCheatAttempts) {
     cls.quizResults[quizResultIndex].status = "banned";
+    cls.quizResults[quizResultIndex].bannedAt = now;
   }
 
   cls.updatedAt = now;
