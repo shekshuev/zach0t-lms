@@ -13,6 +13,8 @@ const isDark = computed({
   },
 });
 
+const route = useRoute();
+
 const { t } = useI18n();
 
 const items = computed<NavigationMenuItem[][]>(() => {
@@ -163,7 +165,9 @@ watchEffect(() => {
           />
         </div>
         <div class="max-h-screen overflow-y-auto">
-          <slot />
+          <UContainer class="max-w-4xl py-8">
+            <slot />
+          </UContainer>
         </div>
       </div>
     </template>

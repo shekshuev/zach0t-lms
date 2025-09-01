@@ -20,7 +20,13 @@
         "collapse": "Collapse",
         "expand": "Expand",
         "light": "Light theme",
-        "dark": "Dark theme"
+        "dark": "Dark theme",
+        "breadcrumb": {
+          "schedule": "Schedule",
+          "class": "Class",
+          "auizzes": "All quizzes",
+          "quiz": "Quiz"
+        }
       }
     }
   },
@@ -130,7 +136,9 @@
         "max-cheat-attempts": "Max cheat attempts",
         "duration": "Duration"
       }
-    },
+    }
+  },
+  "features": {
     "dashboard": {
       "schedule": {
         "begin-at": "Begin at",
