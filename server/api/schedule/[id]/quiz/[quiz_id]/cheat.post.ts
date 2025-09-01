@@ -32,7 +32,7 @@ export default defineEventHandler(async event => {
 
   cls.updatedAt = now;
 
-  await cls.save();
+  // await cls.save();
 
   return toReadStudentQuizResultDto(cls.quizResults[quizResultIndex]);
 });

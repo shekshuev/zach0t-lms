@@ -4,7 +4,7 @@ import type { ReadFullLessonDto } from "./lesson";
 export const CLASS_STATUSES = ["opened", "closed"] as const;
 export type ClassStatus = (typeof CLASS_STATUSES)[number];
 
-export const QUIZ_STATUSES = ["pending", "started", "finished", "banned"] as const;
+export const QUIZ_STATUSES = ["pending", "started", "finished", "banned", "timeout"] as const;
 export type QuizStatus = (typeof QUIZ_STATUSES)[number];
 
 export interface UnbanQuizResultDto {
@@ -42,6 +42,7 @@ export interface ReadStudentQuizResultDto {
   status: QuizStatus;
   startedAt: string;
   completedAt: string | null;
+  deadlineAt: string | null;
 }
 
 export interface FilterClassDto {

@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import redCard from "@/assets/img/red-card.webp";
+import yellowCard from "@/assets/img/yello-card.jpg";
 import CompletedSvg from "@/assets/svg/completed.svg";
+import TimeSvg from "@/assets/svg/time.svg";
 import type { FormSubmitEvent } from "@nuxt/ui";
 import type { FetchError } from "ofetch";
 import { z } from "zod";
@@ -22,15 +25,14 @@ const {
   data: cls,
   error,
   status,
-} = await useAsyncData(
-  `class-${classId.value}`,
-  () => {
-    return $fetch<ReadFullClassDto>(`/api/schedule/${classId.value}`);
-  },
-  {
-    watch: [quizStatus],
-  },
-);
+  refresh,
+} = await useAsyncData(`class-${classId.value}`, () => {
+  return $fetch<ReadFullClassDto>(`/api/schedule/${classId.value}`);
+});
+
+onBeforeRouteLeave(() => {
+  refresh();
+});
 
 const schema = z.object({
   questionId: z.string().uuid(),
@@ -63,7 +65,11 @@ watchEffect(() => {
 watchEffect(() => {
   if (quizResult.value) {
     currentQuestionIndex.value = quizResult.value.nextQuestionIndex;
-    quizStatus.value = quizResult.value.status;
+    if (quizResult.value.deadlineAt && new Date(quizResult.value.deadlineAt).getTime() - Date.now() <= 0) {
+      quizStatus.value = "timeout";
+    } else {
+      quizStatus.value = quizResult.value.status;
+    }
   }
 });
 
@@ -72,6 +78,32 @@ watchEffect(() => {
     state.questionId = currentQuestion.value.id;
     state.options = [];
   }
+});
+
+const timer = ref(0);
+let timerInterval: ReturnType<typeof setInterval> | null = null;
+
+watchEffect(onCleanup => {
+  const result = quizResult.value;
+  if (!result || !result.deadlineAt) return;
+
+  const deadline = new Date(result.deadlineAt).getTime();
+
+  const update = () => {
+    const now = Date.now();
+    const remaining = Math.max(0, Math.floor((deadline - now) / 1000));
+    timer.value = remaining;
+    if (remaining === 0 && quizStatus.value !== "timeout") {
+      quizStatus.value = "timeout";
+    }
+  };
+
+  update();
+  timerInterval = setInterval(update, 1000);
+
+  onCleanup(() => {
+    if (timerInterval) clearInterval(timerInterval);
+  });
 });
 
 useCheaterDetector(async () => {
@@ -148,8 +180,28 @@ const handleCheckboxChange = (optionId: string, isChecked: boolean) => {
         <UButton color="neutral" variant="ghost" @click="$router.back()">{{ $t("actions.go-back") }}</UButton>
       </div>
     </UCard>
+    <UCard v-else-if="quizStatus === 'timeout'">
+      <div class="flex flex-col gap-8 items-center justify-center">
+        <TimeSvg class="w-full sm:w-80" />
+
+        <p class="text-center text-xl font-bold">{{ $t("pages.dashboard.schedule.quizzes.finished") }}</p>
+
+        <UButton color="neutral" variant="ghost" @click="$router.back()">{{ $t("actions.go-back") }}</UButton>
+      </div>
+    </UCard>
     <UForm v-else :schema="schema" :state="state as any" class="flex flex-col gap-8" @submit="onSubmit">
       <UCard v-if="currentQuestion" class="space-y-4">
+        <template #header>
+          <p class="text-sm text-gray-500 text-right">
+            {{ $t("pages.dashboard.schedule.quizzes.time-left") }}:
+            {{
+              Math.floor(timer / 60)
+                .toString()
+                .padStart(2, "0")
+            }}:{{ (timer % 60).toString().padStart(2, "0") }}
+          </p>
+        </template>
+
         <USkeleton class="h-24 w-full" v-if="status === 'pending'" />
         <WidgetsTipTapViewer v-else :content="currentQuestion.prompt" />
 
@@ -201,12 +253,30 @@ const handleCheckboxChange = (optionId: string, isChecked: boolean) => {
       v-model:open="banModalOpen"
       :title="$t('pages.dashboard.schedule.quizzes.cheat-attempt-title')"
       :description="$t('pages.dashboard.schedule.quizzes.cheat-attempt-description')"
-    />
+    >
+      <template #body>
+        <div class="rounded-lg max-w-lx overflow-hidden">
+          <img :src="yellowCard" />
+        </div>
+      </template>
+      <template #footer>
+        <UButton block @click="banModalOpen = false">{{ $t("pages.dashboard.schedule.quizzes.understood") }}</UButton>
+      </template>
+    </UModal>
     <UModal
       :dismissible="false"
       v-model:open="finalBanModalOpen"
       :title="$t('pages.dashboard.schedule.quizzes.cheat-attempt-title')"
       :description="$t('pages.dashboard.schedule.quizzes.cheat-attempt-description-final')"
-    />
+    >
+      <template #body>
+        <div class="rounded-lg max-w-lx overflow-hidden">
+          <img :src="redCard" />
+        </div>
+      </template>
+      <template #footer>
+        <UButton block @click="banModalOpen = false">{{ $t("pages.dashboard.schedule.quizzes.understood") }}</UButton>
+      </template>
+    </UModal>
   </UContainer>
 </template>

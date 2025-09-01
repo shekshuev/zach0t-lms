@@ -51,6 +51,7 @@ export function toReadFullStudentLessonDto(lesson: LessonDocument): ReadFullLess
       id: quiz.id,
       title: quiz.title,
       maxCheatAttempts: quiz.maxCheatAttempts,
+      duration: quiz.duration,
       questions: quiz.questions.map(question => ({
         id: question.id,
         type: question.type,
@@ -89,6 +90,7 @@ function toReadQuizResultDto(result: QuizResultType): ReadQuizResultDto {
     nextQuestionIndex: result.nextQuestionIndex,
     startedAt: result.startedAt.toISOString(),
     completedAt: result.completedAt?.toISOString() || null,
+    deadlineAt: result.deadlineAt?.toISOString() || null,
     status: result.status,
     cheatAttempts: result.cheatAttempts,
   };
@@ -100,6 +102,7 @@ export function toReadStudentQuizResultDto(result: QuizResultType): ReadStudentQ
     quizId: result.quizId,
     status: result.status,
     startedAt: result.startedAt.toISOString(),
+    deadlineAt: result.deadlineAt?.toISOString() || null,
     completedAt: result.completedAt?.toISOString() || null,
   };
 }

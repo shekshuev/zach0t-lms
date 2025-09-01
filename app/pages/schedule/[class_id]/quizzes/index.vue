@@ -11,7 +11,11 @@ const { t } = useI18n();
 
 const classId = computed(() => route.params.class_id);
 
-const { data: cls, error } = await useAsyncData(`class-${classId.value}`, () => {
+const {
+  data: cls,
+  error,
+  refresh,
+} = await useAsyncData(`class-${classId.value}`, () => {
   return $fetch<ReadFullClassDto>(`/api/schedule/${classId.value}`);
 });
 
@@ -24,9 +28,10 @@ const quizzes = computed(
   () =>
     cls.value?.lesson.quizzes?.map(quiz => {
       const qr = cls.value?.quizResults.find(qr => qr.quizId === quiz.id);
+      const deadlinePassed = qr?.deadlineAt ? new Date(qr.deadlineAt).getTime() - Date.now() <= 0 : false;
       return {
         ...quiz,
-        status: qr?.status || "pending",
+        status: deadlinePassed ? "timeout" : qr?.status || "pending",
         startedAt: qr?.startedAt ? dateTimeFormatter.format(new Date(qr.startedAt)) : "-",
         completedAt: qr?.startedAt ? dateTimeFormatter.format(new Date(qr.startedAt)) : "-",
         score: "-",
@@ -50,6 +55,7 @@ async function startQuiz(id: string) {
       await $fetch<ReadStudentQuizResultDto>(`/api/schedule/${classId.value}/quiz/${id}/start`, {
         method: "POST",
       });
+      refresh();
     } catch (err) {
       const msg = (err as FetchError)?.data?.message || "unknown";
       toast.add({ title: t(`errors.${msg}`), color: "error" });
@@ -74,7 +80,7 @@ async function startQuiz(id: string) {
                 ? 'warning'
                 : quiz.status === 'finished'
                   ? 'success'
-                  : quiz.status === 'banned'
+                  : ['banned', 'timeout'].includes(quiz.status)
                     ? 'error'
                     : 'info'
             "
@@ -105,7 +111,7 @@ async function startQuiz(id: string) {
         </div>
       </dl>
 
-      <template #footer>
+      <template v-if="['pending', 'started'].includes(quiz.status)" #footer>
         <UButton @click="startQuiz(quiz.id)" :loading="loading" block>{{
           $t("pages.dashboard.schedule.quizzes.start-quiz")
         }}</UButton>
