@@ -1,6 +1,6 @@
 import type { HydratedDocument, InferSchemaType } from "mongoose";
 import { Schema, model } from "mongoose";
-import { uuid } from "uuidv4";
+import { v4 } from "uuid";
 
 const UserSchema = new Schema({
   username: {
@@ -34,7 +34,7 @@ const UserSchema = new Schema({
   },
   resetPasswordToken: {
     type: String,
-    default: () => uuid(),
+    default: () => v4(),
   },
   createdAt: {
     type: Date,

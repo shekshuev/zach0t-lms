@@ -1,4 +1,4 @@
-import { uuid } from "uuidv4";
+import { v4 } from "uuid";
 import { z } from "zod";
 // import type { ResetPasswordDto, SessionPayload, UserRole } from "sh";
 import {
@@ -39,7 +39,7 @@ export default defineEventHandler(async event => {
   await User.findByIdAndUpdate(user.id, {
     passwordHash: await hashPassword(password),
     status: "active",
-    resetPasswordToken: uuid(),
+    resetPasswordToken: v4(),
     updatedAt: new Date(),
   });
 
