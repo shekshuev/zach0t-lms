@@ -12,7 +12,14 @@ export default defineEventHandler(async event => {
     return [];
   }
 
-  filters.group = { $regex: user.group, $options: "i" };
+  if (user.role === "student") {
+    filters.group = { $regex: user.group, $options: "i" };
+  }
+
+  if (user.role === "teacher") {
+    const groups = user.group.split(" ");
+    filters.group = { $in: groups };
+  }
 
   if (query.from && typeof query.from === "string") {
     const date = parseDateTime(query.from).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toDate("UTC");

@@ -66,6 +66,20 @@ const items = computed<NavigationMenuItem[][]>(() => {
       },
     ],
   ];
+  if ((user?.value as SessionPayload)?.role === "teacher") {
+    result.push([
+      {
+        label: t("layouts.dashboard.menu.teacher"),
+        type: "label",
+      },
+      {
+        label: t("layouts.dashboard.menu.subjects"),
+        icon: "i-lucide-book-open",
+        type: "link",
+        to: "/admin/subjects",
+      },
+    ]);
+  }
   if ((user?.value as SessionPayload)?.role === "admin") {
     result.push([
       {

@@ -3,7 +3,8 @@
     "dashboard": {
       "menu": {
         "header": "Menu",
-        "admin": "Admin",
+        "admin": "Admin panel",
+        "teacher": "Teacher panel",
         "dashboard": "Dashboard",
         "assignments": "Assignments",
         "schedule": "Schedule",
