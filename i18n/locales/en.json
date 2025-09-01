@@ -151,7 +151,8 @@
           "cheat-attempt-description": "Your behavior looks unusual. This is your first warning. Further violations may lead to test termination or a ban.",
           "cheat-attempt-description-final": "Your actions have been flagged as suspicious. This behavior is not tolerated. Access to the test has been blocked.",
           "understood": "I understood",
-          "time-left": "Time left"
+          "time-left": "Time left",
+          "waiting": "Waiting..."
         }
       }
     }

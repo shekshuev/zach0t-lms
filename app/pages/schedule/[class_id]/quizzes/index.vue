@@ -16,7 +16,7 @@ const {
   error,
   refresh,
 } = await useAsyncData(`class-${classId.value}`, () => {
-  return $fetch<ReadFullClassDto>(`/api/schedule/${classId.value}`);
+  return $fetch<ReadStudentFullClassDto>(`/api/schedule/${classId.value}`);
 });
 
 const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {
@@ -34,7 +34,7 @@ const quizzes = computed(
         status: deadlinePassed ? "timeout" : qr?.status || "pending",
         startedAt: qr?.startedAt ? dateTimeFormatter.format(new Date(qr.startedAt)) : "-",
         completedAt: qr?.startedAt ? dateTimeFormatter.format(new Date(qr.startedAt)) : "-",
-        score: "-",
+        score: qr && qr?.score !== null ? `${qr.score.toFixed(2)}%` : t("pages.dashboard.schedule.quizzes.waiting"),
       };
     }) || [],
 );

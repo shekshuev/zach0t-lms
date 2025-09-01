@@ -35,6 +35,10 @@ const QuizResultSchema = new Schema({
     default: "pending",
     required: true,
   },
+  totalQuestions: {
+    type: Number,
+    default: 0,
+  },
   startedAt: {
     type: Date,
     default: Date.now,

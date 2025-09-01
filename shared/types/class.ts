@@ -43,6 +43,7 @@ export interface ReadStudentQuizResultDto {
   startedAt: string;
   completedAt: string | null;
   deadlineAt: string | null;
+  score: number | null;
 }
 
 export interface FilterClassDto {

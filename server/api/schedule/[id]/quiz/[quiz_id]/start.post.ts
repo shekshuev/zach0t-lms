@@ -29,6 +29,7 @@ export default defineEventHandler(async event => {
       startedAt: now,
       deadlineAt: quiz?.duration && quiz.duration > 0 ? new Date(now.getTime() + quiz.duration * 1000) : null,
       status: "started",
+      totalQuestions: quiz?.questions.length || 0,
       completedAt: null,
     };
     cls.quizResults.push(newQuizResult);

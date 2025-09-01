@@ -97,6 +97,13 @@ function toReadQuizResultDto(result: QuizResultType): ReadQuizResultDto {
 }
 
 export function toReadStudentQuizResultDto(result: QuizResultType): ReadStudentQuizResultDto {
+  let score = null;
+  if (Array.isArray(result.answers)) {
+    const hasUncheckedQuestions = result?.answers.find(a => a.score === null);
+    if (!hasUncheckedQuestions && result.totalQuestions > 0) {
+      score = (result.answers.reduce((acc, curr) => (acc += curr.score), 0) * 100) / result.totalQuestions;
+    }
+  }
   return {
     nextQuestionIndex: result.nextQuestionIndex,
     quizId: result.quizId,
@@ -104,6 +111,7 @@ export function toReadStudentQuizResultDto(result: QuizResultType): ReadStudentQ
     startedAt: result.startedAt.toISOString(),
     deadlineAt: result.deadlineAt?.toISOString() || null,
     completedAt: result.completedAt?.toISOString() || null,
+    score,
   };
 }
 
