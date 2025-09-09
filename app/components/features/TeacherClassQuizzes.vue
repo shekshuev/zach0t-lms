@@ -65,7 +65,7 @@ async function startQuiz(id: string) {
 </script>
 
 <template>
-  <UCard v-for="quiz in quizzes" class="space-y-4">
+  <UCard v-for="quiz in quizzes" class="space-y-4 mb-8">
     <template #header>
       <div class="flex items-center justify-between">
         <h3 class="text-md font-semibold">{{ quiz.title }}</h3>

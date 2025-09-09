@@ -4,6 +4,7 @@ export default defineEventHandler(async event => {
   const body = await readBody<UpdateClassDto>(event);
 
   const parsed = classSchema.safeParse(body);
+  console.log(parsed.error?.message);
   if (!parsed.success) {
     throw createError({ statusCode: 422, message: "unprocessable_entity" });
   }

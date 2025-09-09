@@ -11,6 +11,6 @@ const role = computed(() => (user.value as SessionPayload).role);
     <FeaturesStudentClassQuiz />
   </template>
   <template v-else-if="role === 'teacher'">
-    <FeaturesStudentClassQuiz />
+    <FeaturesTeacherClassQuiz />
   </template>
 </template>
