@@ -38,6 +38,7 @@ const content = ref<JSONContent>({
 
 watch(content, newValue => {
   state.value = "not-saved";
+  cls.value!.lesson.content = newValue;
   autosave(newValue);
 });
 
