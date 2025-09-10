@@ -148,6 +148,8 @@
         "to-content": "To content",
         "to-quizzes": "To quizzes",
         "quizzes": {
+          "user-id": "User ID",
+          "name": "Name",
           "status": "Status",
           "started-at": "Started at",
           "completed-at": "Completed at",

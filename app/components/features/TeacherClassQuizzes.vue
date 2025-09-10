@@ -1,18 +1,47 @@
 <script setup lang="ts">
-import type { FetchError } from "ofetch";
+import type { TableColumn } from "@nuxt/ui";
 
 const route = useRoute();
-const toast = useToast();
 const { t } = useI18n();
 
 const classId = computed(() => route.params.class_id);
 
-const {
-  data: cls,
-  error,
-  refresh,
-} = await useAsyncData(`class-${classId.value}`, () => {
-  return $fetch<ReadStudentFullClassDto>(`/api/schedule/${classId.value}`);
+const { data: cls, error } = await useAsyncData(`class-${classId.value}`, () => {
+  return $fetch<ReadTeacherFullClassDto>(`/api/schedule/${classId.value}`);
+});
+
+interface ResultDataRow {
+  quizId: string;
+  id: string;
+  name: string;
+  startedAt: string;
+  completedAt: string;
+  status: string;
+  score: string;
+}
+
+const resultsData = computed<ResultDataRow[]>(() => {
+  const students = cls.value?.students;
+  const results = cls.value?.quizResults;
+  if (!Array.isArray(students) || students.length === 0) {
+    return [];
+  }
+  return students.map(student => {
+    const result = results?.find(r => r.userId === student.id);
+    const deadlinePassed = result?.deadlineAt ? new Date(result.deadlineAt).getTime() - Date.now() <= 0 : false;
+    return {
+      quizId: result?.quizId,
+      id: student.id,
+      name: [student.lastName, student.firstName].join(" "),
+      startedAt: result?.startedAt ? dateTimeFormatter.format(new Date(result.startedAt)) : "-",
+      completedAt: result?.startedAt ? dateTimeFormatter.format(new Date(result.startedAt)) : "-",
+      status: deadlinePassed ? "timeout" : result?.status || "pending",
+      score:
+        result && result?.score !== null
+          ? `${result.score.toFixed(2)}%`
+          : t("features.dashboard.schedule.quizzes.waiting"),
+    } as ResultDataRow;
+  });
 });
 
 const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {
@@ -22,46 +51,44 @@ const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {
 
 const quizzes = computed(
   () =>
-    cls.value?.lesson.quizzes?.map(quiz => {
-      const qr = cls.value?.quizResults.find(qr => qr.quizId === quiz.id);
-      const deadlinePassed = qr?.deadlineAt ? new Date(qr.deadlineAt).getTime() - Date.now() <= 0 : false;
-      return {
-        ...quiz,
-        status: deadlinePassed ? "timeout" : qr?.status || "pending",
-        startedAt: qr?.startedAt ? dateTimeFormatter.format(new Date(qr.startedAt)) : "-",
-        completedAt: qr?.startedAt ? dateTimeFormatter.format(new Date(qr.startedAt)) : "-",
-        score: qr && qr?.score !== null ? `${qr.score.toFixed(2)}%` : t("features.dashboard.schedule.quizzes.waiting"),
-      };
-    }) || [],
+    cls.value?.lesson.quizzes?.map(quiz => ({
+      ...quiz,
+      results: resultsData.value?.filter(rd => rd.quizId === quiz.id),
+    })) || [],
 );
+
+const columns: TableColumn<ResultDataRow>[] = [
+  {
+    header: t("features.dashboard.schedule.quizzes.user-id"),
+    accessorKey: "id",
+  },
+  {
+    header: t("features.dashboard.schedule.quizzes.name"),
+    accessorKey: "name",
+  },
+  {
+    header: t("features.dashboard.schedule.quizzes.started-at"),
+    accessorKey: "startedAt",
+  },
+  {
+    header: t("features.dashboard.schedule.quizzes.completed-at"),
+    accessorKey: "completedAt",
+  },
+  {
+    header: t("features.dashboard.schedule.quizzes.status"),
+    accessorKey: "status",
+  },
+  {
+    header: t("features.dashboard.schedule.quizzes.score"),
+    accessorKey: "score",
+  },
+];
 
 watchEffect(() => {
   if (error.value) {
     showError({ statusCode: error.value.statusCode });
   }
 });
-
-const loading = ref(false);
-
-async function startQuiz(id: string) {
-  const quizResult = cls.value?.quizResults?.find?.(qr => qr.quizId === id);
-  if (!quizResult) {
-    try {
-      loading.value = true;
-      await $fetch<ReadStudentQuizResultDto>(`/api/schedule/${classId.value}/quiz/${id}/start`, {
-        method: "POST",
-      });
-      refresh();
-    } catch (err) {
-      const msg = (err as FetchError)?.data?.message || "unknown";
-      toast.add({ title: t(`errors.${msg}`), color: "error" });
-      return;
-    } finally {
-      loading.value = false;
-    }
-  }
-  navigateTo(`/schedule/${classId.value}/quizzes/${id}`);
-}
 </script>
 
 <template>
@@ -69,7 +96,7 @@ async function startQuiz(id: string) {
     <template #header>
       <div class="flex items-center justify-between">
         <h3 class="text-md font-semibold">{{ quiz.title }}</h3>
-        <UBadge
+        <!-- <UBadge
           :color="
             quiz.status === 'pending'
               ? 'warning'
@@ -81,35 +108,10 @@ async function startQuiz(id: string) {
           "
         >
           {{ $t(`shared.quiz-statuses.${quiz.status}`) }}
-        </UBadge>
+        </UBadge> -->
       </div>
     </template>
 
-    <dl class="divide-y divide-gray-200 dark:divide-gray-800">
-      <div class="py-3 sm:flex sm:gap-4">
-        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 shrink-0 w-48">
-          {{ $t("features.dashboard.schedule.quizzes.started-at") }}
-        </dt>
-        <dd class="mt-1 text-sm text-gray-900 dark:text-white sm:mt-0">{{ quiz.startedAt }}</dd>
-      </div>
-      <div class="py-3 sm:flex sm:gap-4">
-        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 shrink-0 w-48">
-          {{ $t("features.dashboard.schedule.quizzes.completed-at") }}
-        </dt>
-        <dd class="mt-1 text-sm text-gray-900 dark:text-white sm:mt-0">{{ quiz.completedAt }}</dd>
-      </div>
-      <div class="py-3 sm:flex sm:gap-4">
-        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 shrink-0 w-48">
-          {{ $t("features.dashboard.schedule.quizzes.score") }}
-        </dt>
-        <dd class="mt-1 text-sm text-gray-900 dark:text-white sm:mt-0">{{ quiz.score }}</dd>
-      </div>
-    </dl>
-
-    <template v-if="['pending', 'started'].includes(quiz.status)" #footer>
-      <UButton @click="startQuiz(quiz.id)" :loading="loading" block>{{
-        $t("features.dashboard.schedule.quizzes.start-quiz")
-      }}</UButton>
-    </template>
+    <UTable :columns="columns" :data="quiz.results" />
   </UCard>
 </template>

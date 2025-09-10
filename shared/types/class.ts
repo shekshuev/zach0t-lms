@@ -46,6 +46,10 @@ export interface ReadStudentQuizResultDto {
   score: number | null;
 }
 
+export interface ReadTeacherQuizResultDto extends ReadQuizResultDto {
+  score: number | null;
+}
+
 export interface FilterClassDto {
   lessonId?: string;
   group?: string;
@@ -88,6 +92,11 @@ export interface ReadFullClassDto extends ReadClassDto {
 export interface ReadStudentFullClassDto extends ReadClassDto {
   lesson: ReadFullLessonDto;
   quizResults: ReadStudentQuizResultDto[];
+}
+
+export interface ReadTeacherFullClassDto extends ReadFullClassDto {
+  quizResults: ReadTeacherQuizResultDto[];
+  students: ReadUserDto[];
 }
 
 export const classSchema = z.object({

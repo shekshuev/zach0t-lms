@@ -35,5 +35,12 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 404, message: "class_not_found" });
   }
 
-  return toReadFullStudentClassDto(cls, user.id);
+  if (user.role === "student") {
+    return toReadFullStudentClassDto(cls, user.id);
+  } else if (user.role === "teacher") {
+    const users = await User.find({ group: cls.group });
+    return toReadFullTeacherClassDto(cls, users);
+  } else {
+    return toReadFullClassDto(cls);
+  }
 });

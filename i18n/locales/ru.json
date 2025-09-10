@@ -148,6 +148,8 @@
         "to-content": "К материалам занятия",
         "to-quizzes": "К тестам",
         "quizzes": {
+          "user-id": "ID пользователя",
+          "name": "Имя",
           "status": "Статус",
           "started-at": "Начат",
           "completed-at": "Завершен",

@@ -115,11 +115,34 @@ export function toReadStudentQuizResultDto(result: QuizResultType): ReadStudentQ
   };
 }
 
+export function toReadTeacherQuizResultDto(result: QuizResultType): ReadTeacherQuizResultDto {
+  let score = null;
+  if (Array.isArray(result.answers)) {
+    const hasUncheckedQuestions = result?.answers.find(a => a.score === null);
+    if (!hasUncheckedQuestions && result.totalQuestions > 0) {
+      score = (result.answers.reduce((acc, curr) => (acc += curr.score), 0) * 100) / result.totalQuestions;
+    }
+  }
+  return {
+    ...toReadQuizResultDto(result),
+    score,
+  };
+}
+
 export function toReadFullClassDto(cls: ClassDocument): ReadFullClassDto {
   return {
     ...toReadClassDto(cls),
     lesson: toReadFullLessonDto(cls.lesson as LessonDocument),
     quizResults: cls.quizResults.map(toReadQuizResultDto),
+  };
+}
+
+export function toReadFullTeacherClassDto(cls: ClassDocument, students: UserDocument[]): ReadTeacherFullClassDto {
+  return {
+    ...toReadClassDto(cls),
+    lesson: toReadFullLessonDto(cls.lesson as LessonDocument),
+    quizResults: cls.quizResults.map(toReadTeacherQuizResultDto),
+    students: students.map(toReadUserDto),
   };
 }
 
