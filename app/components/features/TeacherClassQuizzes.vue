@@ -10,58 +10,62 @@ const { data: cls, error } = await useAsyncData(`class-${classId.value}`, () => 
   return $fetch<ReadTeacherFullClassDto>(`/api/schedule/${classId.value}`);
 });
 
-interface ResultDataRow {
-  quizId: string;
+interface DataRow {
   id: string;
   name: string;
   startedAt: string;
   completedAt: string;
+  cheatAttempts: number;
   status: string;
   score: string;
 }
 
-const resultsData = computed<ResultDataRow[]>(() => {
-  const students = cls.value?.students;
-  const results = cls.value?.quizResults;
-  if (!Array.isArray(students) || students.length === 0) {
-    return [];
-  }
-  return students.map(student => {
-    const result = results?.find(r => r.userId === student.id);
-    const deadlinePassed = result?.deadlineAt ? new Date(result.deadlineAt).getTime() - Date.now() <= 0 : false;
-    return {
-      quizId: result?.quizId,
-      id: student.id,
-      name: [student.lastName, student.firstName].join(" "),
-      startedAt: result?.startedAt ? dateTimeFormatter.format(new Date(result.startedAt)) : "-",
-      completedAt: result?.startedAt ? dateTimeFormatter.format(new Date(result.startedAt)) : "-",
-      status: deadlinePassed ? "timeout" : result?.status || "pending",
-      score:
-        result && result?.score !== null
-          ? `${result.score.toFixed(2)}%`
-          : t("features.dashboard.schedule.quizzes.waiting"),
-    } as ResultDataRow;
-  });
-});
+interface QuizAggregate {
+  id: string;
+  title: string;
+  students: DataRow[];
+}
 
 const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "full",
   timeStyle: "short",
 });
 
-const quizzes = computed(
-  () =>
-    cls.value?.lesson.quizzes?.map(quiz => ({
-      ...quiz,
-      results: resultsData.value?.filter(rd => rd.quizId === quiz.id),
-    })) || [],
-);
+const aggregateData = computed<QuizAggregate[]>(() => {
+  const quizzes = cls.value?.lesson.quizzes;
+  const students = cls.value?.students || [];
+  const results = cls.value?.quizResults || [];
+  if (!Array.isArray(quizzes) || quizzes.length === 0) {
+    return [];
+  }
+  return quizzes.map(quiz => {
+    return {
+      id: quiz.id,
+      title: quiz.title,
+      students: students.map(student => {
+        const result = results?.find(r => r.userId === student.id && r.quizId === quiz.id);
+        let deadlinePassed = false;
+        if (result?.answers && result.answers.length < quiz.questions.length) {
+          deadlinePassed = result?.deadlineAt ? new Date(result.deadlineAt).getTime() - Date.now() <= 0 : false;
+        }
+        return {
+          id: student.id,
+          name: [student.lastName, student.firstName].join(" "),
+          startedAt: result?.startedAt ? dateTimeFormatter.format(new Date(result.startedAt)) : "-",
+          completedAt: result?.startedAt ? dateTimeFormatter.format(new Date(result.startedAt)) : "-",
+          cheatAttempts: result?.startedAt ? result?.cheatAttempts : "-",
+          status: deadlinePassed ? "timeout" : result?.status || "pending",
+          score:
+            result && result?.score !== null
+              ? `${result.score.toFixed(2)}%`
+              : t("features.dashboard.schedule.quizzes.waiting"),
+        };
+      }),
+    };
+  });
+});
 
-const columns: TableColumn<ResultDataRow>[] = [
-  {
-    header: t("features.dashboard.schedule.quizzes.user-id"),
-    accessorKey: "id",
-  },
+const columns: TableColumn<DataRow>[] = [
   {
     header: t("features.dashboard.schedule.quizzes.name"),
     accessorKey: "name",
@@ -73,6 +77,10 @@ const columns: TableColumn<ResultDataRow>[] = [
   {
     header: t("features.dashboard.schedule.quizzes.completed-at"),
     accessorKey: "completedAt",
+  },
+  {
+    header: t("features.dashboard.schedule.quizzes.cheat-attempts"),
+    accessorKey: "cheatAttempts",
   },
   {
     header: t("features.dashboard.schedule.quizzes.status"),
@@ -92,26 +100,13 @@ watchEffect(() => {
 </script>
 
 <template>
-  <UCard v-for="quiz in quizzes" class="space-y-4 mb-8">
+  <UCard v-for="quiz in aggregateData" class="space-y-4 mb-8">
     <template #header>
       <div class="flex items-center justify-between">
         <h3 class="text-md font-semibold">{{ quiz.title }}</h3>
-        <!-- <UBadge
-          :color="
-            quiz.status === 'pending'
-              ? 'warning'
-              : quiz.status === 'finished'
-                ? 'success'
-                : ['banned', 'timeout'].includes(quiz.status)
-                  ? 'error'
-                  : 'info'
-          "
-        >
-          {{ $t(`shared.quiz-statuses.${quiz.status}`) }}
-        </UBadge> -->
       </div>
     </template>
 
-    <UTable :columns="columns" :data="quiz.results" />
+    <UTable :columns="columns" :data="quiz.students" />
   </UCard>
 </template>
