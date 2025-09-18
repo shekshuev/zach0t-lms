@@ -162,7 +162,7 @@ function getRowItems(row: Row<DataRow>) {
     {
       label: t("actions.show"),
       type: "link",
-      to: `/schedule/${classId.value}/quizzes/${row.original.quizId}`,
+      to: `/schedule/${classId.value}/quizzes/${row.original.quizId}?userId=${row.original.id}`,
     },
     {
       label: t("actions.unban"),
