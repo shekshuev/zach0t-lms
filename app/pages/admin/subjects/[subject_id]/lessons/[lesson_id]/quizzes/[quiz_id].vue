@@ -55,6 +55,8 @@ const schema = z.object({
   questions: z.array(quizQuestionSchema),
 });
 
+type QuizFormData = z.infer<typeof schema>;
+
 const state = reactive<Quiz>({
   id: v4(),
   title: "",
@@ -103,13 +105,18 @@ watch(
   },
 );
 
-async function onSubmit(e: FormSubmitEvent<Quiz>) {
+async function onSubmit(e: FormSubmitEvent<QuizFormData>) {
   try {
+    const submitQuiz: Quiz = {
+      ...state,
+      ...e.data,
+    };
+
     let payloadQuizzes;
     if (isNew.value) {
-      payloadQuizzes = [...quizzes.value, e.data];
+      payloadQuizzes = [...quizzes.value, submitQuiz];
     } else {
-      payloadQuizzes = quizzes.value.map(q => (q.id === e.data.id ? e.data : q));
+      payloadQuizzes = quizzes.value.map(q => (q.id === submitQuiz.id ? submitQuiz : q));
     }
     await $fetch(`/api/lessons/${lessonId.value}`, {
       method: "PUT",
@@ -120,7 +127,7 @@ async function onSubmit(e: FormSubmitEvent<Quiz>) {
       },
     });
     if (isNew.value) {
-      router.replace(`/admin/subjects/${subjectId.value}/lessons/${lessonId.value}/quizzes/${e.data.id}`);
+      router.replace(`/admin/subjects/${subjectId.value}/lessons/${lessonId.value}/quizzes/${submitQuiz.id}`);
       toast.add({ title: t("pages.admin.quizzes.quiz-created") });
     } else {
       toast.add({ title: t("pages.admin.quizzes.quiz-updated") });
