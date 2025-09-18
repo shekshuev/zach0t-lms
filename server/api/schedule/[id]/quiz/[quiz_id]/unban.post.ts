@@ -1,7 +1,7 @@
 import { UnbanQuizResultDto } from "~~/shared/types/class";
 
 export default defineEventHandler(async event => {
-  const user = await requireTeacherSession(event);
+  await requireTeacherSession(event);
   const classId = getRouterParam(event, "id");
   const quizId = getRouterParam(event, "quiz_id");
   const body = await readBody<UnbanQuizResultDto>(event);

@@ -272,7 +272,9 @@ const handleCheckboxChange = (optionId: string, isChecked: boolean) => {
       </div>
     </template>
     <template #footer>
-      <UButton block @click="banModalOpen = false">{{ $t("features.dashboard.schedule.quizzes.understood") }}</UButton>
+      <UButton block @click="finalBanModalOpen = false">{{
+        $t("features.dashboard.schedule.quizzes.understood")
+      }}</UButton>
     </template>
   </UModal>
 </template>

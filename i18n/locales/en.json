@@ -164,7 +164,8 @@
           "understood": "I understood",
           "time-left": "Time left",
           "waiting": "Waiting...",
-          "cheat-attempts": "Cheat attempts"
+          "cheat-attempts": "Cheat attempts",
+          "unbanned": "Unbanned"
         }
       }
     }
@@ -356,7 +357,8 @@
     "question_not_found": "Question not found",
     "question_already_answered": "Question already answered",
     "quiz_already_started": "Quiz already started",
-    "quiz_not_started": "Quiz not started"
+    "quiz_not_started": "Quiz not started",
+    "quiz_not_found": "Quiz not found"
   },
   "actions": {
     "header": "Actions",
@@ -367,7 +369,9 @@
     "apply-filters": "Apply filters",
     "clear-filters": "Clear filters",
     "go-back": "Go back",
-    "go-home": "Go home"
+    "go-home": "Go home",
+    "show": "Show",
+    "unban": "Unban"
   },
   "shared": {
     "class-statuses": {

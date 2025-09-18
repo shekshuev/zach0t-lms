@@ -164,7 +164,8 @@
           "understood": "Я понял",
           "time-left": "Осталось времени",
           "waiting": "Ожидание...",
-          "cheat-attempts": "Попыток жульничать"
+          "cheat-attempts": "Попыток жульничать",
+          "unbanned": "Разбанен"
         }
       }
     }
@@ -356,7 +357,8 @@
     "question_not_found": "Вопрос не найден",
     "question_already_answered": "Ответ на вопрос уже есть",
     "quiz_already_started": "Тест уже начат",
-    "quiz_not_started": "Тест не начат"
+    "quiz_not_started": "Тест не начат",
+    "quiz_not_found": "Тест не найден"
   },
   "actions": {
     "header": "Действия",
@@ -367,7 +369,9 @@
     "apply-filters": "Применить фильтры",
     "clear-filters": "Очистить фильтры",
     "go-back": "Назад",
-    "go-home": "На главную"
+    "go-home": "На главную",
+    "show": "Просмотр",
+    "unban": "Разбанить"
   },
   "shared": {
     "class-statuses": {

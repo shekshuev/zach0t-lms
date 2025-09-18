@@ -1,14 +1,38 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
+import type { Row } from "@tanstack/vue-table";
+import type { FetchError } from "ofetch";
+
+const UButton = resolveComponent("UButton");
+const UDropdownMenu = resolveComponent("UDropdownMenu");
 
 const route = useRoute();
 const { t } = useI18n();
 
 const classId = computed(() => route.params.class_id);
+const toast = useToast();
 
-const { data: cls, error } = await useAsyncData(`class-${classId.value}`, () => {
+const {
+  data: cls,
+  error,
+  refresh,
+} = await useAsyncData(`class-${classId.value}`, () => {
   return $fetch<ReadTeacherFullClassDto>(`/api/schedule/${classId.value}`);
 });
+
+async function unbanUserResult(userId: string, quizId: string) {
+  try {
+    await $fetch(`/api/schedule/${classId.value}/quiz/${quizId}/unban`, {
+      method: "POST",
+      body: { userId } as UnbanQuizResultDto,
+    });
+    refresh();
+    toast.add({ title: t("features.dashboard.schedule.quizzes.unbanned") });
+  } catch (err) {
+    const msg = (err as FetchError)?.data?.message || "unknown";
+    toast.add({ title: t(`errors.${msg}`), color: "error" });
+  }
+}
 
 interface DataRow {
   id: string;
@@ -18,6 +42,7 @@ interface DataRow {
   cheatAttempts: number;
   status: string;
   score: string;
+  quizId: string;
 }
 
 interface QuizAggregate {
@@ -64,6 +89,7 @@ const aggregateData = computed<QuizAggregate[]>(() => {
           cheatAttempts: result?.startedAt ? result?.cheatAttempts : "-",
           status: deadlinePassed ? "timeout" : result?.status || "pending",
           score,
+          quizId: quiz.id,
         };
       }),
     };
@@ -71,6 +97,10 @@ const aggregateData = computed<QuizAggregate[]>(() => {
 });
 
 const columns: TableColumn<DataRow>[] = [
+  {
+    header: t("features.dashboard.schedule.quizzes.id"),
+    accessorKey: "id",
+  },
   {
     header: t("features.dashboard.schedule.quizzes.name"),
     accessorKey: "name",
@@ -95,7 +125,51 @@ const columns: TableColumn<DataRow>[] = [
     header: t("features.dashboard.schedule.quizzes.score"),
     accessorKey: "score",
   },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return h(
+        "div",
+        { class: "text-right" },
+        h(
+          UDropdownMenu,
+          {
+            content: {
+              align: "end",
+            },
+            items: getRowItems(row),
+          },
+          () =>
+            h(UButton, {
+              icon: "i-lucide-ellipsis-vertical",
+              variant: "ghost",
+            }),
+        ),
+      );
+    },
+  },
 ];
+
+function getRowItems(row: Row<DataRow>) {
+  return [
+    {
+      type: "label",
+      label: t("actions.header"),
+    },
+    {
+      type: "separator",
+    },
+    {
+      label: t("actions.show"),
+      type: "link",
+      to: `/schedule/${classId.value}/quizzes/${row.original.quizId}`,
+    },
+    {
+      label: t("actions.unban"),
+      onSelect: () => unbanUserResult(row.original.id, row.original.quizId),
+    },
+  ];
+}
 
 watchEffect(() => {
   if (error.value) {
@@ -111,7 +185,6 @@ watchEffect(() => {
         <h3 class="text-md font-semibold">{{ quiz.title }}</h3>
       </div>
     </template>
-
     <UTable :columns="columns" :data="quiz.students" />
   </UCard>
 </template>
