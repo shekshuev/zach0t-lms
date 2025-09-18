@@ -107,7 +107,8 @@ useCheaterDetector(async () => {
   if (
     finalBanModalOpen.value ||
     banModalOpen.value ||
-    (quiz.value?.maxCheatAttempts && quiz.value?.maxCheatAttempts <= 0)
+    (quiz.value?.maxCheatAttempts && quiz.value?.maxCheatAttempts <= 0) ||
+    quizStatus.value !== "started"
   )
     return;
   try {

@@ -33,7 +33,7 @@ const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {
 
 const aggregateData = computed<QuizAggregate[]>(() => {
   const quizzes = cls.value?.lesson.quizzes;
-  const students = cls.value?.students || [];
+  const students = (cls.value?.students || []) as ReadUserDto[];
   const results = cls.value?.quizResults || [];
   if (!Array.isArray(quizzes) || quizzes.length === 0) {
     return [];
@@ -48,6 +48,14 @@ const aggregateData = computed<QuizAggregate[]>(() => {
         if (result?.answers && result.answers.length < quiz.questions.length) {
           deadlinePassed = result?.deadlineAt ? new Date(result.deadlineAt).getTime() - Date.now() <= 0 : false;
         }
+        let score = "-";
+        if (result) {
+          if (result.score) {
+            score = `${result.score.toFixed(2)}%`;
+          } else {
+            score = t("features.dashboard.schedule.quizzes.waiting");
+          }
+        }
         return {
           id: student.id,
           name: [student.lastName, student.firstName].join(" "),
@@ -55,14 +63,11 @@ const aggregateData = computed<QuizAggregate[]>(() => {
           completedAt: result?.startedAt ? dateTimeFormatter.format(new Date(result.startedAt)) : "-",
           cheatAttempts: result?.startedAt ? result?.cheatAttempts : "-",
           status: deadlinePassed ? "timeout" : result?.status || "pending",
-          score:
-            result && result?.score !== null
-              ? `${result.score.toFixed(2)}%`
-              : t("features.dashboard.schedule.quizzes.waiting"),
+          score,
         };
       }),
     };
-  });
+  }) as QuizAggregate[];
 });
 
 const columns: TableColumn<DataRow>[] = [

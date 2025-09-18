@@ -25,12 +25,20 @@ const quizzes = computed(
     cls.value?.lesson.quizzes?.map(quiz => {
       const qr = cls.value?.quizResults.find(qr => qr.quizId === quiz.id);
       const deadlinePassed = qr?.deadlineAt ? new Date(qr.deadlineAt).getTime() - Date.now() <= 0 : false;
+      let score = "-";
+      if (qr) {
+        if (qr.score) {
+          score = `${qr.score.toFixed(2)}%`;
+        } else {
+          score = t("features.dashboard.schedule.quizzes.waiting");
+        }
+      }
       return {
         ...quiz,
         status: deadlinePassed ? "timeout" : qr?.status || "pending",
         startedAt: qr?.startedAt ? dateTimeFormatter.format(new Date(qr.startedAt)) : "-",
         completedAt: qr?.startedAt ? dateTimeFormatter.format(new Date(qr.startedAt)) : "-",
-        score: qr && qr?.score !== null ? `${qr.score.toFixed(2)}%` : t("features.dashboard.schedule.quizzes.waiting"),
+        score,
       };
     }) || [],
 );
@@ -65,7 +73,7 @@ async function startQuiz(id: string) {
 </script>
 
 <template>
-  <UCard v-for="quiz in quizzes" class="space-y-4">
+  <UCard v-for="quiz in quizzes" class="space-y-4 mb-8">
     <template #header>
       <div class="flex items-center justify-between">
         <h3 class="text-md font-semibold">{{ quiz.title }}</h3>

@@ -163,7 +163,8 @@
           "cheat-attempt-description-final": "Your actions have been flagged as suspicious. This behavior is not tolerated. Access to the test has been blocked.",
           "understood": "I understood",
           "time-left": "Time left",
-          "waiting": "Waiting..."
+          "waiting": "Waiting...",
+          "cheat-attempts": "Cheat attempts"
         }
       }
     }
